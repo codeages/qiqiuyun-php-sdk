@@ -19,7 +19,7 @@
   "autoload" : {
     "files": ["src/functions.php"],
     "psr-4": {
-      "QiQiuQun\\SDK\\" : "src"
+      "QiQiuYun\\SDK\\" : "src"
     }
   },
   "autoload-dev" : {

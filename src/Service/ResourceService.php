@@ -2,7 +2,6 @@
 namespace QiQiuYun\SDK\Service;
 
 use QiQiuYun\SDK\Exception\SDKException;
-use QiQiuYun\SDK\Service\Resource\PlayTokenGenerator;
 use QiQiuYun\SDK;
 
 class ResourceService
@@ -51,7 +50,7 @@ class ResourceService
      */
     public function generatePlayToken($resNo, $lifetime = 600)
     {
-        $once = SDK\random_str('12');
+        $once = SDK\random_str('16');
         $deadline = time() + $lifetime;
 
         $signingText = "{$resNo}\n{$once}\n{$deadline}";
