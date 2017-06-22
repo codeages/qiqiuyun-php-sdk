@@ -1,7 +1,8 @@
 <?php
 namespace {
     if (!function_exists('json_last_error_msg')) {
-        function json_last_error_msg() {
+        function json_last_error_msg()
+        {
             static $JSON_ERRORS = array(
                 JSON_ERROR_NONE => 'No error',
                 JSON_ERROR_DEPTH => 'Maximum stack depth exceeded',
@@ -50,4 +51,3 @@ namespace QiQiuYun\SDK {
     }
 
 }
-
