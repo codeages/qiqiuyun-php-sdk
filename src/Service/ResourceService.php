@@ -1,4 +1,5 @@
 <?php
+
 namespace QiQiuYun\SDK\Service;
 
 use QiQiuYun\SDK\Exception\SDKException;
@@ -46,6 +47,7 @@ class ResourceService
      *
      * @param $resNo string 资源编号
      * @param int $lifetime Token的有效时长
+     *
      * @return string 资源播放Token
      */
     public function generatePlayToken($resNo, $lifetime = 600)

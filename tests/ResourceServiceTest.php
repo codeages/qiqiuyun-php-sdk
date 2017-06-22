@@ -1,4 +1,5 @@
 <?php
+
 namespace QiQiuYun\SDK\Tests;
 
 use PHPUnit\Framework\TestCase;
@@ -43,5 +44,4 @@ class ResourceServiceTest extends TestCase
 
         return new ResourceService($config);
     }
-
 }
