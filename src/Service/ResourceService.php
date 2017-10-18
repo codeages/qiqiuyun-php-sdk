@@ -23,7 +23,7 @@ class ResourceService
         $options = array_merge(array(
             'access_key' => '',
             'secret_key' => '',
-            'token_generator' => null
+            'token_generator' => null,
         ), $options);
 
         if (!$options['access_key']) {

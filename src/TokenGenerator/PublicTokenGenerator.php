@@ -1,4 +1,5 @@
 <?php
+
 namespace QiQiuYun\SDK\TokenGenerator;
 
 use QiQiuYun\SDK;
@@ -16,7 +17,7 @@ class PublicTokenGenerator implements TokenGenerator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function generatePlayToken($resNo, $lifetime = 600, $once = true)
     {
