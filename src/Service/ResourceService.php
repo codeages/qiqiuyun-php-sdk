@@ -3,7 +3,8 @@
 namespace QiQiuYun\SDK\Service;
 
 use QiQiuYun\SDK\Exception\SDKException;
-use QiQiuYun\SDK;
+use QiQiuYun\SDK\TokenGenerator\TokenGenerator;
+use QiQiuYun\SDK\TokenGenerator\PublicTokenGenerator;
 
 class ResourceService
 {
@@ -15,23 +16,35 @@ class ResourceService
 
     protected $secretKey;
 
-    public function __construct(array $config = array())
+    protected $tokenGenerator;
+
+    public function __construct(array $options = array())
     {
-        $config = array_merge(array(
+        $options = array_merge(array(
             'access_key' => '',
             'secret_key' => '',
-        ), $config);
+            'token_generator' => null
+        ), $options);
 
-        if (!$config['access_key']) {
-            throw new SDKException('Required "access_key" key no supplied in config.');
+        if (!$options['access_key']) {
+            throw new SDKException('Required "access_key" key no supplied in options.');
         }
 
-        if (!$config['secret_key']) {
-            throw new SDKException('Required "secret_key" key no supplied in config.');
+        if (!$options['secret_key']) {
+            throw new SDKException('Required "secret_key" key no supplied in options.');
         }
 
-        $this->accessKey = $config['access_key'];
-        $this->secretKey = $config['secret_key'];
+        if ($options['token_generator']) {
+            if (!$options['token_generator'] instanceof TokenGenerator) {
+                throw new SDKException('"token_generator" must be instanceof TokenGenerator.');
+            }
+            $this->tokenGenerator = $options['token_generator'];
+        } else {
+            $this->tokenGenerator = new PublicTokenGenerator($options['access_key'], $options['secret_key']);
+        }
+
+        $this->accessKey = $options['access_key'];
+        $this->secretKey = $options['secret_key'];
     }
 
     /**
@@ -55,21 +68,7 @@ class ResourceService
      */
     public function generatePlayToken($resNo, $lifetime = 600, $once = true)
     {
-        if ($once) {
-            $once = SDK\random_str('16');
-        } else {
-            $once = '!once';
-        }
-
-        $deadline = time() + $lifetime;
-
-        $signingText = "{$resNo}\n{$once}\n{$deadline}";
-
-        $sign = hash_hmac('sha1', $signingText, $this->secretKey, true);
-
-        $encodedSign = SDK\base64_urlsafe_encode($sign);
-
-        return "{$once}:{$deadline}:{$encodedSign}";
+        return $this->tokenGenerator->generatePlayToken($resNo, $lifetime, $once);
     }
 
     /**
