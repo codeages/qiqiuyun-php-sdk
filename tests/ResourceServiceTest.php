@@ -32,6 +32,14 @@ class ResourceServiceTest extends TestCase
         $this->assertEquals($encodedSign, $parsedToken[2]);
     }
 
+    public function testGetPlaySrc()
+    {
+        $service = $this->createResourceService();
+        $src = $service->getPlaySrc('test_res_no', 3600);
+
+        $this->assertStringStartsWith('//', $src);
+    }
+
     /**
      * @return ResourceService
      */

@@ -9,6 +9,8 @@ class ResourceService
 {
     const BASE_API_URL = 'http://api.edusoho.net';
 
+    const JS_SDK_HOST = 'service-cdn.qiqiuyun.net';
+
     protected $accessKey;
 
     protected $secretKey;
@@ -43,16 +45,22 @@ class ResourceService
     }
 
     /**
-     * 生成资源播放Token
+     * 生成资源播放 Token
      *
-     * @param $resNo string 资源编号
-     * @param int $lifetime Token的有效时长
+     * @param string $resNo    资源编号
+     * @param int    $lifetime Token 的有效时长
+     * @param bool   $once     Token是否一次性
      *
      * @return string 资源播放Token
      */
-    public function generatePlayToken($resNo, $lifetime = 600)
+    public function generatePlayToken($resNo, $lifetime = 600, $once = true)
     {
-        $once = SDK\random_str('16');
+        if ($once) {
+            $once = SDK\random_str('16');
+        } else {
+            $once = '!once';
+        }
+
         $deadline = time() + $lifetime;
 
         $signingText = "{$resNo}\n{$once}\n{$deadline}";
@@ -62,5 +70,25 @@ class ResourceService
         $encodedSign = SDK\base64_urlsafe_encode($sign);
 
         return "{$once}:{$deadline}:{$encodedSign}";
+    }
+
+    /**
+     * 获取云资源的播放地址，该地址可以直接嵌入iframe播放
+     *
+     * @param string $resNo    资源编号
+     * @param int    $lifetime 播放地址的有效时长
+     * @param bool   $once     播放地址是否一次性
+     *
+     * @return string 播放地址
+     */
+    public function getPlaySrc($resNo, $lifetime = 600, $once = true)
+    {
+        $src = '//'.self::JS_SDK_HOST.'/js-sdk/player.html';
+        $params = array(
+            'resNo' => $resNo,
+            'token' => $this->generatePlayToken($resNo, $lifetime, $once),
+        );
+
+        return $src.'?'.http_build_query($params);
     }
 }
