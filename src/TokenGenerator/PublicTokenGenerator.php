@@ -24,7 +24,7 @@ class PublicTokenGenerator implements TokenGenerator
         if ($once) {
             $once = SDK\random_str('16');
         } else {
-            $once = '!once';
+            $once = 'no'; // no, mean "not once"
         }
 
         $deadline = time() + $lifetime;
