@@ -8,9 +8,9 @@ use QiQiuYun\SDK\TokenGenerator\PublicTokenGenerator;
 
 class ResourceService
 {
-    const BASE_API_URL = 'http://api.edusoho.net';
+    protected $apiHost;
 
-    const JS_SDK_HOST = 'service-cdn.qiqiuyun.net';
+    protected $playHost;
 
     protected $accessKey;
 
@@ -24,6 +24,8 @@ class ResourceService
             'access_key' => '',
             'secret_key' => '',
             'token_generator' => null,
+            'api_host' => 'api.edusoho.net',
+            'play_host' => 'play.qiqiuyun.net',
         ), $options);
 
         if (!$options['access_key']) {
@@ -45,6 +47,8 @@ class ResourceService
 
         $this->accessKey = $options['access_key'];
         $this->secretKey = $options['secret_key'];
+        $this->playHost = $options['play_host'];
+        $this->apiHost = $options['api_host'];
     }
 
     /**
@@ -82,7 +86,7 @@ class ResourceService
      */
     public function getPlaySrc($resNo, $lifetime = 600, $once = true)
     {
-        $src = '//'.self::JS_SDK_HOST.'/js-sdk/player.html';
+        $src = "//{$this->playHost}/player";
         $params = array(
             'resNo' => $resNo,
             'token' => $this->generatePlayToken($resNo, $lifetime, $once),

@@ -37,7 +37,13 @@ class ResourceServiceTest extends TestCase
         $service = $this->createResourceService();
         $src = $service->getPlaySrc('test_res_no', 3600);
 
-        $this->assertStringStartsWith('//', $src);
+        $this->assertStringStartsWith('//play.qiqiuyun.net/player', $src);
+
+        $service = $this->createResourceService([
+            'play_host' => 'play.dev',
+        ]);
+        $src = $service->getPlaySrc('test_res_no', 3600);
+        $this->assertStringStartsWith('//play.dev/player', $src);
     }
 
     /**
