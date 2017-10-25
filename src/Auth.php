@@ -13,4 +13,9 @@ class Auth
         $this->accessKey = $accessKey;
         $this->secretKey = $secretKey;
     }
+
+    public function getAccessKey()
+    {
+        return $this->accessKey;
+    }
 }

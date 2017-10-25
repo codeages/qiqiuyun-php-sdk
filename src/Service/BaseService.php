@@ -26,11 +26,25 @@ abstract class BaseService
      * @var Client
      */
     protected $client;
+
+    /**
+     * API base uri
+     *
+     * @var string
+     */
+    protected $baseUri;
     
     public function __construct(Auth $auth, $options = array())
     {
         $this->auth = $auth;
         $this->options = $options;
-        $this->client = new Client();
+        $this->client = $this->createClient();
+    }
+
+    protected function createClient($options = array())
+    {
+        return new Client(array(
+            'base_uri' => $this->baseUri,
+        ));
     }
 }

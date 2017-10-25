@@ -3,6 +3,8 @@ namespace QiQiuYun\SDK\Service;
 
 class XAPIService extends BaseService
 {
+    protected $baseUri = 'http://localhost:8000';
+
     protected $defaultLang = 'zh-CN';
 
     /**
@@ -136,8 +138,18 @@ class XAPIService extends BaseService
             )
         );
 
-        $this->client->request('POST', 'statements', array(
+        $response = $this->client->request('POST', 'statements', array(
             'json' => $statement,
+            'headers' => array(
+                'Authorization' => 'Signature '. $this->makeSignature(),
+            )
         ));
+    }
+
+    public function makeSignature()
+    {
+        $deadline = strtotime(date('Y-m-d H:0:0', strtotime('+2 hours')));
+        $signingText = $this->auth->getAccessKey()."\n".$deadline;
+        return $this->auth->sign($signingText);
     }
 }
