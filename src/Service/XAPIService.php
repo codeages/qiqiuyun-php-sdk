@@ -46,10 +46,10 @@ class XAPIService extends BaseService
 
         $statement['result'] = array(
             'duration' => $this->convertTime($result['duration']),
-            'extensions' => array(
-                'http://id.tincanapi.com/extension/starting-point' => $this->convertTime($result['starting_point']),
-                'http://id.tincanapi.com/extension/ending-point' => $this->convertTime($result['ending_point']),
-            ),
+            // 'extensions' => array(
+            //     'http://id.tincanapi.com/extension/starting-point' => $this->convertTime($result['starting_point']),
+            //     'http://id.tincanapi.com/extension/ending-point' => $this->convertTime($result['ending_point']),
+            // ),
         );
 
         $this->pushStatement($statement);
@@ -134,7 +134,7 @@ class XAPIService extends BaseService
     {
         $statement['context'] = array(
             'extensions' => array (
-                'http://xapi.edusoho.com/extensions/school' => $this->context,
+                'http://xapi.edusoho.com/extensions/school' => $this->options['school'],
             )
         );
 
@@ -146,10 +146,15 @@ class XAPIService extends BaseService
         ));
     }
 
-    public function makeSignature()
+    protected function makeSignature()
     {
         $deadline = strtotime(date('Y-m-d H:0:0', strtotime('+2 hours')));
         $signingText = $this->auth->getAccessKey()."\n".$deadline;
         return $this->auth->sign($signingText);
+    }
+
+    protected function convertTime($time)
+    {
+
     }
 }

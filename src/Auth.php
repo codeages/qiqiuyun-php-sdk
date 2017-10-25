@@ -18,4 +18,9 @@ class Auth
     {
         return $this->accessKey;
     }
+
+    public function sign($signingText)
+    {
+        return 'xxx';
+    }
 }

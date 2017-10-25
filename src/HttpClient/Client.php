@@ -51,7 +51,7 @@ class Client
 
         $errorCode = curl_errno($curl);
         if ($errorCode) {
-            throw new ClientException(\curl_error(), $errorCode);
+            throw new ClientException(\curl_error($curl), $errorCode);
         }
 
         curl_close($curl);
