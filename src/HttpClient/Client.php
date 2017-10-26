@@ -36,7 +36,7 @@ class Client
         $options = [
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_HTTPHEADER => $this->compileRequestHeaders($headers),
-            CURLOPT_URL => (string) $uri,
+            CURLOPT_URL => $uri,
             CURLOPT_CONNECTTIMEOUT => 10,
             CURLOPT_TIMEOUT => $options['timeout'],
             CURLOPT_RETURNTRANSFER => true, // Follow 301 redirects
