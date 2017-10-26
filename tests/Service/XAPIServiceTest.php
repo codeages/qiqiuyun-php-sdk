@@ -14,20 +14,14 @@ class ClientTest extends BaseTestCase
         $this->auth = $this->createAuth();
     }
 
-    public function testWatchVideo()
+    public function testWatchVideo_Success()
     {
-        $service = new XAPIService($this->auth, array(
-            'school' => array(
-                'id' => $this->accessKey,
-                'name' => '测试网校',
-            )
-        ));
+        $service = $this->createXAPIService();
 
         $actor = array(
             'id' => 1,
             'name' => '测试用户',
         );
-
         $object = array(
             'id' => 1,
             'name' => '测试任务',
@@ -41,13 +35,58 @@ class ClientTest extends BaseTestCase
                 'name' => '测试视频.mp4'
             )
         );
-
         $result = array(
             'duration' => 100,
         );
 
-        $service->watchVideo($actor, $object, $result);
+        $statement = $service->watchVideo($actor, $object, $result);
 
+        $this->assertArrayHasKey('actor', $statement);
+        $this->assertArrayHasKey('object', $statement);
+        $this->assertArrayHasKey('result', $statement);
+    }
 
+    /**
+     * @expectedException QiQiuYun\SDK\Exception\ResponseException
+     * @expectedExceptionCode 9
+     *
+     * @return void
+     */
+    public function testWatchVideo_Error()
+    {
+        $service = $this->createXAPIService();
+        
+        $actor = array(
+            'id' => 1,
+            'name' => '测试用户',
+        );
+        $object = array(
+            'id' => -1,
+            'name' => 'error',
+            'course' => array(
+                'id' => 1,
+                'title' => '测试课程',
+                'description' => '这是一个测试课程',
+            ),
+            'video' => array(
+                'id' => '1111',
+                'name' => '测试视频.mp4'
+            )
+        );
+        $result = array(
+            'duration' => 100,
+        );
+
+        $statement = $service->watchVideo($actor, $object, $result);
+    }
+
+    protected function createXAPIService()
+    {
+        return new XAPIService($this->auth, array(
+            'school' => array(
+                'id' => $this->accessKey,
+                'name' => '测试网校',
+            )
+        ));
     }
 }

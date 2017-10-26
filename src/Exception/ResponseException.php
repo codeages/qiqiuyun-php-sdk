@@ -17,7 +17,7 @@ class ResponseException extends SDKException
         $errorCode = $this->get('code', -1);
         $errorMessage = $this->get('message', 'Unknow error');
 
-        parent::__construct($error['message'], $error['code']);
+        parent::__construct($errorMessage, $errorCode);
     }
 
     public function getResponse()

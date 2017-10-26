@@ -143,7 +143,7 @@ class XAPIService extends BaseService
             )
         ));
 
-        $response = json_decode($rawResponse, true);
+        $response = json_decode($rawResponse->getBody(), true);
         if (isset($response['error'])) {
             throw new ResponseException($rawResponse);
         }

@@ -28,6 +28,11 @@ class Client
 
         $headers = isset($options['headers']) ? $options['headers'] : [];
         $body = isset($options['body']) ? $options['body'] : null;
+        if (isset($options['json'])) {
+            $body = json_encode($options['json']);
+            $headers['Content-Type'] = 'application/json';
+        }
+
         $uri = $this->buildUri($uri, $options);
 
         $options = [
