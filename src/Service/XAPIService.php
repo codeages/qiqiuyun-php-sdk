@@ -1,8 +1,12 @@
 <?php
 namespace QiQiuYun\SDK\Service;
 
+use QiQiuYun\SDK\Exception\ResponseException;
+
 class XAPIService extends BaseService
 {
+    protected $baseUri = 'http://xapi.qiqiuyun.net';
+
     protected $defaultLang = 'zh-CN';
 
     /**
@@ -10,7 +14,7 @@ class XAPIService extends BaseService
      *
      * @return void
      */
-    public function watchVideo($actor, $object, $result)
+    public function watchVideo($actor, $object, $result, $isPush = true)
     {
         $statement = array();
         $statement['actor'] = array('account' => $actor);
@@ -44,13 +48,9 @@ class XAPIService extends BaseService
 
         $statement['result'] = array(
             'duration' => $this->convertTime($result['duration']),
-            'extensions' => array(
-                'http://id.tincanapi.com/extension/starting-point' => $this->convertTime($result['starting_point']),
-                'http://id.tincanapi.com/extension/ending-point' => $this->convertTime($result['ending_point']),
-            ),
         );
 
-        $this->pushStatement($statement);
+        return $isPush ? $this->pushStatement($statement) : $statement;
     }
 
     /**
@@ -332,12 +332,34 @@ class XAPIService extends BaseService
     {
         $statement['context'] = array(
             'extensions' => array (
-                'http://xapi.edusoho.com/extensions/school' => $this->context,
+                'http://xapi.edusoho.com/extensions/school' => $this->options['school'],
             )
         );
 
-        $this->client->request('POST', 'statements', array(
+        $rawResponse = $this->client->request('POST', '/statements', array(
             'json' => $statement,
+            'headers' => array(
+                'Authorization' => 'Signature '.$this->makeSignature(),
+            )
         ));
+
+        $response = json_decode($rawResponse->getBody(), true);
+        if (isset($response['error'])) {
+            throw new ResponseException($rawResponse);
+        }
+
+        return $statement;
+    }
+
+    protected function makeSignature()
+    {
+        $deadline = strtotime(date('Y-m-d H:0:0', strtotime('+2 hours')));
+        $signingText = $this->auth->getAccessKey()."\n".$deadline;
+        return $this->auth->sign($signingText);
+    }
+
+    protected function convertTime($time)
+    {
+
     }
 }

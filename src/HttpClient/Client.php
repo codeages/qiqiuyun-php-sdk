@@ -2,7 +2,6 @@
 
 namespace QiQiuYun\SDK\HttpClient;
 
-use QiQiuYun\SDK\HttpClient\Psr7;
 use QiQiuYun\SDK\HttpClient\ClientException;
 
 class Client
@@ -12,14 +11,13 @@ class Client
      *
      * @var array
      */
-    private $config;
+    private $options;
 
-    public function __construct($config = array())
+    public function __construct($options = array())
     {
-        $defaults = array(
+        $this->options = array_merge(array(
             'timeout' => 300,
-        );
-        $this->config = $config + $defaults;
+        ), $options);
     }
 
     public function request($method, $uri = '', array $options = [])
@@ -28,12 +26,17 @@ class Client
 
         $headers = isset($options['headers']) ? $options['headers'] : [];
         $body = isset($options['body']) ? $options['body'] : null;
+        if (isset($options['json'])) {
+            $body = json_encode($options['json']);
+            $headers['Content-Type'] = 'application/json';
+        }
+
         $uri = $this->buildUri($uri, $options);
 
         $options = [
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_HTTPHEADER => $this->compileRequestHeaders($headers),
-            CURLOPT_URL => (string) $uri,
+            CURLOPT_URL => $uri,
             CURLOPT_CONNECTTIMEOUT => 10,
             CURLOPT_TIMEOUT => $options['timeout'],
             CURLOPT_RETURNTRANSFER => true, // Follow 301 redirects
@@ -51,7 +54,7 @@ class Client
 
         $errorCode = curl_errno($curl);
         if ($errorCode) {
-            throw new ClientException(\curl_error(), $errorCode);
+            throw new ClientException(\curl_error($curl), $errorCode);
         }
 
         curl_close($curl);
@@ -61,7 +64,7 @@ class Client
         return new Response($rawHeaders, $rawBody);
     }
 
-        /**
+    /**
      * Merges default options into the array.
      *
      * @param array $options Options to modify by reference
@@ -70,7 +73,7 @@ class Client
      */
     private function prepareDefaults($options)
     {
-        $defaults = $this->config;
+        $defaults = $this->options;
 
         if (array_key_exists('headers', $options)) {
             if ($options['headers'] === null) {
@@ -93,16 +96,13 @@ class Client
         return $result;
     }
 
-    private function buildUri($uri, array $config)
+    private function buildUri($uri, array $options)
     {
-        // for BC we accept null which would otherwise fail in uri_for
-        $uri = Psr7\uri_for($uri === null ? '' : $uri);
-
-        if (isset($config['base_uri'])) {
-            $uri = Psr7\UriResolver::resolve(Psr7\uri_for($config['base_uri']), $uri);
+        if (empty($options['base_uri'])) {
+            return $uri;
         }
 
-        return $uri->getScheme() === '' && $uri->getHost() !== '' ? $uri->withScheme('http') : $uri;
+        return rtrim($options['base_uri'], "\/").$uri;
     }
 
     public function compileRequestHeaders(array $headers)
