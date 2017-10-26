@@ -64,7 +64,7 @@ class Client
         return new Response($rawHeaders, $rawBody);
     }
 
-        /**
+    /**
      * Merges default options into the array.
      *
      * @param array $options Options to modify by reference

@@ -41,8 +41,12 @@ abstract class BaseService
         $this->client = $this->createClient();
     }
 
-    protected function createClient($options = array())
+    protected function createClient()
     {
+        if (!empty($this->options['base_uri'])) {
+            $this->baseUri = $this->options['base_uri'];
+        }
+
         return new Client(array(
             'base_uri' => $this->baseUri,
         ));

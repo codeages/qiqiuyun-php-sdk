@@ -5,7 +5,7 @@ use QiQiuYun\SDK\Exception\ResponseException;
 
 class XAPIService extends BaseService
 {
-    protected $baseUri = 'http://localhost:8000/xapi/';
+    protected $baseUri = 'http://xapi.qiqiuyun.net';
 
     protected $defaultLang = 'zh-CN';
 
