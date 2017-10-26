@@ -136,7 +136,7 @@ class XAPIService extends BaseService
             )
         );
 
-        $rawResponse = $this->client->request('POST', 'statements', array(
+        $rawResponse = $this->client->request('POST', '/statements', array(
             'json' => $statement,
             'headers' => array(
                 'Authorization' => 'Signature '.$this->makeSignature(),

@@ -2,7 +2,6 @@
 
 namespace QiQiuYun\SDK\HttpClient;
 
-use QiQiuYun\SDK\HttpClient\Psr7;
 use QiQiuYun\SDK\HttpClient\ClientException;
 
 class Client
@@ -12,14 +11,13 @@ class Client
      *
      * @var array
      */
-    private $config;
+    private $options;
 
-    public function __construct($config = array())
+    public function __construct($options = array())
     {
-        $defaults = array(
+        $this->options = array_merge(array(
             'timeout' => 300,
-        );
-        $this->config = $config + $defaults;
+        ), $options);
     }
 
     public function request($method, $uri = '', array $options = [])
@@ -75,7 +73,7 @@ class Client
      */
     private function prepareDefaults($options)
     {
-        $defaults = $this->config;
+        $defaults = $this->options;
 
         if (array_key_exists('headers', $options)) {
             if ($options['headers'] === null) {
@@ -98,16 +96,13 @@ class Client
         return $result;
     }
 
-    private function buildUri($uri, array $config)
+    private function buildUri($uri, array $options)
     {
-        // for BC we accept null which would otherwise fail in uri_for
-        $uri = Psr7\uri_for($uri === null ? '' : $uri);
-
-        if (isset($config['base_uri'])) {
-            $uri = Psr7\UriResolver::resolve(Psr7\uri_for($config['base_uri']), $uri);
+        if (empty($options['base_uri'])) {
+            return $uri;
         }
 
-        return $uri->getScheme() === '' && $uri->getHost() !== '' ? $uri->withScheme('http') : $uri;
+        return rtrim($options['base_uri'], "\/").$uri;
     }
 
     public function compileRequestHeaders(array $headers)

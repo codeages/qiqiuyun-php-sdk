@@ -20,7 +20,7 @@
     "silex/silex": "^2.0"
   },
   "autoload" : {
-    "files": ["src/functions.php", "src/HttpClient/Psr7/functions_include.php"],
+    "files": ["src/functions.php"],
     "psr-4": {
       "QiQiuYun\\SDK\\" : "src"
     }
