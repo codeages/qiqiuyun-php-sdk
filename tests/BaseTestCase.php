@@ -4,7 +4,7 @@ namespace QiQiuYun\SDK\Tests;
 use PHPUnit\Framework\TestCase;
 use QiQiuYun\SDK\Auth;
 
-class BaseTestCase extends TestCase
+abstract class BaseTestCase extends TestCase
 {
     protected $accessKey = 'test_access_key';
 
