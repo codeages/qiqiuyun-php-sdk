@@ -35,8 +35,8 @@ class XAPIService extends BaseService
                         'description' => $object['course']['description'],
                     ),
                     'http://xapi.edusoho.com/extensions/resource' => array(
-                        'id' => $object['video']['id'],
-                        'name' => $object['video']['name'],
+                        'id' => $object['resource']['id'],
+                        'name' => $object['resource']['name'],
                     )
                 )
             )
@@ -58,9 +58,43 @@ class XAPIService extends BaseService
      *
      * @return void
      */
-    public function finishActivity()
+    public function finishActivity($actor, $object, $result)
     {
+        $statement = array();
+        $statement['actor'] = array('account' => $actor);
+        $statement['verb'] = array(
+            'id' => 'http://adlnet.gov/expapi/verbs/completed',
+            'display' => array(
+                'zh-CN' => '完成了',
+                'en-US' => 'completed'
+            )
+        );
 
+        $statement['object'] = array(
+            'id' => $object['id'],
+            'defination' => array(
+                'type' => 'https://w3id.org/xapi/acrossx/activities/video',
+                'name' => array(
+                    $this->defaultLang => $object['name']
+                ),
+                'extensions' => array(
+                    'http://xapi.edusoho.com/extensions/course' => array(
+                        'id' => $object['course']['id'],
+                        'title' => $object['course']['title'],
+                        'description' => $object['course']['description']
+
+                    ),
+                    'http://xapi.edusoho.com/extensions/resource' => array(
+                        'id' => $object['resource']['id'],
+                        'name' => $object['resource']['name']
+                    )
+                )
+            )
+        );
+
+        $statement['result'] = array(
+            'success' => true
+        );
     }
 
     /**
@@ -68,19 +102,83 @@ class XAPIService extends BaseService
      *
      * @return void
      */
-    public function finishActivityQuestion()
+    public function finishActivityQuestion($actor, $object, $result)
     {
+        $statement = array();
+        $statement['actor'] = array('account' => $actor);
+        $statement['verb'] = array(
+            'id' => 'http://adlnet.gov/expapi/verbs/answered',
+            'display' => array(
+                'zh-CN' => '回答'
+            )
+        );
+        $statement['object'] = array(
+            'id' => $object['id'],
+            'defination' => array(
+                'type' => 'http://adlnet.gov/expapi/activities/interaction',
+                'interactionType' => $object['type'],
+                'description' => array(
+                    $this->defaultLang => $object['stem'],
+                ),
+                'correctResponsesPattern' => $object['answer'],
+                'choices' => $object['choices'],
+                'extensions' => array(
+                    'http://xapi.edusoho.com/extensions/course' => array(
+                        'id' => $object['course']['id'],
+                        'title' => $object['course']['title'],
+                        'description' => $object['course']['description'],
+                    ),
+                    'http://xapi.edusoho.com/extensions/activity' => array(
+                        'id' => $object['activity']['id'],
+                        'title' => $object['activity']['title']
+                    ),
+                    'http://xapi.edusoho.com/extensions/resource' => array(
+                        'id' => $object['resource']['id'],
+                        'name' => $object['resource']['name']
+                    )
+                )
+            )
+        );
 
+        $statement['result'] = array(
+            'score' => $result['score'],
+            'success' => true,
+            'response' => $result['response'],
+            'duration' => $this->convertTime($result['duration'])
+        );
     }
-
+    
     /**
      * 提交“完成作业”的学习记录
      *
      * @return void
      */
-    public function finishHomework()
+    public function finishHomework($actor, $object, $result)
     {
-
+        $statement = array();
+        $statement['actor'] = array('account' => $actor);
+        $statement['verb'] = array(
+            'id' => 'http://adlnet.gov/expapi/verbs/completed',
+            'display' => array(
+                'zh-CN' => '完成了'
+            )
+        );
+        $statement['object'] = array(
+            'id' => $object['id'],
+            'defination' => array(
+                'type' => 'http://xapi.edusoho.com/activities/homework',
+                'extensions' => array(
+                    'http://xapi.edusoho.com/extensions/course' => array(
+                        'id' => $object['course']['id'],
+                        'title' => $object['course']['title'],
+                        'description' => $object['course']['description'],
+                    ),
+                )
+            ),
+        );
+        $statement['result'] = array(
+            'success' => true
+        );
     }
 
     /**
@@ -88,9 +186,32 @@ class XAPIService extends BaseService
      *
      * @return void
      */
-    public function finishExercise()
+    public function finishExercise($actor, $object, $result)
     {
-
+        $statement = array();
+        $statement['actor'] = array('account' => $actor);
+        $statement['verb'] = array(
+            'id' => 'http://adlnet.gov/expapi/verbs/completed',
+            'display' => array(
+                'zh-CN' => '完成了'
+            )
+        );
+        $statement['object'] = array(
+            'id' => $object['id'],
+            'defination' => array(
+                'type' => 'http://xapi.edusoho.com/activities/testpaper',
+                'extensions' => array(
+                    'http://xapi.edusoho.com/extensions/course' => array(
+                        'id' => $object['course']['id'],
+                        'title' => $object['course']['title'],
+                        'description' => $object['course']['description'],
+                    ),
+                )
+            ),
+        );
+        $statement['result'] = array(
+            'success' => true
+        );
     }
 
     /**
@@ -98,9 +219,32 @@ class XAPIService extends BaseService
      *
      * @return void
      */
-    public function finishTestpaper()
+    public function finishTestpaper($actor, $object, $result)
     {
-
+        $statement = array();
+        $statement['actor'] = array('account' => $actor);
+        $statement['verb'] = array(
+            'id' => 'http://adlnet.gov/expapi/verbs/completed',
+            'display' => array(
+                'zh-CN' => '完成了'
+            )
+        );
+        $statement['object'] = array(
+            'id' => $object['id'],
+            'defination' => array(
+                'type' => 'http://xapi.edusoho.com/activities/examination',
+                'extensions' => array(
+                    'http://xapi.edusoho.com/extensions/course' => array(
+                        'id' => $object['course']['id'],
+                        'title' => $object['course']['title'],
+                        'description' => $object['course']['description'],
+                    ),
+                )
+            ),
+        );
+        $statement['result'] = array(
+            'success' => true
+        );
     }
 
     /**
@@ -108,9 +252,37 @@ class XAPIService extends BaseService
      *
      * @return void
      */
-    public function writeNote()
+    public function writeNote($actor, $object, $result)
     {
+        $statement = array();
+        $statement['actor'] = array('account' => $actor);
+        $statement['verb'] = array(
+            'id' => 'https://w3id.org/xapi/adb/verbs/noted',
+            'display' => array(
+                'zh-CN' => '记录'
+            )
+        );
+        $statement['object'] = array(
+            'id' => $object['id'],
+            'defination' => array(
+                'type' => 'https://w3id.org/xapi/acrossx/activities/video',
+                'extensions' => array(
+                    'http://xapi.edusoho.com/extensions/course' => array(
+                        'id' => $object['course']['id'],
+                        'title' => $object['course']['title'],
+                        'description' => $object['course']['description']
 
+                    ),
+                    'http://xapi.edusoho.com/extensions/resource' => array(
+                        'id' => $object['resource']['id'],
+                        'name' => $object['resource']['name']
+                    )
+                )
+            ),
+        );
+        $statement['result'] = array(
+            'response' => $result['title']
+        );
     }
 
     /**
@@ -118,9 +290,37 @@ class XAPIService extends BaseService
      *
      * @return void
      */
-    public function askQuestion()
+    public function askQuestion($actor, $object, $result)
     {
+        $statement = array();
+        $statement['actor'] = array('account' => $actor);
+        $statement['verb'] = array(
+            'id' => 'http://adlnet.gov/expapi/verbs/asked',
+            'display' => array(
+                'zh-CN' => '提问了'
+            )
+        );
+        $statement['object'] = array(
+            'id' => $object['id'],
+            'defination' => array(
+                'type' => 'https://w3id.org/xapi/acrossx/activities/video',
+                'extensions' => array(
+                    'http://xapi.edusoho.com/extensions/course' => array(
+                        'id' => $object['course']['id'],
+                        'title' => $object['course']['title'],
+                        'description' => $object['course']['description']
 
+                    ),
+                    'http://xapi.edusoho.com/extensions/resource' => array(
+                        'id' => $object['resource']['id'],
+                        'name' => $object['resource']['name']
+                    )
+                )
+            )
+        );
+        $statement['result'] = array(
+            'response' => $result['title']
+        );
     }
 
     /**
