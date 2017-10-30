@@ -429,8 +429,63 @@ class XAPIService extends BaseService
         return $this->auth->sign($signingText);
     }
 
-    protected function convertTime($time)
+    protected function getTime($timestamp, $format = 'iso8601')
     {
+        switch ($format) {
+            case 'iso8601':
+                $result = $this->get_iso8601_time($timestamp);
+                break;
+            default:
+                $result = $timestamp;
+        }
 
+        return $result;
+    }
+
+    protected function convertTime($time, $format = 'iso8601')
+    {
+        switch ($format) {
+            case 'iso8601':
+                $result = $this->time_to_iso8601_duration($time);
+                break;
+            default:
+                $result = $time;
+        }
+
+        return $result;
+    }
+
+    protected function time_to_iso8601_duration($time)
+    {
+        $units = array(
+            "Y" => 365*24*3600,
+            "D" => 24*3600,
+            "H" => 3600,
+            "M" => 60,
+            "S" => 1,
+        );
+
+        $str = "P";
+        $isTime = false;
+
+        foreach ($units as $unitName => &$unit) {
+            $quot  = intval($time / $unit);
+            $time -= $quot * $unit;
+            $unit  = $quot;
+            if ($unit > 0) {
+                if (!$isTime && in_array($unitName, array("H", "M", "S"))) {
+                    $str .= "T";
+                    $isTime = true;
+                }
+                $str .= strval($unit) . $unitName;
+            }
+        }
+
+        return $str;
+    }
+
+    protected function get_iso8601_time($timestamp = null)
+    {
+        return empty($timestamp) ? date('c') : date('c', $timestamp);
     }
 }
