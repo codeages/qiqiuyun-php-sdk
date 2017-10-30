@@ -51,7 +51,7 @@ class XAPIService extends BaseService
             'duration' => $this->convertTime($result['duration']),
         );
 
-        return $isPush ? $this->pushStatement($statement) : $statement;
+//        return $isPush ? $this->pushStatement($statement) : $statement;
     }
 
     /**
