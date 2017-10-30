@@ -2,6 +2,7 @@
 namespace QiQiuYun\SDK\Service;
 
 use QiQiuYun\SDK\Exception\ResponseException;
+use QiQiuYun\SDK\Exception\SDKException;
 
 class XAPIService extends BaseService
 {
@@ -325,8 +326,9 @@ class XAPIService extends BaseService
 
     /**
      * 提交学习记录
-     *
-     * @return void
+     * @param $statement
+     * @return mixed
+     * @throws ResponseException
      */
     public function pushStatement($statement)
     {
@@ -349,6 +351,75 @@ class XAPIService extends BaseService
         }
 
         return $statement;
+    }
+
+    private function getActivityType($minType)
+    {
+        switch ($minType) {
+            case 'audio':
+                $activityType = 'http://activitystrea.ms/schema/1.0/audio';
+                break;
+            case 'course':
+                $activityType = 'http://adlnet.gov/expapi/activities/course';
+                break;
+            case 'document':
+                $activityType = 'https://w3id.org/xapi/acrossx/activities/document';
+                break;
+            case 'examination':
+                $activityType = 'http://xapi.edusoho.com/activities/examination';
+                break;
+            case 'homework':
+                $activityType = 'http://xapi.edusoho.com/activities/homework';
+                break;
+            case 'interaction':
+                $activityType = 'http://adlnet.gov/expapi/activities/interaction';
+                break;
+            case 'live':
+                $activityType = 'http://xapi.edusoho.com/activities/live';
+                break;
+            case 'testpaper':
+                $activityType = 'http://xapi.edusoho.com/activities/testpaper';
+                break;
+            case 'video':
+                $activityType = 'https://w3id.org/xapi/acrossx/activities/video';
+                break;
+            default:
+                throw new SDKException('Please input correct type');
+        }
+
+        return $activityType;
+
+    }
+
+    private function getExtensionId($type)
+    {
+        switch ($type) {
+            case 'activity':
+                $id = 'http://xapi.edusoho.com/extensions/activity';
+                break;
+            case 'course':
+                $id = 'http://xapi.edusoho.com/extensions/course';
+                break;
+            case 'duration':
+                $id = 'http://id.tincanapi.com/extension/duration';
+                break;
+            case 'ending-point':
+                $id = 'http://id.tincanapi.com/extension/ending-point';
+                break;
+            case 'resource':
+                $id = 'http://xapi.edusoho.com/extensions/resource';
+                break;
+            case 'school':
+                $id = 'http://xapi.edusoho.com/extensions/school';
+                break;
+            case 'starting-point':
+                $id = 'http://id.tincanapi.com/extension/starting-point';
+                break;
+            default:
+                throw new SDKException('Please input correct type');
+        }
+
+        return $id;
     }
 
     protected function makeSignature()
