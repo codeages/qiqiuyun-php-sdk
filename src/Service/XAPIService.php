@@ -275,14 +275,14 @@ class XAPIService extends BaseService
 
                     ),
                     'http://xapi.edusoho.com/extensions/resource' => array(
-                        'id' => $object['resource']['id'],
-                        'name' => $object['resource']['name']
+                        'id' => empty($object['resource']['id']) ? 0 : $object['resource']['id'],
+                        'name' => empty($object['resource']['name']) ? '' : $object['resource']['name']
                     )
                 )
             ),
         );
         $statement['result'] = array(
-            'response' => $result['title']
+            'response' => $result['content']
         );
     }
 
