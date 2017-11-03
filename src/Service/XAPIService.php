@@ -174,6 +174,9 @@ class XAPIService extends BaseService
             'id' => $object['id'],
             'definition' => array(
                 'type' => 'http://xapi.edusoho.com/activities/homework',
+                'name' => array(
+                    $this->defaultLang => $object['name']
+                ),
                 'extensions' => array(
                     'http://xapi.edusoho.com/extensions/course' => array(
                         'id' => empty($object['course']['id']) ? 0 : $object['course']['id'],
@@ -209,6 +212,9 @@ class XAPIService extends BaseService
             'id' => $object['id'],
             'definition' => array(
                 'type' => 'http://xapi.edusoho.com/activities/exercise',
+                'name' => array(
+                    $this->defaultLang => $object['name']
+                ),
                 'extensions' => array(
                     'http://xapi.edusoho.com/extensions/course' => array(
                         'id' => empty($object['course']['id']) ? 0 : $object['course']['id'],
@@ -244,6 +250,9 @@ class XAPIService extends BaseService
             'id' => $object['id'],
             'definition' => array(
                 'type' => 'http://xapi.edusoho.com/activities/testpaper',
+                'name' => array(
+                    $this->defaultLang => $object['name']
+                ),
                 'extensions' => array(
                     'http://xapi.edusoho.com/extensions/course' => array(
                         'id' => empty($object['course']['id']) ? 0 : $object['course']['id'],
@@ -339,6 +348,42 @@ class XAPIService extends BaseService
         return $isPush ? $this->pushStatement($statement) : $statement;
     }
 
+    public function watchLive($actor, $object, $result, $isPush = true)
+    {
+        $statement = array();
+        $statement['actor'] = $actor;
+        $statement['verb'] = array(
+            'id' => 'https://w3id.org/xapi/acrossx/verbs/watched',
+            'display' => array(
+                'zh-CN' => '观看了',
+                'en-US' => 'watched'
+            )
+        );
+        $statement['object'] = array(
+            'id' => $object['id'],
+            'definition' => array(
+                'type' => 'http://xapi.edusoho.com/activities/live',
+                'name' => array(
+                    $this->defaultLang => $object['name'],
+                ),
+                'extensions' => array (
+                    'http://xapi.edusoho.com/extensions/course' => array(
+                        'id' => empty($object['course']['id']) ? 0 : $object['course']['id'],
+                        'title' => empty($object['course']['title']) ? '' : $object['course']['title'],
+                        'description' => empty($object['course']['description']) ? '' : $object['course']['description'],
+                    )
+                )
+            )
+        );
+
+        $statement['result'] = array(
+            'duration' => $this->convertTime($result['duration']),
+        );
+
+        return $isPush ? $this->pushStatement($statement) : $statement;
+
+    }
+
     /**
      * 提交学习记录
      * @param $statement
@@ -384,7 +429,6 @@ class XAPIService extends BaseService
             $statement['timestamp'] = $this->getTime(null);
         }
 
-
         $rawResponse = $this->client->request('POST', '/statements', array(
             'json' => $statements,
             'headers' => array(
@@ -398,37 +442,73 @@ class XAPIService extends BaseService
             throw new ResponseException($rawResponse);
         }
 
-        return $statement;
+        return $response;
+    }
+
+    private function getVerbType($verb)
+    {
+        switch ($verb) {
+            case 'answered': //回答了
+                $verbType = 'http://adlnet.gov/expapi/verbs/answered';
+                break;
+            case 'asked': //提问了
+                $verbType = 'http://adlnet.gov/expapi/verbs/asked';
+                break;
+            case 'completed': //完成了
+                $verbType = 'http://adlnet.gov/expapi/verbs/completed';
+                break;
+            case 'liked': //喜欢
+                $verbType = 'https://w3id.org/xapi/acrossx/verbs/liked';
+                break;
+            case 'listened': //听了
+                $verbType = 'http://activitystrea.ms/schema/1.0/listen';
+                break;
+            case 'noted': //记录了
+                $verbType = 'https://w3id.org/xapi/adb/verbs/noted';
+                break;
+            case 'read': //读了
+                $verbType = 'https://w3id.org/xapi/adb/verbs/read';
+                break;
+            case 'watched': //观看了
+                $verbType = 'https://w3id.org/xapi/acrossx/verbs/watched';
+                break;
+            default:
+                throw new SDKException('Please input correct verb');
+        }
+        return $verbType;
     }
 
     private function getActivityType($minType)
     {
         switch ($minType) {
-            case 'audio':
+            case 'audio': //音频
                 $activityType = 'http://activitystrea.ms/schema/1.0/audio';
                 break;
-            case 'course':
+            case 'course': //课程
                 $activityType = 'http://adlnet.gov/expapi/activities/course';
                 break;
-            case 'document':
+            case 'document': //文档,一个主要内容为文本的独立文件,包含word,excel,ppt,text等格式
                 $activityType = 'https://w3id.org/xapi/acrossx/activities/document';
                 break;
-            case 'exercise':
-                $activityType = 'http://xapi.edusoho.com/activities/examination';
+            case 'exercise': //练习,非xAPI标准
+                $activityType = 'http://xapi.edusoho.com/activities/exercise';
                 break;
-            case 'homework':
+            case 'homework': //作业,非xAPI标准
                 $activityType = 'http://xapi.edusoho.com/activities/homework';
                 break;
-            case 'interaction':
+            case 'interaction': //互动
                 $activityType = 'http://adlnet.gov/expapi/activities/interaction';
                 break;
-            case 'live':
+            case 'live': //直播,非xAPI标准
                 $activityType = 'http://xapi.edusoho.com/activities/live';
                 break;
-            case 'testpaper':
+            case 'question': //问题
+                $activityType = 'http://adlnet.gov/expapi/activities/question';
+                break;
+            case 'testpaper': //试卷,非xAPI标准
                 $activityType = 'http://xapi.edusoho.com/activities/testpaper';
                 break;
-            case 'video':
+            case 'video': //视频
                 $activityType = 'https://w3id.org/xapi/acrossx/activities/video';
                 break;
             default:
@@ -442,25 +522,25 @@ class XAPIService extends BaseService
     private function getExtensionId($type)
     {
         switch ($type) {
-            case 'activity':
+            case 'activity': //活动,非xAPI标准
                 $id = 'http://xapi.edusoho.com/extensions/activity';
                 break;
-            case 'course':
+            case 'course': //活动所属课程,非xAPI标准
                 $id = 'http://xapi.edusoho.com/extensions/course';
                 break;
-            case 'duration':
+            case 'duration': //遵守ISO8601标准的时间长度
                 $id = 'http://id.tincanapi.com/extension/duration';
                 break;
-            case 'ending-point':
+            case 'ending-point': //活动发生的终点,遵守ISO8601标准
                 $id = 'http://id.tincanapi.com/extension/ending-point';
                 break;
-            case 'resource':
+            case 'resource': //活动对应的资源,非xAPI标准
                 $id = 'http://xapi.edusoho.com/extensions/resource';
                 break;
-            case 'school':
+            case 'school': //活动所在的网校,非xAPI标准
                 $id = 'http://xapi.edusoho.com/extensions/school';
                 break;
-            case 'starting-point':
+            case 'starting-point': //活动发生的起点,遵守ISO8601标准
                 $id = 'http://id.tincanapi.com/extension/starting-point';
                 break;
             default:
