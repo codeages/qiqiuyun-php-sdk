@@ -1,5 +1,5 @@
 {
-  "name" : "brentchen/qiqiuyun-php-sdk",
+  "name" : "codeages/qiqiuyun-php-sdk",
   "type" : "library",
   "description" : "QiQiuYun PHP SDK",
   "authors": [
