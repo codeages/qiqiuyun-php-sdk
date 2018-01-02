@@ -20,11 +20,11 @@ class Client
         ), $options);
     }
 
-    public function request($method, $uri = '', array $options = [])
+    public function request($method, $uri = '', array $options = array())
     {
         $options = $this->prepareDefaults($options);
 
-        $headers = isset($options['headers']) ? $options['headers'] : [];
+        $headers = isset($options['headers']) ? $options['headers'] : array();
         $body = isset($options['body']) ? $options['body'] : null;
         if (isset($options['json'])) {
             $body = json_encode($options['json']);
@@ -33,7 +33,7 @@ class Client
 
         $uri = $this->buildUri($uri, $options);
 
-        $options = [
+        $options = array(
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_HTTPHEADER => $this->compileRequestHeaders($headers),
             CURLOPT_URL => $uri,
@@ -41,7 +41,9 @@ class Client
             CURLOPT_TIMEOUT => $options['timeout'],
             CURLOPT_RETURNTRANSFER => true, // Follow 301 redirects
             CURLOPT_HEADER => true, // Enable header processing
-        ];
+        );
+
+
 
         if ($method !== 'GET') {
             $options[CURLOPT_POSTFIELDS] = $body;
@@ -107,7 +109,7 @@ class Client
 
     public function compileRequestHeaders(array $headers)
     {
-        $return = [];
+        $return = array();
 
         foreach ($headers as $key => $value) {
             $return[] = $key . ': ' . $value;

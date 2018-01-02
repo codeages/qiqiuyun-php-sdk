@@ -3,20 +3,56 @@
 namespace QiQiuYun\SDK\Service;
 
 use QiQiuYun\SDK\SignUtil;
-use QiQiuYun\SDK\Service\BaseService;
-use QiQiuYun\SDK;
-
 
 class MarketingService extends BaseService
 {
-   
-    public function generateLoginForm($user,$site)
+    protected $baseUri = 'http://fx.yxdev.com';
+
+    public function generateLoginForm($user, $site)
     {
-        $sign = $this->sign($user,$site);
-        return $this->generateForm($user,$site,$sign);
+        $jsonStr = SignUtil::serialize(['user' => $user, 'site' => $site]);
+        $sign = $this->formatSign($jsonStr);
+
+        return $this->generateForm($user, $site, $sign);
     }
 
-    private function generateForm($user,$site,$sign)
+    /**
+     * 给分销平台发送数据
+     *
+     * @param $suffix 如 /merchant_students
+     * @param $data, 格式为 json数据数组
+     *  [
+     *      {
+     *          'd' => 1,
+     *          'c' => 2,
+     *      },
+     *      .....
+     *  ]
+     */
+    public function postDistributorJsonArrayData($suffix, $data)
+    {
+        $jsonStr = SignUtil::serializeJsonArrayAndCut($data);
+
+        return $this->postDistributorData($suffix, $data, $jsonStr);
+    }
+
+    /**
+     * 给分销平台发送数据
+     *
+     * @param $data, 格式为 json数据数组
+     *  {
+     *      'd' => 1,
+     *      'c' => 2,
+     *  }
+     */
+    public function postDistributorJsonData($suffix, $data)
+    {
+        $jsonStr = SignUtil::serializeJsonAndCut($data);
+
+        return $this->postDistributorData($suffix, $data, $jsonStr);
+    }
+
+    private function generateForm($user, $site, $sign)
     {
         return "
             <form class='form-horizontal' id='login-form' method='post' action='http://test.fx.edusoho.cn/merchant/login'>
@@ -38,14 +74,17 @@ class MarketingService extends BaseService
             </form>";
     }
 
-    private function sign($user,$site)
+    private function postDistributorData($suffix, $data, $jsonStr)
     {
-        $bodyJson = SignUtil::serialize(['user'=>$user,'site'=>$site]);
-        $time = time();
-        $once = SDK\random_str('16');
-        $signText = implode('\n', array($time,$once, $bodyJson));
-        $sign = $this->auth->sign($signText);
-        $accessKey = $this->auth->getAccessKey();
-        return "{$accessKey}:{$time}:{$once}:{$sign}";
+        $sign = SignUtil::sign($this->auth, $jsonStr);
+
+        return $this->client->request(
+            'POST',
+            $this->baseUri . $suffix,
+            array(
+                'data' => $data,
+                'sign' => $sign,
+            )
+        );
     }
 }
