@@ -59,7 +59,7 @@ class SignUtil
     {
         $time = time();
         $once = SDK\random_str('16');
-        $signText = implode('\n', array($once, $time, $jsonStr));
+        $signText = implode('\n', array($time, $once, $jsonStr));
         $sign = $auth->sign($signText);
         $accessKey = $auth->getAccessKey();
 

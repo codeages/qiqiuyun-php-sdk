@@ -11,8 +11,9 @@ class MarketingService extends BaseService
     public function generateLoginForm($user, $site)
     {
         $jsonStr = SignUtil::serialize(['user' => $user, 'site' => $site]);
-        $sign = $this->formatSign($jsonStr);
-
+        
+        $sign = SignUtil::sign($this->auth, $jsonStr);
+        
         return $this->generateForm($user, $site, $sign);
     }
 
@@ -54,8 +55,9 @@ class MarketingService extends BaseService
 
     private function generateForm($user, $site, $sign)
     {
+        $url = $this->baseUri;
         return "
-            <form class='form-horizontal' id='login-form' method='post' action='http://test.fx.edusoho.cn/merchant/login'>
+            <form class='form-horizontal' id='login-form' method='post' action='{$url}'>
                 <fieldset style='display:none;'>
                     <input type='hidden' name='site[name]' class='form-control' value={$site['name']}>
                     <input type='hidden' name='site[logo]' class='form-control' value={$site['logo']}>
