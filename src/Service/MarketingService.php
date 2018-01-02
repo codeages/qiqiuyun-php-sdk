@@ -19,7 +19,7 @@ class MarketingService extends BaseService
     private function generateForm($user,$site,$sign)
     {
         return "
-            <form class='form-horizontal' id='login-form' method='post' action='http://fx.yxdev.com/merchant/login'>
+            <form class='form-horizontal' id='login-form' method='post' action='http://test.fx.edusoho.cn/merchant/login'>
                 <fieldset style='display:none;'>
                     <input type='hidden' name='site[name]' class='form-control' value={$site['name']}>
                     <input type='hidden' name='site[logo]' class='form-control' value={$site['logo']}>
@@ -43,7 +43,7 @@ class MarketingService extends BaseService
         $bodyJson = SignUtil::serialize(['user'=>$user,'site'=>$site]);
         $time = time();
         $once = SDK\random_str('16');
-        $signText = implode('\n', array($once, $time, $bodyJson));
+        $signText = implode('\n', array($time,$once, $bodyJson));
         $sign = $this->auth->sign($signText);
         $accessKey = $this->auth->getAccessKey();
         return "{$accessKey}:{$time}:{$once}:{$sign}";
