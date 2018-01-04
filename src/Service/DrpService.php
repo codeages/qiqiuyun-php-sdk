@@ -57,7 +57,7 @@ class DrpService extends BaseService
             throw new DrpException('非法请求:sign值不一致');
         }
 
-        return array('couponPrice' => $coupon_price, 'couponExpiryDay' => $coupon_expiry_day, 'time' => $time, 'nonce' => $nonce);
+        return array('couponPrice' => $couponPrice, 'couponExpiryDay' => $couponExpiryDay, 'time' => $time, 'nonce' => $nonce);
     }
 
     /**
