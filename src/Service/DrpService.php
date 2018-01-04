@@ -45,7 +45,7 @@ class DrpService extends BaseService
     public function parseToken($token)
     {
         $data = explode(':', $token);
-        if (6 !== count($data)) {
+        if (7 !== count($data)) {
             throw new DrpException('非法请求:sign格式不合法');
         }
 
