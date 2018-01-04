@@ -44,15 +44,16 @@ class DrpService extends BaseService
     public function parseToken($token)
     {
         $data = explode(':', $token);
-        if (6 !== count($data)) {
+
+        if (7 !== count($data)) {
             throw new DrpException('非法请求:sign格式不合法');
         }
 
         list($merchantId, $agencyId, $couponPrice, $couponExpiryDay, $time, $nonce, $signature) = $data;
 
-        $json = SignUtil::serialize(['coupon_price' => $couponPrice, 'coupon_expiry_day' => $couponExpiryDay]);
-        $signText = implode('\n', array($time, $once, $json));
-        $sign = $auth->sign($signText);
+        $json = SignUtil::serialize(['merchant_id' => $merchantId, 'agency_id' => $agencyId, 'coupon_price' => $couponPrice, 'coupon_expiry_day' => $couponExpiryDay]);
+        $signText = implode('\n', array($time, $nonce, $json));
+        $sign = $this->auth->sign($signText);
         if ($sign != $signature) {
             throw new DrpException('非法请求:sign值不一致');
         }
