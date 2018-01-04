@@ -4,6 +4,7 @@ namespace QiQiuYun\SDK\Service;
 
 use QiQiuYun\SDK\SignUtil;
 use QiQiuYun\SDK\Helper\MarketingHelper;
+use QiQiuYun\SDK\Exception\DrpException;
 
 class DrpService extends BaseService
 {
