@@ -17,7 +17,7 @@ class DrpService extends BaseService
      * @param array $user 当前登陆的ES用户
      * @param array $site 网校信息
      *
-     * @return string form表达
+     * @return string form表单
      */
     public function generateLoginForm($user, $site)
     {
@@ -41,7 +41,7 @@ class DrpService extends BaseService
      *
      * @throws DrpException 签名不通过
      */
-    public function resolveToken($token)
+    public function parseToken($token)
     {
         $data = explode(':', $token);
         if (6 !== count($data)) {
@@ -71,7 +71,7 @@ class DrpService extends BaseService
      *  * createdTime: 当前记录的创建时间（用户注册时间）
      *  * token: 用户注册时用的token
      */
-    public function postDrpStudents($students)
+    public function postStudents($students)
     {
         $students = MarketingHelper::transformStudent($students);
 
@@ -83,7 +83,7 @@ class DrpService extends BaseService
      *
      * @param $data
      */
-    public function postDrpStudentOrders($orders)
+    public function postOrders(array $orders)
     {
         $orders = MarketingHelper::transformOrders($orders);
 
