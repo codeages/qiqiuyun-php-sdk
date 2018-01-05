@@ -51,9 +51,9 @@ class DrpService extends BaseService
 
         list($merchantId, $agencyId, $couponPrice, $couponExpiryDay, $time, $nonce, $signature) = $data;
 
-        $json = SignUtil::serialize(['coupon_price' => $couponPrice, 'coupon_expiry_day' => $couponExpiryDay]);
-        $signText = implode('\n', array($time, $once, $json));
-        $sign = $auth->sign($signText);
+        $json = SignUtil::serialize(['merchant_id' => $merchantId, 'agency_id' => $agencyId, 'coupon_price' => $couponPrice, 'coupon_expiry_day' => $couponExpiryDay]);
+        $signText = implode('\n', array($time, $nonce, $json));
+        $sign = $this->auth->sign($signText);
         if ($sign != $signature) {
             throw new DrpException('非法请求:sign值不一致');
         }
