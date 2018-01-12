@@ -21,9 +21,13 @@ class MarketingHelper
 
     public static function generateLoginForm($action, $user, $site, $sign)
     {
-        return "
-            <form class='form-horizontal' id='login-form' method='post' action='{$action}'>
-                <fieldset style='display:none;'>
+        $loginTitle = "<div align='center'> 正在登陆中......</div>";
+        $submitJs = "<script type='text/javascript'>
+                        window.onload = function(){
+                            document.getElementById('login-form').submit()
+                        };
+                    </script>";
+        $form = "<form class='form-horizontal' style='display:none;' id='login-form' method='post' action='{$action}'>
                     <input type='hidden' name='site[name]' class='form-control' value={$site['name']}>
                     <input type='hidden' name='site[logo]' class='form-control' value={$site['logo']}>
                     <input type='hidden' name='site[about]' class='form-control' value={$site['about']}>
@@ -36,9 +40,8 @@ class MarketingHelper
                     <input type='hidden' name='user[nickname]' class='form-control' value='{$user['nickname']}'>
                     <input type='hidden' name='user[avatar]' class='form-control' value='{$user['avatar']}'>
                     <input type='hidden' name='sign' class='form-control' value='{$sign}'>
-                </fieldset>
-                <button type='submit' class='btn btn-primary'>提交</button>
-            </form>
-        ";
+                    <button type='submit' class='btn btn-primary'>提交</button>
+                </form>";
+        return $loginTitle.$form.$submitJs;
     }
 }
