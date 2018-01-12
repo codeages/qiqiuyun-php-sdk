@@ -35,7 +35,6 @@ class MarketingHelper
                     <input type='hidden' name='site[qq]' class='form-control' value={$site['qq']}>
                     <input type='hidden' name='site[telephone]' class='form-control' value={$site['telephone']}>
                     <input type='hidden' name='site[domain]' class='form-control' value={$site['domain']}>
-                    <input type='hidden' name='site[access_key]' class='form-control' value='{$site['access_key']}'>
                     <input type='hidden' name='user[user_source_id]' class='form-control' value='{$user['user_source_id']}'>
                     <input type='hidden' name='user[nickname]' class='form-control' value='{$user['nickname']}'>
                     <input type='hidden' name='user[avatar]' class='form-control' value='{$user['avatar']}'>

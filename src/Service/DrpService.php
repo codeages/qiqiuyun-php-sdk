@@ -11,15 +11,25 @@ use QiQiuYun\SDK\Exception\SDKException;
 class DrpService extends BaseService
 {
     private $loginPath = '/merchant/login';
-    private $merchantStudents = '/merchant/students';
-    private $studentOrders = '/merchant/orders';
     private $postDataPath = '/post_merchant_data';
 
     /**
      * 生成登陆的表单
      *
      * @param array $user 当前登陆的ES用户
+     * user信息如下：
+     * * user_source_id 用户在ES的Id
+     * * nickname 用户在ES的昵称
+     * * avatar 用户头像
      * @param array $site 网校信息
+     * site网校信息
+     * * domain 网校网址
+     * * name 网校名称
+     * * logo 网校logo
+     * * about 网校介绍
+     * * wechat 网校微信客服
+     * * qq 网校qq客服
+     * * telephone 网校电话客服
      *
      * @return string form表单
      */
@@ -65,7 +75,7 @@ class DrpService extends BaseService
     }
 
     /**
-     * 上报通过分销平台注册的用户,以及他们的订单信息
+     * 上报通过分销平台注册的用户,或者他们的订单信息
      *
      * 
      * @param array $data, 数组,形如[{$user},...]
@@ -107,25 +117,12 @@ class DrpService extends BaseService
         return $this->doPost($data, $type);
     }
 
-    /**
-     * 上报属于分销平台的用户的订单
-     *
-     * @param $data
-     */
-    public function postOrders(array $orders)
-    {
-        $orders = MarketingHelper::transformOrders($orders);
-
-        return $this->postData($this->studentOrders, $orders);
-    }
-
     private function doPost($data, $type)
     {
         $jsonStr = SignUtil::serialize(['data'=>$data,'type'=>$type]);
         $jsonStr = SignUtil::cut($jsonStr);
         $sign = SignUtil::sign($this->auth, $jsonStr);
-        // $postDataPath = $this->postDataPath;
-
+        
         return $this->client->request(
             'POST',
             $this->baseUri.$this->postDataPath,
