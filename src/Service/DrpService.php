@@ -7,7 +7,6 @@ use QiQiuYun\SDK\Helper\MarketingHelper;
 use QiQiuYun\SDK\Exception\DrpException;
 use QiQiuYun\SDK\Exception\SDKException;
 
-
 class DrpService extends BaseService
 {
     private $loginPath = '/merchant/login';
@@ -77,8 +76,8 @@ class DrpService extends BaseService
     /**
      * 上报通过分销平台注册的用户,或者他们的订单信息
      *
-     * 
-     * @param array $data, 数组,形如[{$user},...]
+     *
+     * @param array  $data, 数组,形如[{$user},...]
      * user 内容如下:
      *  * user_source_id: 用户的Id
      *  * nickname: 用户名的用户名
@@ -100,35 +99,39 @@ class DrpService extends BaseService
      *  * pay_amount 订单支付金额（分）
      *  * deduction [{'type'=>'adjust_price','detail'=>'修改价格','amount'=>1(分)},...]
      *  * status 订单状态
-     * @param string $type 数据类型，user，order
-     * 
+     * @param string $type  数据类型，user，order
+     *
      * @return array 内容如下:
      *               -code success | error
-     *               -msg 如果code为error，这里是错误原因   
+     *               -msg 如果code为error，这里是错误原因
      */
-    public function postData($data,$type)
+    public function postData($data, $type)
     {
-        if(empty($data) || empty($type)){
+        if (empty($data) || empty($type)) {
             throw new SDKException("Required 'data' and 'type'");
         }
-        if(!is_array($data)){
+        if (!is_array($data)) {
             throw new SDKException("'data' must be instanceof Array");
         }
+
         return $this->doPost($data, $type);
     }
 
     private function doPost($data, $type)
     {
-        $jsonStr = SignUtil::serialize(array('data'=>$data,'type'=>$type));
+        $jsonStr = SignUtil::serialize(array('data' => $data, 'type' => $type));
         $jsonStr = SignUtil::cut($jsonStr);
         $sign = SignUtil::sign($this->auth, $jsonStr);
-        
+
         return $this->client->request(
             'POST',
-            $this->baseUri.$this->postDataPath,
+            $this->postDataPath,
             array(
-                'data' => $data,
-                'sign' => $sign,
+                'json' => array(
+                    'data' => $data,
+                    'type' => $type,
+                    'sign' => $sign,
+                ),
             )
         );
     }
