@@ -35,6 +35,7 @@ class DrpService extends BaseService
     public function generateLoginForm($user, $site)
     {
         $jsonStr = SignUtil::serialize(array('user' => $user, 'site' => $site));
+        $jsonStr = SignUtil::cut($jsonStr);
         $sign = SignUtil::sign($this->auth, $jsonStr);
         $action = $this->baseUri.$this->loginPath;
 
