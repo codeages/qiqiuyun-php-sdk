@@ -2,6 +2,8 @@
 
 namespace QiQiuYun\SDK;
 
+use QiQiuYun\SDK;
+
 class Auth
 {
     protected $accessKey;
@@ -26,8 +28,11 @@ class Auth
         return  str_replace(array('+', '/'), array('-', '_'), base64_encode($signature));
     }
 
-    public function secretSign()
+    public function generateSignature($deadline, $uri, $body, $useOnce = true)
     {
-        return "secret {$this->accessKey}:{$this->secretKey}";
+        $once = $useOnce ? SDK\random_str('16') : 'no';
+        $signingText = "{$once}\n{$deadline}\n{$uri}\n{$body}";
+        $sign = $this->sign($signingText);
+        return "{$this->accessKey}:{$deadline}:{$once}:{$sign}";
     }
 }

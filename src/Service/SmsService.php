@@ -18,7 +18,7 @@ class SmsService extends BaseService
         $rawResponse = $this->client->request('POST', '/messages', array(
             'json' => $params,
             'headers' => array(
-                'Authorization' => $this->auth->secretSign(),
+                'Authorization' => 'Signature '.$this->makeSignature('/messages', $params),
             ),
         ));
         $response = json_decode($rawResponse->getBody(), true);
@@ -41,7 +41,7 @@ class SmsService extends BaseService
         $rawResponse = $this->client->request('POST', '/messages/batch_messages', array(
             'json' => $params,
             'headers' => array(
-                'Authorization' => $this->auth->secretSign(),
+                'Authorization' => 'Signature '.$this->makeSignature('/messages/batch_messages', $params),
             ),
         ));
         $response = json_decode($rawResponse->getBody(), true);
@@ -51,6 +51,13 @@ class SmsService extends BaseService
         }
         
         return $response; 
+    }
+
+    protected function makeSignature($uri, $body = '', $lifeTime = 600)
+    {
+        $deadline = time() + $lifeTime;
+        $rowBody = json_encode($body);
+        return $this->auth->generateSignature($deadline, $uri, $rowBody, true);
     }
 
 }
