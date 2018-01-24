@@ -9,6 +9,7 @@ use QiQiuYun\SDK\Exception\SDKException;
 
 class DrpService extends BaseService
 {
+    protected $baseUri = 'http://test.fx.edusoho.cn';
     private $loginPath = '/merchant/login';
     private $postDataPath = '/post_merchant_data';
 
