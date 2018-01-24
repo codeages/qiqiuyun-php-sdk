@@ -25,4 +25,9 @@ class Auth
 
         return  str_replace(array('+', '/'), array('-', '_'), base64_encode($signature));
     }
+
+    public function secretSign()
+    {
+        return "secret {$this->accessKey}:{$this->secretKey}";
+    }
 }
