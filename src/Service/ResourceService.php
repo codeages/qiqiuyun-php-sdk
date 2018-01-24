@@ -99,10 +99,11 @@ class ResourceService
 
     /**
      * 获取云资源的播放元信息
-     * 
+     *
      * @param $string $resNo
-     * @param integer $lifetime
-     * @param boolean $once
+     * @param int  $lifetime
+     * @param bool $once
+     *
      * @return array 资源播放元信息
      */
     public function getPlayMeta($resNo, $lifetime = 600, $once = true)

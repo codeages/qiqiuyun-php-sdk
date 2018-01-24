@@ -5,6 +5,7 @@ namespace QiQiuYun\SDK\Tests\Service\Tools;
 class MockedClient
 {
     protected $response;
+
     public function request($method, $url, $data)
     {
         $this->method = $method;

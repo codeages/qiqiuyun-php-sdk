@@ -4,13 +4,10 @@ namespace QiQiuYun\SDK\Exception;
 
 class DrpException extends SDKException
 {
-   
-
     /**
      * ES上报的数据格式不合法
      */
     const POST_DATA_INVALID_ARGUMENT = 4108;
-
 
     /**
      * 上报数据进入队列失败
@@ -22,11 +19,8 @@ class DrpException extends SDKException
      */
     const POST_DATA_TOKEN_INVALID = 4110;
 
-
     /**
      * 上报数据的签名不合法
      */
     const POST_DATA_SIGN_INVALID = 4111;
-
-
 }

@@ -60,7 +60,7 @@ class DrpService extends BaseService
     {
         $token = explode(':', $token);
         if (7 !== count($token)) {
-            throw new DrpException(DrpException::POST_DATA_TOKEN_INVALID,'非法请求:token格式不合法');
+            throw new DrpException(DrpException::POST_DATA_TOKEN_INVALID, '非法请求:token格式不合法');
         }
 
         list($merchantId, $agencyId, $couponPrice, $couponExpiryDay, $time, $nonce, $expectSign) = $token;
@@ -69,7 +69,7 @@ class DrpService extends BaseService
         $signText = implode('\n', array($time, $nonce, $json));
         $actualSign = $this->auth->sign($signText);
         if ($expectSign != $actualSign) {
-            throw new DrpException(DrpException::POST_DATA_SIGN_INVALID,'非法请求:sign值不一致');
+            throw new DrpException(DrpException::POST_DATA_SIGN_INVALID, '非法请求:sign值不一致');
         }
 
         return array('coupon_price' => $couponPrice, 'coupon_expiry_day' => $couponExpiryDay, 'time' => $time, 'nonce' => $nonce);
@@ -81,32 +81,31 @@ class DrpService extends BaseService
      *
      * @param array  $data, 数组,形如[{$user},...]
      * user 内容如下:
-     *  * user_source_id: 用户的Id
-     *  * nickname: 用户名的用户名
-     *  * mobile: 用户的手机号
-     *  * registered_time: 当前记录的创建时间（用户注册时间）
-     *  * token: 用户注册时用的token
+     * * user_source_id: 用户的Id
+     * * nickname: 用户名的用户名
+     * * mobile: 用户的手机号
+     * * registered_time: 当前记录的创建时间（用户注册时间）
+     * * token: 用户注册时用的token
      * order 内容如下：
-     *  * user_source_id 订单的用户Id
-     *  * source_id 订单的Id
-     *  * product_type 商品类型
-     *  * product_id 商品Id
-     *  * title  订单title
-     *  * sn 订单编号
-     *  * created_time 订单创建时间
-     *  * payment_time 支付时间
-     *  * refund_expiry_day 退款有效期（X天）
-     *  * refund_deadline 退款截止时间
-     *  * price 订单价格（分）
-     *  * pay_amount 订单支付金额（分）
-     *  * deduction [{'type'=>'adjust_price','detail'=>'修改价格','amount'=>1(分)},...]
-     *  * status 订单状态
+     * * user_source_id 订单的用户Id
+     * * source_id 订单的Id
+     * * product_type 商品类型
+     * * product_id 商品Id
+     * * title  订单title
+     * * sn 订单编号
+     * * created_time 订单创建时间
+     * * payment_time 支付时间
+     * * refund_expiry_day 退款有效期（X天）
+     * * refund_deadline 退款截止时间
+     * * price 订单价格（分）
+     * * pay_amount 订单支付金额（分）
+     * * deduction [{'type'=>'adjust_price','detail'=>'修改价格','amount'=>1(分)},...]
+     * * status 订单状态
      * @param string $type  数据类型，user，order
      *
      * @return array success=true
-     * 
+     *
      * @throws DrpException 上报数据异常
-     *              
      */
     public function postData($data, $type)
     {
@@ -138,9 +137,10 @@ class DrpService extends BaseService
             )
         );
         $result = json_decode($response->getBody(), true);
-        if(isset($result['error'])){
-            throw new DrpException($result['message'],$result['code']);
+        if (isset($result['error'])) {
+            throw new DrpException($result['message'], $result['code']);
         }
+
         return $result;
     }
 }
