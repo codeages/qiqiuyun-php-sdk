@@ -2,7 +2,7 @@
 
 namespace QiQiuYun\SDK\Service;
 
-use QiQiuYun\SDK\SignUtil;
+use QiQiuYun\SDK\Util\SignUtil;
 use QiQiuYun\SDK\Helper\MarketingHelper;
 use QiQiuYun\SDK\Exception\DrpException;
 use QiQiuYun\SDK\Exception\SDKException;
@@ -43,7 +43,7 @@ class DrpService extends BaseService
     }
 
     /**
-     *  解析token，返回token的组成部分
+     *  解析用户注册时用到的token，返回token的组成部分
      *
      * @param string $token
      *
@@ -55,23 +55,23 @@ class DrpService extends BaseService
      *
      * @throws DrpException 签名不通过
      */
-    public function parseToken($token)
+    public function parseRegisterToken($token)
     {
-        $data = explode(':', $token);
-        if (7 !== count($data)) {
-            throw new DrpException('非法请求:sign格式不合法');
+        $token = explode(':', $token);
+        if (7 !== count($token)) {
+            throw new DrpException(DrpException::POST_DATA_TOKEN_INVALID,'非法请求:token格式不合法');
         }
 
-        list($merchantId, $agencyId, $couponPrice, $couponExpiryDay, $time, $nonce, $signature) = $data;
+        list($merchantId, $agencyId, $couponPrice, $couponExpiryDay, $time, $nonce, $expectSign) = $token;
 
         $json = SignUtil::serialize(array('merchant_id' => $merchantId, 'agency_id' => $agencyId, 'coupon_price' => $couponPrice, 'coupon_expiry_day' => $couponExpiryDay));
         $signText = implode('\n', array($time, $nonce, $json));
-        $sign = $this->auth->sign($signText);
-        if ($sign != $signature) {
-            throw new DrpException('非法请求:sign值不一致');
+        $actualSign = $this->auth->sign($signText);
+        if ($expectSign != $actualSign) {
+            throw new DrpException(DrpException::POST_DATA_SIGN_INVALID,'非法请求:sign值不一致');
         }
 
-        return array('couponPrice' => $couponPrice, 'couponExpiryDay' => $couponExpiryDay, 'time' => $time, 'nonce' => $nonce);
+        return array('coupon_price' => $couponPrice, 'coupon_expiry_day' => $couponExpiryDay, 'time' => $time, 'nonce' => $nonce);
     }
 
     /**
@@ -102,9 +102,10 @@ class DrpService extends BaseService
      *  * status 订单状态
      * @param string $type  数据类型，user，order
      *
-     * @return array 内容如下:
-     *               -code success | error
-     *               -msg 如果code为error，这里是错误原因
+     * @return array success=true
+     * 
+     * @throws DrpException 上报数据异常
+     *              
      */
     public function postData($data, $type)
     {
@@ -124,7 +125,7 @@ class DrpService extends BaseService
         $jsonStr = SignUtil::cut($jsonStr);
         $sign = SignUtil::sign($this->auth, $jsonStr);
 
-        return $this->client->request(
+        $response = $this->client->request(
             'POST',
             $this->postDataPath,
             array(
@@ -135,5 +136,10 @@ class DrpService extends BaseService
                 ),
             )
         );
+        $result = json_decode($response->getBody(), true);
+        if(isset($result['error'])){
+            throw new DrpException($result['message'],$result['code']);
+        }
+        return $result;
     }
 }
