@@ -5,7 +5,7 @@ namespace QiQiuYun\SDK\Exception;
 class DrpException extends SDKException
 {
     /**
-     * ES上报的数据格式不合法
+     * 上报的数据格式不合法
      */
     const POST_DATA_INVALID_ARGUMENT = 4108;
 
