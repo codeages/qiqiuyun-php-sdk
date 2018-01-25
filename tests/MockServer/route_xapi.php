@@ -6,13 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 $xapi = $app['controllers_factory'];
 
 $xapi->post('/statements', function (Application $app, Request $request) {
-    $object = $request->request->get('object');
+    $statements = $request->request->all();
 
-    $object = $request->request->all();
-
-    var_dump(array_keys($object));
-    exit();
-    if ($object['id'] <= 0) {
+    if ($statements[0]['object']['id'] <= 0) {
         return $app->json(array(
             'error' => array(
                 'code' => 9,
