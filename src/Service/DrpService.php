@@ -11,7 +11,7 @@ class DrpService extends BaseService
 {
     protected $baseUri = 'http://test.fx.edusoho.cn';
     private $loginPath = '/merchant/login';
-    private $postDataPath = '/post_merchant_data';
+    private $postDataPath = '/merchant_data/actions/report';
 
     /**
      * 生成登陆的表单
@@ -138,7 +138,7 @@ class DrpService extends BaseService
         );
         $result = json_decode($response->getBody(), true);
         if (isset($result['error'])) {
-            throw new DrpException($result['message'], $result['code']);
+            throw new DrpException($result['error']['message'], $result['error']['code']);
         }
 
         return $result;
