@@ -7,6 +7,7 @@ use QiQiuYun\SDK\TokenGenerator\TokenGenerator;
 use QiQiuYun\SDK\TokenGenerator\PublicTokenGenerator;
 use QiQiuYun\SDK\HttpClient\Client;
 use QiQiuYun\SDK\Exception\ResponseException;
+use Psr\Log\LoggerInterface;
 
 class ResourceService
 {
@@ -16,7 +17,9 @@ class ResourceService
 
     protected $tokenGenerator;
 
-    public function __construct(array $options = array())
+    protected $logger;
+
+    public function __construct(array $options = array(), LoggerInterface $logger = null)
     {
         $options = array_merge(array(
             'access_key' => '',
@@ -44,6 +47,7 @@ class ResourceService
 
         $this->playHost = $options['play_host'];
         $this->apiHost = $options['api_host'];
+        $this->logger = $logger;
     }
 
     /**
@@ -121,6 +125,6 @@ class ResourceService
 
     protected function createPlayClient()
     {
-        return new Client();
+        return new Client(array(), $this->logger);
     }
 }
