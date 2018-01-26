@@ -2,7 +2,6 @@
 
 namespace QiQiuYun\SDK;
 
-
 /**
  * 系统通用错误码
  *
