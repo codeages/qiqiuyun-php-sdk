@@ -120,7 +120,7 @@ class ResourceService
 
         $result = json_decode($response->getBody(), true);
 
-        if ($response->getHttpResponseCode() != 200 || empty($result) || isset($result['error'])) {
+        if (200 != $response->getHttpResponseCode() || empty($result) || isset($result['error'])) {
             throw new ResponseException($response);
         }
 
