@@ -85,6 +85,7 @@ class DrpService extends BaseService
      *                      * nickname: 用户名的用户名
      *                      * mobile: 用户的手机号
      *                      * registered_time: 当前记录的创建时间（用户注册时间）
+     *                      * updated_time:用户信息修改时间
      *                      * token: 用户注册时用的token
      *                      order 内容如下：
      *                      * user_source_id 订单的用户Id
