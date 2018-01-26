@@ -5,6 +5,7 @@ namespace QiQiuYun\SDK\Service;
 use QiQiuYun\SDK\Auth;
 use QiQiuYun\SDK\HttpClient\Client;
 use Psr\Log\LoggerInterface;
+use QiQiuYun\SDK\HttpClient\ClientInterface;
 
 abstract class BaseService
 {
@@ -18,7 +19,7 @@ abstract class BaseService
     /**
      * Service options
      *
-     * @var string[]
+     * @var array
      */
     protected $options;
 
@@ -34,7 +35,7 @@ abstract class BaseService
      *
      * @var string
      */
-    protected $baseUri;
+    protected $baseUri = '';
 
     /**
      * Logger
@@ -43,22 +44,28 @@ abstract class BaseService
      */
     protected $logger;
 
-    public function __construct(Auth $auth, $options = array(), LoggerInterface $logger = null)
+    public function __construct(Auth $auth, array $options = array(), LoggerInterface $logger = null, ClientInterface $client = null)
     {
         $this->auth = $auth;
         $this->options = $options;
         $this->logger = $logger;
-        $this->client = $this->createClient();
+        $this->client = $client;
     }
 
     protected function createClient()
     {
+        if ($this->client) {
+            return $this->client;
+        }
+
         if (!empty($this->options['base_uri'])) {
             $this->baseUri = $this->options['base_uri'];
         }
 
-        return new Client(array(
+        $this->client = new Client(array(
             'base_uri' => $this->baseUri,
         ), $this->logger);
+
+        return $this->client;
     }
 }

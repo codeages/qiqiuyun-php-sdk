@@ -1,11 +1,9 @@
 <?php
-
 namespace QiQiuYun\SDK\HttpClient;
 
 use Psr\Log\LoggerInterface;
 
-
-class Client
+class Client implements ClientInterface
 {
     /**
      * Default request options
@@ -124,7 +122,7 @@ class Client
         return rtrim($options['base_uri'], "\/").$uri;
     }
 
-    public function compileRequestHeaders(array $headers)
+    private function compileRequestHeaders(array $headers)
     {
         $return = array();
 
@@ -135,7 +133,7 @@ class Client
         return $return;
     }
 
-    public function extractResponseHeadersAndBody($rawResponse)
+    private function extractResponseHeadersAndBody($rawResponse)
     {
         $parts = explode("\r\n\r\n", $rawResponse);
         $rawBody = array_pop($parts);
