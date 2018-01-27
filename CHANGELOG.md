@@ -11,3 +11,18 @@
 * 统一API鉴权签名逻辑到`Auth`。
 * 分销API的签名逻辑，改用通用的签名逻辑，不再对BODY截取1024字节做签名。
 * 错误码统一声明到 `ErrorCode`。
+* XAPIService 构造函数的第二个参数变更，原先：
+  ```php
+  new XAPIService($auth, array(
+      'school' => array(
+          'id' => $accessKey,
+          'name' => '测试网校'
+      )
+  ));
+  ```
+  改为：
+  ```php
+  new XAPIService($auth, array(
+      'school_name' => '测试网校'
+    ));
+  ```

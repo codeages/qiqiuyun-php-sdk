@@ -587,10 +587,14 @@ class XAPIService extends BaseService
      */
     public function pushStatements($statements)
     {
+        $school = array(
+            'id' => $this->auth->getAccessKey(),
+            'name' => $this->options['school_name'],
+        );
         foreach ($statements as &$statement) {
             $statement['context'] = array(
                 'extensions' => array(
-                    'http://xapi.edusoho.com/extensions/school' => $this->options['school'],
+                    'http://xapi.edusoho.com/extensions/school' => $school,
                 ),
             );
         }
@@ -785,5 +789,15 @@ class XAPIService extends BaseService
     protected function getIsoTime($timestamp = null)
     {
         return empty($timestamp) ? date('c') : date('c', $timestamp);
+    }
+
+    protected function filterOptions(array $options = array())
+    {
+        $options = parent::filterOptions($options);
+        if (empty($options['school_name'])) {
+            throw new SDKException('Option `school_name` is missing.');
+        }
+
+        return $options;
     }
 }

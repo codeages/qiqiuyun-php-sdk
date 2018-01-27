@@ -86,10 +86,7 @@ class XAPIServiceTest extends BaseTestCase
     protected function createXAPIService($httpClient = null)
     {
         return new XAPIService($this->auth, array(
-            'school' => array(
-                'id' => $this->accessKey,
-                'name' => '测试网校',
-            ),
+            'school_name' => '测试网校',
         ), null, $httpClient);
     }
 }

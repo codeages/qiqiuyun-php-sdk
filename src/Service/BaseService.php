@@ -9,6 +9,7 @@ use QiQiuYun\SDK\HttpClient\ClientInterface;
 use QiQiuYun\SDK\Exception\SDKException;
 use QiQiuYun\SDK\HttpClient\Response;
 use QiQiuYun\SDK\Exception\ResponseException;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class BaseService
 {
@@ -47,14 +48,17 @@ abstract class BaseService
      */
     protected $logger;
 
+    private static $resolversByClass = array();
+
     public function __construct(Auth $auth, array $options = array(), LoggerInterface $logger = null, ClientInterface $client = null)
     {
         $this->auth = $auth;
         $this->logger = $logger;
         $this->client = $client;
-        $this->options = $options;
 
-        if (isset($options['host'])) {
+        $this->options = $this->filterOptions($options);
+
+        if (!empty($this->options['host'])) {
             $this->host = $options['host'];
         }
     }
@@ -137,7 +141,7 @@ abstract class BaseService
             throw new SDKException("The protocol parameter must be in 'http', 'https', 'auto', your value is '{$protocol}'.");
         }
 
-        if ($this->host && is_array($this->host)) {
+        if (is_array($this->host)) {
             shuffle($this->host);
             reset($this->host);
             $host = current($this->host);
@@ -153,5 +157,12 @@ abstract class BaseService
         $uri = ('/' !== substr($uri, 0, 1) ? '/' : '').$uri;
 
         return ('auto' == $protocol ? '//' : $protocol.'://').$host.$uri;
+    }
+
+    protected function filterOptions(array $options = array())
+    {
+        return array_replace(array(
+            'host' => '',
+        ), $options);
     }
 }
