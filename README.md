@@ -52,4 +52,4 @@ $sdk->getSmsService();
 
 ## 变更日志
 
-见 [CHANGLOG.md](CHANGLOG.md)。
+见 [CHANGELOG.md](CHANGELOG.md) 。
