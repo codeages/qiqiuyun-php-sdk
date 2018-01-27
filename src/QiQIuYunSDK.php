@@ -1,9 +1,9 @@
 <?php
+
 namespace QiQiuYun\SDK;
 
 use Psr\Log\LoggerInterface;
 use QiQiuYun\SDK\HttpClient\ClientInterface;
-use QiQiuYun\SDK\Service\SmsService;
 use QiQiuYun\SDK\Exception\SDKException;
 
 class QiQiuYunSDK
@@ -18,14 +18,14 @@ class QiQiuYunSDK
 
     protected $httpClient;
 
-    public function __construct(array $options , LoggerInterface $logger = null, ClientInterface $httpClient = null)
+    public function __construct(array $options, LoggerInterface $logger = null, ClientInterface $httpClient = null)
     {
         if (empty($options['access_key'])) {
             throw new SDKException('`access_key` param is missing.');
         }
         if (empty($options['secret_key'])) {
             throw new SDKException('`secret_key` param is missing.');
-        }  
+        }
 
         $this->options = $options;
         $this->auth = new Auth($options['access_key'], $options['secret_key']);
@@ -77,6 +77,7 @@ class QiQiuYunSDK
      * 根据服务名获得服务实例
      *
      * @param string $name 服务名
+     *
      * @return mixed 服务实例
      */
     protected function getService($name)

@@ -15,8 +15,8 @@ class QiQiuYunSDKTest extends BaseTestCase
             'service' => array(
                 'xapi' => array(
                     'school_name' => '测试网校',
-                )
-            )
+                ),
+            ),
         ));
 
         $this->assertInstanceOf('QiQiuYun\\SDK\\Service\\SmsService', $sdk->getSmsService());

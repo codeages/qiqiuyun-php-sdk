@@ -9,7 +9,6 @@ use QiQiuYun\SDK\HttpClient\ClientInterface;
 use QiQiuYun\SDK\Exception\SDKException;
 use QiQiuYun\SDK\HttpClient\Response;
 use QiQiuYun\SDK\Exception\ResponseException;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class BaseService
 {
