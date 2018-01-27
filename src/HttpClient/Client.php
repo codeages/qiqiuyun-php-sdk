@@ -50,7 +50,7 @@ class Client implements ClientInterface
             CURLOPT_HEADER => true, // Enable header processing
         );
 
-        if ('GET' !== $method) {
+        if ('GET' !== $method && $body !== null) {
             $options[CURLOPT_POSTFIELDS] = $body;
         }
 

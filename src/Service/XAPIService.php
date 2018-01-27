@@ -7,7 +7,7 @@ use QiQiuYun\SDK\Exception\SDKException;
 
 class XAPIService extends BaseService
 {
-    protected $baseUri = 'http://xapi.qiqiuyun.net';
+    protected $host = 'xapi.qiqiuyun.net';
 
     protected $defaultLang = 'zh-CN';
 
@@ -572,26 +572,7 @@ class XAPIService extends BaseService
      */
     public function pushStatement($statement)
     {
-        $statement['context'] = array(
-            'extensions' => array(
-                'http://xapi.edusoho.com/extensions/school' => $this->options['school'],
-            ),
-        );
-
-        $rawResponse = $this->client->request('POST', '/statements', array(
-            'json' => array($statement),
-            'headers' => array(
-                'Authorization' => 'Signature '.$this->makeSignature(),
-            ),
-        ));
-
-        $response = json_decode($rawResponse->getBody(), true);
-
-        if (isset($response['error'])) {
-            throw new ResponseException($rawResponse);
-        }
-
-        return $statement;
+        return $this->pushStatements(array($statement));
     }
 
     /**
@@ -614,20 +595,9 @@ class XAPIService extends BaseService
             );
         }
 
-        $rawResponse = $this->client->request('POST', '/statements', array(
-            'json' => $statements,
-            'headers' => array(
-                'Authorization' => 'Signature '.$this->makeSignature(),
-            ),
+        return $this->request('POST', '/statements', $statements, array(
+            'Authorization' => $this->auth->makeXAPIRequestAuthorization(),
         ));
-
-        $response = json_decode($rawResponse->getBody(), true);
-
-        if (isset($response['error'])) {
-            throw new ResponseException($rawResponse);
-        }
-
-        return $response;
     }
 
     /**
@@ -755,15 +725,6 @@ class XAPIService extends BaseService
         }
 
         return $id;
-    }
-
-    protected function makeSignature()
-    {
-        $deadline = strtotime(date('Y-m-d H:0:0', strtotime('+2 hours')));
-        $signingText = $this->auth->getAccessKey()."\n".$deadline;
-        $signingText = $this->auth->getAccessKey().':'.$deadline.':'.$this->auth->sign($signingText);
-
-        return $signingText;
     }
 
     protected function getTime($timestamp, $format = 'iso8601')

@@ -11,13 +11,6 @@ use QiQiuYun\SDK\HttpClient\Response;
 
 class XAPIServiceTest extends BaseTestCase
 {
-    protected $auth;
-
-    public function setUp()
-    {
-        $this->auth = $this->createAuth();
-    }
-
     public function testWatchVideo_Success()
     {
         $actor = array(
@@ -41,14 +34,11 @@ class XAPIServiceTest extends BaseTestCase
             'duration' => 100,
         );
 
-        $httpClient = $this->createMock(ClientInterface::class);
-        $httpClient
-            ->method('request')
-            ->willReturn(new Response([], json_encode([
-                'actor' => $actor,
-                'object' => $object,
-                'result' => $result,
-            ])));
+        $httpClient = $this->mockHttpClient(array(
+            'actor' => $actor,
+            'object' => $object,
+            'result' => $result,
+        ));
 
         $service = $this->createXAPIService($httpClient);
 
@@ -86,15 +76,12 @@ class XAPIServiceTest extends BaseTestCase
             'duration' => 100,
         );
 
-        $httpClient = $this->createMock(ClientInterface::class);
-        $httpClient
-            ->method('request')
-            ->willReturn(new Response([], json_encode([
-                'error' => [
-                    'code' => 9,
-                    'message' => 'invalid argument',
-                ]
-            ])));
+        $httpClient = $this->mockHttpClient(array(
+            'error' => array(
+                'code' => 9,
+                'message' => 'invalid argument',
+            )
+        ));
 
         $service = $this->createXAPIService($httpClient);
         $statement = $service->watchVideo($actor, $object, $result);
@@ -102,15 +89,11 @@ class XAPIServiceTest extends BaseTestCase
 
     protected function createXAPIService($httpClient = null)
     {
-        $logger = new Logger('UnitTest');
-        $logger->pushHandler(new StreamHandler(dirname(dirname(__DIR__)).'/var/log/unittest.log', Logger::DEBUG));
-
         return new XAPIService($this->auth, array(
-            'base_uri' => 'http://localhost:8001/xapi/',
             'school' => array(
                 'id' => $this->accessKey,
                 'name' => '测试网校',
             ),
-        ), $logger, $httpClient);
+        ), null, $httpClient);
     }
 }

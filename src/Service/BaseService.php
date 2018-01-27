@@ -6,6 +6,9 @@ use QiQiuYun\SDK\Auth;
 use QiQiuYun\SDK\HttpClient\Client;
 use Psr\Log\LoggerInterface;
 use QiQiuYun\SDK\HttpClient\ClientInterface;
+use QiQiuYun\SDK\Exception\SDKException;
+use QiQiuYun\SDK\HttpClient\Response;
+use QiQiuYun\SDK\Exception\ResponseException;
 
 abstract class BaseService
 {
@@ -28,14 +31,14 @@ abstract class BaseService
      *
      * @var Client
      */
-    protected $client;
+    private $client;
 
     /**
-     * API base uri
+     * API host
      *
      * @var string
      */
-    protected $baseUri = '';
+    protected $host = '';
 
     /**
      * Logger
@@ -47,9 +50,13 @@ abstract class BaseService
     public function __construct(Auth $auth, array $options = array(), LoggerInterface $logger = null, ClientInterface $client = null)
     {
         $this->auth = $auth;
-        $this->options = $options;
         $this->logger = $logger;
         $this->client = $client;
+        $this->options = $options;
+
+        if (isset($options['host'])) {
+            $this->host = $options['host'];
+        }
     }
 
     protected function createClient()
@@ -58,14 +65,92 @@ abstract class BaseService
             return $this->client;
         }
 
-        if (!empty($this->options['base_uri'])) {
-            $this->baseUri = $this->options['base_uri'];
-        }
-
-        $this->client = new Client(array(
-            'base_uri' => $this->baseUri,
-        ), $this->logger);
+        $this->client = new Client(array(), $this->logger);
 
         return $this->client;
+    }
+
+    /**
+     * 气球云 API V2 的统一请求方法
+     *
+     * @param string $method
+     * @param string $uri
+     * @param array $data
+     * @param array $headers
+     * @return array
+     */
+    protected function request($method, $uri, array $data = array(), array $headers = array())
+    {
+        $options = array();
+
+        if (!empty($data)) {
+            if ('GET' === strtoupper($method) && !empty($data)) {
+                $uri = $uri.(strpos($uri, '?') > 0 ? '&' : '?').http_build_query($data);
+            } else {
+                if (version_compare(phpversion(), '5.4.0', '>=')) {
+                    $options['body'] = json_encode($data, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
+                } else {
+                    $options['body'] = json_encode($data);
+                }
+            }
+        }
+
+        if (!isset($headers['Authorization'])) {
+            $headers['Authorization'] = $this->auth->makeRequestAuthorization($uri, $options['body']);
+        }
+
+        $options['headers'] = $headers;
+
+        $response = $this->client->request($method, $uri, $options);
+
+        return $this->extractResultFromResponse($response);
+    }
+
+    /**
+     * 从Response中抽取API返回结果
+     *
+     * @param Response $response
+     * @return void
+     */
+    protected function extractResultFromResponse(Response $response)
+    {
+        $result = json_decode($response->getBody(), true);
+
+        if (200 != $response->getHttpResponseCode() || isset($result['error'])) {
+            $this->logger && $this->logger->error((string)$response);
+            throw new ResponseException($response);
+        }
+
+        return $result;
+    }
+
+    /**
+     * 获得完整的请求地址
+     *
+     * @param string $uri
+     * @return string 请求地址
+     */
+    protected function getRequestUri($uri, $protocol = 'http')
+    {
+        if (!in_array($protocol, array('http', 'https', 'auto'))) {
+            throw new SDKException("The protocol parameter must be in 'http', 'https', 'auto', your value is '{$protocol}'.");
+        }
+
+        if ($this->host && is_array($this->host)) {
+            shuffle($this->host);
+            reset($this->host);
+            $host = current($this->host);
+        } else {
+            $host = $this->host;
+        }
+        $host = (string) $host;
+
+        if (!$host) {
+            throw new SDKException("API host is not exist or invalid.");
+        }
+
+        $uri = (substr($uri, 0, 1) !== '/' ? '/' : '').$uri;
+
+        return ($protocol == 'auto' ? '//' : $protocol.'://').$host.$uri;
     }
 }
