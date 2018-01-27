@@ -29,7 +29,7 @@ $sdk->getXAPIService();
 $sdk->getDrpService();
 ```
 
-气球云为网校的接入云服务，提供了测试环境，方便在开发调试；如需调用测试环境的云服务，需配置各个服务的测试域名，例如调用短信测试服务：
+气球云为网校接入提供了测试环境，用于发调试。通过设置`host`配置项，即可使用测试环境的服务，例如短信测试服务：
 
 ```php
 $sdk = new \QiQiuYun\SDK\QiQiuYunSDK(array(
