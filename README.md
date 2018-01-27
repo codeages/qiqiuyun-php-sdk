@@ -49,3 +49,7 @@ $sdk = new \QiQiuYun\SDK\QiQiuYunSDK(array(
 
 $sdk->getSmsService();
 ```
+
+## 变更日志
+
+见 [CHANGLOG.md](CHANGLOG.md)。
