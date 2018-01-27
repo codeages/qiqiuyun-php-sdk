@@ -2,6 +2,11 @@
 
 [![Build Status](https://travis-ci.org/codeages/qiqiuyun-php-sdk.svg?branch=master)](https://travis-ci.org/codeages/qiqiuyun-php-sdk)
 
+## 安装
+
+```shell
+composer require codesges/qiqiuyun-php-sdk
+```
 
 ## 使用说明
 
