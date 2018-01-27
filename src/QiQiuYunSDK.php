@@ -74,6 +74,18 @@ class QiQiuYunSDK
     }
 
     /**
+     * 创建API请求认证类实例
+     *
+     * @param string $accessKey
+     * @param string $secretKey
+     * @return Auth
+     */
+    public function createAuth($accessKey, $secretKey)
+    {
+        return new Auth($accessKey, $secretKey);
+    }
+
+    /**
      * 根据服务名获得服务实例
      *
      * @param string $name 服务名
@@ -94,10 +106,5 @@ class QiQiuYunSDK
         $this->services[$name] = new $class($this->auth, $options, $this->logger, $this->httpClient);
 
         return $this->services[$name];
-    }
-
-    protected function createAuth($accessKey, $secretKey)
-    {
-        return new Auth($accessKey, $secretKey);
     }
 }
