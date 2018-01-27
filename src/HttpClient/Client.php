@@ -1,4 +1,5 @@
 <?php
+
 namespace QiQiuYun\SDK\HttpClient;
 
 use Psr\Log\LoggerInterface;
@@ -50,7 +51,7 @@ class Client implements ClientInterface
             CURLOPT_HEADER => true, // Enable header processing
         );
 
-        if ('GET' !== $method && $body !== null) {
+        if ('GET' !== $method && null !== $body) {
             $options[CURLOPT_POSTFIELDS] = $body;
         }
 
@@ -73,7 +74,7 @@ class Client implements ClientInterface
 
         list($rawHeaders, $rawBody) = $this->extractResponseHeadersAndBody($rawResponse);
 
-        $this->logger && $this->logger->info("HTTP Response", array(
+        $this->logger && $this->logger->info('HTTP Response', array(
             'headers' => $rawHeaders,
             'body' => $rawBody,
         ));

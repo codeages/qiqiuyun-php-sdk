@@ -2,23 +2,16 @@
 
 namespace QiQiuYun\SDK\Service;
 
-use QiQiuYun\SDK\Exception\SDKException;
-use QiQiuYun\SDK\TokenGenerator\TokenGenerator;
-use QiQiuYun\SDK\TokenGenerator\PublicTokenGenerator;
-use QiQiuYun\SDK\HttpClient\Client;
-use QiQiuYun\SDK\Exception\ResponseException;
-use Psr\Log\LoggerInterface;
-
 class PlayService extends BaseService
 {
-    protected $host = ['play1.qiqiuyun.net', 'play2.qiqiuyun.net'];
+    protected $host = array('play1.qiqiuyun.net', 'play2.qiqiuyun.net');
 
     /**
      * 生成资源播放 Token
      *
      * @param string $resNo    资源编号
      * @param int    $lifetime Token 的有效时长
-     * @param bool   $useNonce     Token是否一次性
+     * @param bool   $useNonce Token是否一次性
      *
      * @return string 资源播放Token
      */
@@ -32,7 +25,7 @@ class PlayService extends BaseService
      *
      * @param string $resNo    资源编号
      * @param int    $lifetime 播放地址的有效时长
-     * @param bool   $useNonce     播放地址是否一次性
+     * @param bool   $useNonce 播放地址是否一次性
      *
      * @return string 播放地址
      */

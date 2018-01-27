@@ -5,7 +5,6 @@ namespace QiQiuYun\SDK\Tests;
 use PHPUnit\Framework\TestCase;
 use QiQiuYun\SDK\Auth;
 use QiQiuYun\SDK\HttpClient\Response;
-use QiQiuYun\SDK\HttpClient\ClientInterface;
 
 abstract class BaseTestCase extends TestCase
 {

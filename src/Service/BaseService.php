@@ -75,8 +75,9 @@ abstract class BaseService
      *
      * @param string $method
      * @param string $uri
-     * @param array $data
-     * @param array $headers
+     * @param array  $data
+     * @param array  $headers
+     *
      * @return array
      */
     protected function request($method, $uri, array $data = array(), array $headers = array())
@@ -88,7 +89,7 @@ abstract class BaseService
                 $uri = $uri.(strpos($uri, '?') > 0 ? '&' : '?').http_build_query($data);
             } else {
                 if (version_compare(phpversion(), '5.4.0', '>=')) {
-                    $options['body'] = json_encode($data, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
+                    $options['body'] = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                 } else {
                     $options['body'] = json_encode($data);
                 }
@@ -110,14 +111,13 @@ abstract class BaseService
      * 从Response中抽取API返回结果
      *
      * @param Response $response
-     * @return void
      */
     protected function extractResultFromResponse(Response $response)
     {
         $result = json_decode($response->getBody(), true);
 
         if (200 != $response->getHttpResponseCode() || isset($result['error'])) {
-            $this->logger && $this->logger->error((string)$response);
+            $this->logger && $this->logger->error((string) $response);
             throw new ResponseException($response);
         }
 
@@ -128,6 +128,7 @@ abstract class BaseService
      * 获得完整的请求地址
      *
      * @param string $uri
+     *
      * @return string 请求地址
      */
     protected function getRequestUri($uri, $protocol = 'http')
@@ -146,11 +147,11 @@ abstract class BaseService
         $host = (string) $host;
 
         if (!$host) {
-            throw new SDKException("API host is not exist or invalid.");
+            throw new SDKException('API host is not exist or invalid.');
         }
 
-        $uri = (substr($uri, 0, 1) !== '/' ? '/' : '').$uri;
+        $uri = ('/' !== substr($uri, 0, 1) ? '/' : '').$uri;
 
-        return ($protocol == 'auto' ? '//' : $protocol.'://').$host.$uri;
+        return ('auto' == $protocol ? '//' : $protocol.'://').$host.$uri;
     }
 }

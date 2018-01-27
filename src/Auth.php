@@ -1,4 +1,5 @@
 <?php
+
 namespace QiQiuYun\SDK;
 
 use QiQiuYun\SDK;
@@ -24,6 +25,7 @@ class Auth
      * 使用 HMAC 算法，对文本进行签名
      *
      * @param string $text 待签名的文本
+     *
      * @return string 签名
      */
     public function makeSignature($text)
@@ -36,10 +38,11 @@ class Auth
     /**
      * 制作API请求的授权信息
      *
-     * @param string $uri HTTP 请求的 URI
-     * @param string $body HTTP 请求的 BODY
-     * @param integer $lifetime 授权生命周期
-     * @param boolean $useNonce 授权随机值避免重放攻击
+     * @param string $uri      HTTP 请求的 URI
+     * @param string $body     HTTP 请求的 BODY
+     * @param int    $lifetime 授权生命周期
+     * @param bool   $useNonce 授权随机值避免重放攻击
+     *
      * @return string 授权信息
      */
     public function makeRequestAuthorization($uri, $body = '', $lifetime = 600, $useNonce = true)
@@ -53,8 +56,6 @@ class Auth
 
     /**
      * 制作XAPI的请求授权信息
-     *
-     * @return void
      */
     public function makeXAPIRequestAuthorization()
     {
@@ -70,7 +71,7 @@ class Auth
      *
      * @param string $resNo    资源编号
      * @param int    $lifetime 令牌的的有效时长，默认600秒
-     * @param bool   $useNonce     是否使用随机值，防止重放攻击
+     * @param bool   $useNonce 是否使用随机值，防止重放攻击
      *
      * @return string 资源播放Token
      */

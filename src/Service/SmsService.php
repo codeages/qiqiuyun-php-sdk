@@ -1,4 +1,5 @@
 <?php
+
 namespace QiQiuYun\SDK\Service;
 
 /**
@@ -10,7 +11,7 @@ class SmsService extends BaseService
      * 单发文本短信
      *
      * @see http://qiqiuyun.pages.codeages.net/api-doc/v1/resource/sms-service.html
-     * 
+     *
      * @param $params array 发送参数
      */
     public function sendToOne(array $params)
@@ -20,7 +21,7 @@ class SmsService extends BaseService
 
     /**
      * 群发文本短信
-     * 
+     *
      * @see http://qiqiuyun.pages.codeages.net/api-doc/v1/resource/sms-service.html
      *
      * @param $params array 发送参数

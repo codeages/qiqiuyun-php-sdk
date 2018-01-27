@@ -4,10 +4,6 @@ namespace QiQiuYun\SDK\Tests\Service;
 
 use QiQiuYun\SDK\Tests\BaseTestCase;
 use QiQiuYun\SDK\Service\XAPIService;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use QiQiuYun\SDK\HttpClient\ClientInterface;
-use QiQiuYun\SDK\HttpClient\Response;
 
 class XAPIServiceTest extends BaseTestCase
 {
@@ -80,7 +76,7 @@ class XAPIServiceTest extends BaseTestCase
             'error' => array(
                 'code' => 9,
                 'message' => 'invalid argument',
-            )
+            ),
         ));
 
         $service = $this->createXAPIService($httpClient);

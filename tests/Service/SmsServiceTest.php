@@ -5,14 +5,13 @@ namespace QiQiuYun\SDK\Tests\Service;
 use QiQiuYun\SDK\Tests\BaseTestCase;
 use QiQiuYun\SDK\Service\SmsService;
 
-
 class SmsServiceTest extends BaseTestCase
 {
     public function testSendToOne()
     {
         $httpClient = $this->mockHttpClient(array(
-            'status' => 'success', 
-            'sn' => '10000'
+            'status' => 'success',
+            'sn' => '10000',
         ));
 
         $service = new SmsService($this->auth, array(), null, $httpClient);
@@ -28,8 +27,8 @@ class SmsServiceTest extends BaseTestCase
     public function testSendToMany()
     {
         $httpClient = $this->mockHttpClient(array(
-            'status' => 'success', 
-            'sn' => '20000'
+            'status' => 'success',
+            'sn' => '20000',
         ));
 
         $service = new SmsService($this->auth, array(), null, $httpClient);

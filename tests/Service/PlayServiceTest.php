@@ -4,10 +4,6 @@ namespace QiQiuYun\SDK\Tests\Service;
 
 use QiQiuYun\SDK\Service\PlayService;
 use QiQiuYun\SDK;
-use QiQiuYun\SDK\TokenGenerator\PublicTokenGenerator;
-use QiQiuYun\SDK\Auth;
-use QiQiuYun\SDK\HttpClient\ClientInterface;
-use QiQiuYun\SDK\HttpClient\Response;
 use QiQiuYun\SDK\Tests\BaseTestCase;
 
 class PlayServiceTest extends BaseTestCase
@@ -41,7 +37,7 @@ class PlayServiceTest extends BaseTestCase
         $src = $playService->getPlaySrc('test_res_no', 3600);
         $this->assertStringStartsWith('//play', $src);
 
-        $playService = new PlayService($this->auth, ['host' => 'play.dev']);
+        $playService = new PlayService($this->auth, array('host' => 'play.dev'));
         $src = $playService->getPlaySrc('test_res_no', 3600);
         $this->assertStringStartsWith('//play.dev', $src);
     }
@@ -49,7 +45,7 @@ class PlayServiceTest extends BaseTestCase
     public function testGetPlayMeta()
     {
         $httpClient = $this->mockHttpClient(array(
-            'player' => 'video', 
+            'player' => 'video',
         ));
 
         $playService = new PlayService($this->auth, array(), null, $httpClient);
