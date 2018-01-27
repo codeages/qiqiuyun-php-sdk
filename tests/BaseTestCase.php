@@ -34,11 +34,13 @@ abstract class BaseTestCase extends TestCase
     protected function mockHttpClient($responseData, $httpStatusCode = 200)
     {
         $response = new Response(array(), json_encode($responseData), $httpStatusCode);
-        $client = $this->createMock(ClientInterface::class);
-        $client
-            ->method('request')
+
+        $stub = $this->getMockBuilder('QiQiuYun\\SDK\\HttpClient\\ClientInterface')
+            ->getMock();
+
+        $stub->method('request')
             ->willReturn($response);
 
-        return $client;
+        return $stub;
     }
 }
