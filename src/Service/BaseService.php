@@ -9,6 +9,7 @@ use QiQiuYun\SDK\HttpClient\ClientInterface;
 use QiQiuYun\SDK\Exception\SDKException;
 use QiQiuYun\SDK\HttpClient\Response;
 use QiQiuYun\SDK\Exception\ResponseException;
+use QiQiuYun\SDK;
 
 abstract class BaseService
 {
@@ -117,7 +118,7 @@ abstract class BaseService
      */
     protected function extractResultFromResponse(Response $response)
     {
-        $result = json_decode($response->getBody(), true);
+        $result = SDK\json_decode($response->getBody(), true);
 
         if (200 != $response->getHttpResponseCode() || isset($result['error'])) {
             $this->logger && $this->logger->error((string) $response);
