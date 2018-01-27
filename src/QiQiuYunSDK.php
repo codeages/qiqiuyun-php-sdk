@@ -28,7 +28,7 @@ class QiQiuYunSDK
         }
 
         $this->options = $options;
-        $this->auth = new Auth($options['access_key'], $options['secret_key']);
+        $this->auth = $this->createAuth($options['access_key'], $options['secret_key']);
         $this->logger = $logger;
         $this->httpClient = $httpClient;
     }
@@ -94,5 +94,10 @@ class QiQiuYunSDK
         $this->services[$name] = new $class($this->auth, $options, $this->logger, $this->httpClient);
 
         return $this->services[$name];
+    }
+
+    protected function createAuth($accessKey, $secretKey)
+    {
+        return new Auth($accessKey, $secretKey);
     }
 }
