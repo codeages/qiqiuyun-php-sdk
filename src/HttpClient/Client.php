@@ -4,8 +4,7 @@ namespace QiQiuYun\SDK\HttpClient;
 
 use Psr\Log\LoggerInterface;
 
-
-class Client
+class Client implements ClientInterface
 {
     /**
      * Default request options
@@ -52,7 +51,7 @@ class Client
             CURLOPT_HEADER => true, // Enable header processing
         );
 
-        if ('GET' !== $method) {
+        if ('GET' !== $method && null !== $body) {
             $options[CURLOPT_POSTFIELDS] = $body;
         }
 
@@ -75,7 +74,7 @@ class Client
 
         list($rawHeaders, $rawBody) = $this->extractResponseHeadersAndBody($rawResponse);
 
-        $this->logger && $this->logger->info("HTTP Response", array(
+        $this->logger && $this->logger->info('HTTP Response', array(
             'headers' => $rawHeaders,
             'body' => $rawBody,
         ));
@@ -124,7 +123,7 @@ class Client
         return rtrim($options['base_uri'], "\/").$uri;
     }
 
-    public function compileRequestHeaders(array $headers)
+    private function compileRequestHeaders(array $headers)
     {
         $return = array();
 
@@ -135,7 +134,7 @@ class Client
         return $return;
     }
 
-    public function extractResponseHeadersAndBody($rawResponse)
+    private function extractResponseHeadersAndBody($rawResponse)
     {
         $parts = explode("\r\n\r\n", $rawResponse);
         $rawBody = array_pop($parts);
