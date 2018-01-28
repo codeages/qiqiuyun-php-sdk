@@ -118,9 +118,15 @@ abstract class BaseService
      */
     protected function extractResultFromResponse(Response $response)
     {
-        $result = SDK\json_decode($response->getBody(), true);
+        try {
+            $result = SDK\json_decode($response->getBody(), true);
+        } catch (\Exception $e) {
+            throw new SDKException($e->getMessage(). "(response: {$response->getBody()}");
+        }
+        
+        $responseCode = $response->getHttpResponseCode();
 
-        if (200 != $response->getHttpResponseCode() || isset($result['error'])) {
+        if ($responseCode < 200 || $responseCode > 299 || isset($result['error'])) {
             $this->logger && $this->logger->error((string) $response);
             throw new ResponseException($response);
         }
