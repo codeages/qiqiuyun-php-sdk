@@ -135,6 +135,7 @@ class Response
 
     public function __toString()
     {
-        return sprintf("[HTTP RESPONSE] %s\n%s\n", $this->httpResponseCode, implode("\n", $this->headers), $this->body);
+        $headers = print_r($this->headers, true);
+        return sprintf("#HTTP RESPONSE# ==Status Code==: %s\t==Headers==: %s\t==Body==: %s", $this->httpResponseCode, $headers, $this->body);
     }
 }
