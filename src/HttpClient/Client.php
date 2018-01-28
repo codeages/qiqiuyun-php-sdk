@@ -55,7 +55,7 @@ class Client implements ClientInterface
             $options[CURLOPT_POSTFIELDS] = $body;
         }
 
-        $this->logger && $this->logger->info("HTTP {$method} {$uri}", array(
+        $this->logger && $this->logger->debug("HTTP {$method} {$uri}", array(
             'headers' => $options[CURLOPT_HTTPHEADER],
             'body' => $body,
         ));
@@ -67,19 +67,20 @@ class Client implements ClientInterface
 
         $errorCode = curl_errno($curl);
         if ($errorCode) {
-            throw new ClientException(\curl_error($curl), $errorCode);
+            $errorMessage = sprintf("HTTP Request failed (curl error {%s}: %s).", $errorCode, \curl_error($curl));;
+            $this->logger && $this->logger->error($errorMessage);
+            throw new ClientException($errorMessage, $errorCode);
         }
 
         curl_close($curl);
 
         list($rawHeaders, $rawBody) = $this->extractResponseHeadersAndBody($rawResponse);
 
-        $this->logger && $this->logger->info('HTTP Response', array(
-            'headers' => $rawHeaders,
-            'body' => $rawBody,
-        ));
+        $response = new Response($rawHeaders, $rawBody);
 
-        return new Response($rawHeaders, $rawBody);
+        $this->logger && $this->logger->debug((string)$response);
+
+        return $response;
     }
 
     /**

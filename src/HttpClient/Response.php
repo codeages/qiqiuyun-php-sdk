@@ -132,4 +132,9 @@ class Response
             }
         }
     }
+
+    public function __toString()
+    {
+        return sprintf("[HTTP RESPONSE] %s\n%s\n", $this->httpResponseCode, implode("\n", $this->headers), $this->body);
+    }
 }
