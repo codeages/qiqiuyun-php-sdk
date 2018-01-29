@@ -41,7 +41,7 @@ class DrpService extends BaseService
 
         $signingText = json_encode(array('site' => $site, 'user' => $user));
         $signature = $this->auth->makeRequestAuthorization($this->loginPath, $signingText);
-
+        $action = $this->getRequestUri($this->loginPath);
         return MarketingHelper::generateLoginForm($action, $user, $site, $signature);
     }
 
