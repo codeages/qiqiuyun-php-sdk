@@ -7,6 +7,8 @@ namespace QiQiuYun\SDK\Service;
  */
 class SmsService extends BaseService
 {
+    protected $host = 'sms-service.qiqiuyun.net';
+
     /**
      * 单发文本短信
      *
