@@ -2,7 +2,9 @@
 
 namespace QiQiuYun\SDK\HttpClient;
 
-class Client
+use Psr\Log\LoggerInterface;
+
+class Client implements ClientInterface
 {
     /**
      * Default request options
@@ -11,15 +13,25 @@ class Client
      */
     private $options;
 
-    public function __construct($options = array())
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct($options = array(), LoggerInterface $logger = null)
     {
         $this->options = array_merge(array(
-            'timeout' => 300,
+            'timeout' => 60, // 响应超时
+            'connect_timeout' => 10, // 连接超时
+            'base_uri' => '',
         ), $options);
+
+        $this->logger = $logger;
     }
 
     public function request($method, $uri = '', array $options = array())
     {
+        $method = strtoupper($method);
         $options = $this->prepareDefaults($options);
 
         $headers = isset($options['headers']) ? $options['headers'] : array();
@@ -29,21 +41,28 @@ class Client
             $headers['Content-Type'] = 'application/json';
         }
 
-        $uri = $this->buildUri($uri, $options);
+        $uri = $this->buildUri($uri);
 
         $options = array(
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_HTTPHEADER => $this->compileRequestHeaders($headers),
             CURLOPT_URL => $uri,
-            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_CONNECTTIMEOUT => $options['connect_timeout'],
             CURLOPT_TIMEOUT => $options['timeout'],
             CURLOPT_RETURNTRANSFER => true, // Follow 301 redirects
             CURLOPT_HEADER => true, // Enable header processing
         );
 
-        if ('GET' !== $method) {
+        if ('GET' !== $method && null !== $body) {
             $options[CURLOPT_POSTFIELDS] = $body;
         }
+
+        $this->logger && $this->logger->debug('HTTP request send.', array(
+            'method' => $method,
+            'uri' => $uri,
+            'headers' => $options[CURLOPT_HTTPHEADER],
+            'body' => $body,
+        ));
 
         $curl = curl_init();
         curl_setopt_array($curl, $options);
@@ -52,14 +71,35 @@ class Client
 
         $errorCode = curl_errno($curl);
         if ($errorCode) {
-            throw new ClientException(\curl_error($curl), $errorCode);
+            $errorMessage = sprintf("HTTP request send failed, cURL error %s: %s (see http://curl.haxx.se/libcurl/c/libcurl-errors.html).", $errorCode, \curl_error($curl));;
+            $this->logger && $this->logger->error($errorMessage, curl_getinfo($curl));
+            throw new ClientException($errorMessage, $errorCode, curl_getinfo($curl));
+        } else {
+            $this->logger && $this->logger->debug('HTTP request send success.', curl_getinfo($curl));
         }
 
         curl_close($curl);
 
         list($rawHeaders, $rawBody) = $this->extractResponseHeadersAndBody($rawResponse);
 
-        return new Response($rawHeaders, $rawBody);
+        $response = new Response($rawHeaders, $rawBody);
+
+        $this->logger && $this->logger->log($response->getHttpResponseCode()>=400 ? 'error' : 'debug', 'HTTP response.', array(
+            'status_code' => $response->getHttpResponseCode(),
+            'headers' => $response->getHeaders(),
+            'body' => $response->getBody(),
+        ));
+
+        return $response;
+    }
+
+    private function buildUri($uri)
+    {
+        if (empty($this->options['base_uri'])) {
+            return $uri;
+        }
+
+        return rtrim($this->options['base_uri'], "\/").$uri;
     }
 
     /**
@@ -77,7 +117,7 @@ class Client
             if (null === $options['headers']) {
                 unset($options['headers']);
             } elseif (!is_array($options['headers'])) {
-                throw new \InvalidArgumentException('headers must be an array');
+                throw new ClientException('option error: headers must be an array.');
             }
         }
 
@@ -94,16 +134,7 @@ class Client
         return $result;
     }
 
-    private function buildUri($uri, array $options)
-    {
-        if (empty($options['base_uri'])) {
-            return $uri;
-        }
-
-        return rtrim($options['base_uri'], "\/").$uri;
-    }
-
-    public function compileRequestHeaders(array $headers)
+    private function compileRequestHeaders(array $headers)
     {
         $return = array();
 
@@ -114,7 +145,7 @@ class Client
         return $return;
     }
 
-    public function extractResponseHeadersAndBody($rawResponse)
+    private function extractResponseHeadersAndBody($rawResponse)
     {
         $parts = explode("\r\n\r\n", $rawResponse);
         $rawBody = array_pop($parts);
