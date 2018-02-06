@@ -619,7 +619,7 @@ class XAPIService extends BaseService
             'value' => $value,
         );
 
-        $rawResponse = $this->client->request('POST', '/setting', array(
+        $rawResponse = $this->request('POST', '/setting', array(
             'json' => $setting,
             'headers' => array(
                 'Authorization' => 'Signature '.$this->makeSignature(),
