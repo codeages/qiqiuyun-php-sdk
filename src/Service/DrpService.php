@@ -2,7 +2,6 @@
 
 namespace QiQiuYun\SDK\Service;
 
-use QiQiuYun\SDK\Util\SignUtil;
 use QiQiuYun\SDK\Helper\MarketingHelper;
 use QiQiuYun\SDK\Exception\SDKException;
 
@@ -40,6 +39,7 @@ class DrpService extends BaseService
         $signingText = json_encode($data);
         $signature = $this->auth->makeRequestAuthorization($this->loginPath, $signingText);
         $action = $this->getRequestUri($this->loginPath);
+
         return MarketingHelper::generateLoginForm($action, $user, $site, $signature);
     }
 
@@ -68,7 +68,6 @@ class DrpService extends BaseService
         ksort($data);
         $dataStr = json_encode($data);
         $signingText = implode("\n", array($nonce, $time, $dataStr));
-
         $actualSign = $this->auth->makeSignature($signingText);
         if ($expectSign != $actualSign) {
             throw new SDKException('非法请求:sign值不一致');
