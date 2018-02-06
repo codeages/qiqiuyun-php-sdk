@@ -617,14 +617,9 @@ class XAPIService extends BaseService
             'value' => $value,
         );
 
-        $response = $this->request('POST', '/setting',
-            array(
-                'json' => $setting,
-            ),
-            array(
-                'Authorization' => $this->auth->makeXAPIRequestAuthorization(),
-            )
-        );
+        $response = $this->request('POST', '/setting', $setting, array(
+            'Authorization' => $this->auth->makeXAPIRequestAuthorization(),
+        ));
 
         return $response;
 
