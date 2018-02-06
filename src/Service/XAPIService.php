@@ -607,9 +607,7 @@ class XAPIService extends BaseService
     /**
      * @param $type
      * @param $value
-     * @return mixed
-     * @throws ResponseException
-     * @throws \QiQiuYun\SDK\HttpClient\ClientException
+     * @return array
      */
     public function setting($type, $value)
     {
@@ -619,18 +617,14 @@ class XAPIService extends BaseService
             'value' => $value,
         );
 
-        $rawResponse = $this->request('POST', '/setting', array(
-            'json' => $setting,
-            'headers' => array(
-                'Authorization' => 'Signature '.$this->makeSignature(),
+        $response = $this->request('POST', '/setting',
+            array(
+                'json' => $setting,
+            ),
+            array(
+                'Authorization' => $this->auth->makeXAPIRequestAuthorization(),
             )
-        ));
-
-        $response = json_decode($rawResponse->getBody(), true);
-
-        if (isset($response['error'])) {
-            throw new ResponseException($rawResponse);
-        }
+        );
 
         return $response;
 
