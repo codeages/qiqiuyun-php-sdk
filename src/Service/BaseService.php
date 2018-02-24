@@ -103,7 +103,7 @@ abstract class BaseService
         if (!isset($headers['Authorization'])) {
             $headers['Authorization'] = $this->auth->makeRequestAuthorization($uri, $options['body']);
         }
-
+        $headers['Content-Type'] = 'application/json';
         $options['headers'] = $headers;
 
         $response = $this->createClient()->request($method, $this->getRequestUri($uri), $options);
