@@ -2,7 +2,7 @@
 
 namespace QiQiuYun\SDK;
 
-final class XAPIObjectDefinitionTypes
+final class XAPIActivityTypes
 {
     const APPLICATION = 'application';
 

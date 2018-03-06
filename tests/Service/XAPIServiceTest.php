@@ -4,7 +4,7 @@ namespace QiQiuYun\SDK\Tests\Service;
 
 use QiQiuYun\SDK\Tests\BaseTestCase;
 use QiQiuYun\SDK\Service\XAPIService;
-use QiQiuYun\SDK\XAPIObjectDefinitionTypes;
+use QiQiuYun\SDK\XAPIActivityTypes;
 use QiQiuYun\SDK\XAPIObjectTypes;
 
 class XAPIServiceTest extends BaseTestCase
@@ -90,7 +90,7 @@ class XAPIServiceTest extends BaseTestCase
         $actor = $this->getActor();
         $object = array(
             'id' => '/cloud/search?q=单反&type=course',
-            'definitionType' => XAPIObjectDefinitionTypes::COURSE
+            'definitionType' => XAPIActivityTypes::COURSE
         );
         $result = array(
             'response' => '单反'
@@ -139,7 +139,7 @@ class XAPIServiceTest extends BaseTestCase
         $object = array(
             'id' => '网校accessKey',
             'name' => 'ABC摄影网',
-            'definitionType' => XAPIObjectDefinitionTypes::APPLICATION
+            'definitionType' => XAPIActivityTypes::APPLICATION
         );
         $httpClient = $this->mockHttpClient(array(
             'actor' => $actor,
@@ -158,7 +158,7 @@ class XAPIServiceTest extends BaseTestCase
         $object = array(
             'id' => '38983',
             'name' => '摄影基础',
-            'definitionType' => XAPIObjectDefinitionTypes::COURSE,
+            'definitionType' => XAPIActivityTypes::COURSE,
         );
         $result = array(
             'amount' => '199.99'
