@@ -2,6 +2,8 @@
 
 namespace QiQiuYun\SDK;
 
+use QiQiuYun\SDK\Exception\SDKException;
+
 final class XAPIActivityTypes
 {
     const APPLICATION = 'application';
@@ -34,54 +36,31 @@ final class XAPIActivityTypes
 
     public static function getFullName($shortName)
     {
-        switch ($shortName) {
-            case self::APPLICATION: //音频
-                $fullName = 'http://activitystrea.ms/schema/1.0/application';
-                break;
-            case self::AUDIO: //音频
-                $fullName = 'http://activitystrea.ms/schema/1.0/audio';
-                break;
-            case self::COURSE: //课程
-                $fullName = 'http://adlnet.gov/expapi/activities/course';
-                break;
-            case self::ONLINE_DISCUSSION:
-                $fullName = 'https://w3id.org/xapi/acrossx/activities/online-discussion';
-                break;
-            case self::DOCUMENT: //文档,一个主要内容为文本的独立文件,包含word,excel,ppt,text等格式
-                $fullName = 'https://w3id.org/xapi/acrossx/activities/document';
-                break;
-            case self::EXERCISE: //练习,非xAPI标准
-                $fullName = 'http://xapi.edusoho.com/activities/exercise';
-                break;
-            case self::HOMEWORK: //作业,非xAPI标准
-                $fullName = 'http://xapi.edusoho.com/activities/homework';
-                break;
-            case self::INTERACTION: //互动
-                $fullName = 'http://adlnet.gov/expapi/activities/interaction';
-                break;
-            case self::LIVE: //直播,非xAPI标准
-                $fullName = 'http://xapi.edusoho.com/activities/live';
-                break;
-            case self::QUESTION: //问题
-                $fullName = 'http://adlnet.gov/expapi/activities/question';
-                break;
-            case self::TEST_PAPER: //试卷,非xAPI标准
-                $fullName = 'http://xapi.edusoho.com/activities/testpaper';
-                break;
-            case self::VIDEO: //视频
-                $fullName = 'https://w3id.org/xapi/acrossx/activities/video';
-                break;
-            case self::MESSAGE: //资讯
-                $fullName = 'https://w3id.org/xapi/acrossx/activities/message';
-                break;
-            case self::CLASS_ONLINE: //班级
-                $fullName = 'https://w3id.org/xapi/acrossx/activities/class-online';
-                break;
-            default:
-                throw new \InvalidArgumentException('UnSupport type');
-        }
+        static $nameMaps = array(
+            self::APPLICATION => 'http://activitystrea.ms/schema/1.0/application',
+            self::AUDIO => 'http://activitystrea.ms/schema/1.0/audio',
 
-        return $fullName;
+            self::COURSE => 'http://adlnet.gov/expapi/activities/course',
+            self::INTERACTION => 'http://adlnet.gov/expapi/activities/interaction',
+            self::QUESTION => 'http://adlnet.gov/expapi/activities/question',
+
+            self::ONLINE_DISCUSSION => 'https://w3id.org/xapi/acrossx/activities/online-discussion',
+            self::DOCUMENT => 'https://w3id.org/xapi/acrossx/activities/document',
+            self::CLASS_ONLINE => 'https://w3id.org/xapi/acrossx/activities/class-online',
+            self::VIDEO => 'https://w3id.org/xapi/acrossx/activities/video',
+            self::MESSAGE => 'https://w3id.org/xapi/acrossx/activities/message',
+
+            self::LIVE => 'http://xapi.edusoho.com/activities/live',
+            self::HOMEWORK => 'http://xapi.edusoho.com/activities/homework',
+            self::EXERCISE => 'http://xapi.edusoho.com/activities/exercise',
+            self::TEST_PAPER => 'http://xapi.edusoho.com/activities/testpaper',
+        );
+
+        if (isset($nameMaps[$shortName])) {
+            return $nameMaps[$shortName];
+        } else {
+            throw new SDKException('UnSupport activity type');
+        }
     }
 
 }

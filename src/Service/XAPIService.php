@@ -596,11 +596,11 @@ class XAPIService extends BaseService
         );
 
         if (!empty($object['definitionType'])) {
-            $statement['definition'] = array(
+            $statement['object']['definition'] = array(
                 'type' => $this->getActivityType($object['definitionType'])
             );
         } else {
-            $statement['objectType'] = $object['objectType'];
+            $statement['object']['objectType'] = $object['objectType'];
         }
 
 
@@ -623,7 +623,7 @@ class XAPIService extends BaseService
      * @param bool $isPush
      * @return array|mixed
      */
-    public function logged($actor, $object, $uuid = null, $timestamp = null, $isPush = true)
+    public function logged($actor, $object = null, $result = null, $uuid = null, $timestamp = null, $isPush = true)
     {
         $statement = array();
         if (!empty($uuid)) {
@@ -633,16 +633,16 @@ class XAPIService extends BaseService
         $statement['verb'] = array(
             'id' => 'https://w3id.org/xapi/adl/verbs/logged-in',
             'display' => array(
-                'zh-CN' => '搜索了',
+                'zh-CN' => '登录了',
                 'en-US' => XAPIVerbs::LOGGED_IN,
             ),
         );
         $statement['object'] = array(
-            'id' => $object['id'],
+            'id' => $this->auth->getAccessKey(),
             'definition' => array(
-                'type' => $this->getActivityType($object['definitionType']),
+                'type' => $this->getActivityType(XAPIActivityTypes::APPLICATION),
                 'name' => array(
-                    $this->defaultLang => $object['name']
+                    $this->defaultLang => $this->options['school_name']
                 )
             )
         );
