@@ -158,7 +158,7 @@ class XAPIServiceTest extends BaseTestCase
         $object = array(
             'id' => '38983',
             'name' => '摄影基础',
-            'definitionType' => XAPIActivityTypes::COURSE,
+            'definitionType' => XAPIActivityTypes::CLASS_ONLINE,
         );
         $result = array(
             'amount' => '199.99'
