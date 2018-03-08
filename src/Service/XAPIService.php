@@ -588,8 +588,8 @@ class XAPIService extends BaseService
     public function pushStatements($statements)
     {
         $school = array(
-            'id' => $this->auth->getAccessKey(),
             'name' => $this->options['school_name'],
+            'url' => $this->options['host'],
         );
         foreach ($statements as &$statement) {
             $statement['context'] = array(
@@ -607,6 +607,7 @@ class XAPIService extends BaseService
     /**
      * @param $type
      * @param $value
+     *
      * @return array
      */
     public function setting($type, $value)
@@ -616,13 +617,11 @@ class XAPIService extends BaseService
             'setting' => $type,
             'value' => $value,
         );
-
         $response = $this->request('POST', '/setting', $setting, array(
             'Authorization' => $this->auth->makeXAPIRequestAuthorization(),
         ));
 
         return $response;
-
     }
 
     /**
