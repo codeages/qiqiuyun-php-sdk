@@ -4,8 +4,8 @@ namespace QiQiuYun\SDK\Service;
 
 use QiQiuYun\SDK\Exception\ResponseException;
 use QiQiuYun\SDK\Exception\SDKException;
-use QiQiuYun\SDK\XAPIActivityTypes;
-use QiQiuYun\SDK\XAPIVerbs;
+use QiQiuYun\SDK\Constants\XAPIActivityTypes;
+use QiQiuYun\SDK\Constants\XAPIVerbs;
 
 class XAPIService extends BaseService
 {

@@ -4,8 +4,8 @@ namespace QiQiuYun\SDK\Tests\Service;
 
 use QiQiuYun\SDK\Tests\BaseTestCase;
 use QiQiuYun\SDK\Service\XAPIService;
-use QiQiuYun\SDK\XAPIActivityTypes;
-use QiQiuYun\SDK\XAPIObjectTypes;
+use QiQiuYun\SDK\Constants\XAPIActivityTypes;
+use QiQiuYun\SDK\Constants\XAPIObjectTypes;
 
 class XAPIServiceTest extends BaseTestCase
 {
