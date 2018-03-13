@@ -593,19 +593,16 @@ class XAPIService extends BaseService
         );
         $statement['object'] = array(
             'id' => $object['id'],
+            'definition' => array(
+                'type' => $this->getActivityType($object['definitionType'])
+            )
         );
 
-        if (!empty($object['definitionType'])) {
-            $statement['object']['definition'] = array(
-                'type' => $this->getActivityType($object['definitionType'])
-            );
-        } else {
-            $statement['object']['objectType'] = $object['objectType'];
-        }
-
-
         $statement['result'] = array(
-            'response' => $result['response']
+            'response' => $result['response'],
+            'extensions' => array(
+                'https://w3id.org/xapi/acrossx/extensions/type' => $this->getActivityType($result['type'])
+            )
         );
 
         $statement['timestamp'] = $this->getTime($timestamp);

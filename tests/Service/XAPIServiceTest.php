@@ -90,10 +90,11 @@ class XAPIServiceTest extends BaseTestCase
         $actor = $this->getActor();
         $object = array(
             'id' => '/cloud/search?q=单反&type=course',
-            'definitionType' => XAPIActivityTypes::COURSE
+            'definitionType' => XAPIActivityTypes::SEARCH_ENGINE
         );
         $result = array(
-            'response' => '单反'
+            'response' => '单反',
+            'type' => 'course',
         );
 
         $httpClient = $this->mockHttpClient(array(
@@ -105,8 +106,11 @@ class XAPIServiceTest extends BaseTestCase
         $statement = $service->searched($actor, $object, $result, null, null, false);
 
         $this->assertEquals('https://w3id.org/xapi/acrossx/verbs/searched', $statement['verb']['id']);
-        $this->assertEquals('http://adlnet.gov/expapi/activities/course', $statement['object']['definition']['type']);
-        $this->assertEquals($result, $statement['result']);
+        $this->assertEquals('https://w3id.org/xapi/acrossx/activities/search-engine',
+            $statement['object']['definition']['type']);
+        $this->assertEquals('http://adlnet.gov/expapi/activities/course',
+            $statement['result']['extensions']['https://w3id.org/xapi/acrossx/extensions/type']);
+        $this->assertEquals('单反', $statement['result']['response']);
     }
 
     public function testSearchTeacher()
@@ -114,10 +118,11 @@ class XAPIServiceTest extends BaseTestCase
         $actor = $this->getActor();
         $object = array(
             'id' => '/cloud/search?q=李老师&type=teacher',
-            'objectType' => XAPIObjectTypes::AGENT
+            'definitionType' => XAPIActivityTypes::SEARCH_ENGINE
         );
         $result = array(
-            'response' => '李老师'
+            'response' => '李老师',
+            'type' => 'user-profile'
         );
 
         $httpClient = $this->mockHttpClient(array(
@@ -128,8 +133,9 @@ class XAPIServiceTest extends BaseTestCase
         $service = $this->createXAPIService($httpClient);
         $statement = $service->searched($actor, $object, $result, null, null, false);
 
-        $this->assertEquals('Agent', $statement['object']['objectType']);
-        $this->assertEquals($result, $statement['result']);
+        $this->assertEquals('http://id.tincanapi.com/activitytype/user-profile',
+            $statement['result']['extensions']['https://w3id.org/xapi/acrossx/extensions/type']);
+        $this->assertEquals('李老师', $statement['result']['response']);
     }
 
     public function testLogged()
