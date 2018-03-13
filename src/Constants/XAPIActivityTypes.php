@@ -66,7 +66,7 @@ final class XAPIActivityTypes
         if (isset($nameMaps[$shortName])) {
             return $nameMaps[$shortName];
         } else {
-            throw new SDKException('UnSupport activity type');
+            throw new \InvalidArgumentException(sprintf('UnSupport type %s', $shortName));
         }
     }
 
