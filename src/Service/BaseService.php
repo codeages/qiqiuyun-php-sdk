@@ -49,13 +49,6 @@ abstract class BaseService
     protected $leafHost = '';
 
     /**
-     * API root host
-     *
-     * @var string
-     */
-    protected $rootHost = '';
-
-    /**
      * Logger
      *
      * @var LoggerInterface
@@ -80,9 +73,6 @@ abstract class BaseService
             $this->leafHost = $options['leafHost'];
         }
 
-        if (!empty($this->options['rootHost'])) {
-            $this->rootHost = $options['rootHost'];
-        }
     }
 
     protected function createClient()
@@ -184,7 +174,6 @@ abstract class BaseService
         }
 
         $uri = ('/' !== substr($uri, 0, 1) ? '/' : '').$uri;
-
         return ('auto' == $protocol ? '//' : $protocol.'://').$host.$uri;
     }
 
@@ -197,10 +186,6 @@ abstract class BaseService
 
     private function getHostByNode($node)
     {
-        if ($node == 'root') {
-            return empty($this->rootHost) ? $this->host : $this->rootHost;
-        }
-
         if ($node == 'leaf') {
             return empty($this->leafHost) ? $this->host : $this->leafHost;
         }
