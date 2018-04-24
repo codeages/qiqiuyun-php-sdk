@@ -8,7 +8,7 @@ namespace QiQiuYun\SDK\Service;
 class SmsService extends BaseService
 {
     protected $host = 'sms-service.qiqiuyun.net';
-    protected $leafHost = ['sms-service-leaf1.qiqiuyun.net', 'sms-service-leaf2.qiqiuyun.net'];
+    protected $leafHost = array('sms-service-leaf1.qiqiuyun.net', 'sms-service-leaf2.qiqiuyun.net');
 
 
     /**
