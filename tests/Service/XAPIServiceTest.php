@@ -184,6 +184,122 @@ class XAPIServiceTest extends BaseTestCase
         $this->assertEquals(199.99, $statement['result']['extensions']['http://xapi.edusoho.com/extensions/amount']);
     }
 
+    public function testRegistered()
+    {
+        $actor = $this->getActor();
+
+        $httpClient = $this->mockHttpClient(array(
+            'actor' => $actor,
+        ));
+
+        $service = $this->createXAPIService($httpClient);
+        $statement = $service->registered($actor, null, null, null, null, false);
+
+        $this->assertEquals(array(
+            'id' => 'http://adlnet.gov/expapi/verbs/registered',
+            'display' => array(
+                'zh-CN' => '注册了',
+                'en-US' => 'registered',
+            )
+        ), $statement['verb']);
+
+    }
+
+    public function testRated()
+    {
+        $actor = $this->getActor();
+        $object = array(
+            'id' => '38983',
+            'name' => '摄影基础',
+            'definitionType' => XAPIActivityTypes::CLASS_ONLINE,
+        );
+        $result = array(
+            'score' => array(
+                'raw' => 4,
+                'max' => 5,
+                'min' => 0
+            )
+        );
+        $httpClient = $this->mockHttpClient(array(
+            'actor' => $actor,
+            'object' => $object,
+            'result' => $result,
+        ));
+
+        $service = $this->createXAPIService($httpClient);
+        $statement = $service->rated($actor, $object, $result, null, null, false);
+
+        $this->assertEquals(array(
+            'id' => 'http://id.tincanapi.com/verb/rated',
+            'display' => array(
+                'zh-CN' => '评分了',
+                'en-US' => 'rated',
+            )
+        ), $statement['verb']);
+
+        $this->assertEquals('https://w3id.org/xapi/acrossx/activities/class-online',
+            $statement['object']['definition']['type']);
+        $this->assertEquals(array('raw' => 4, 'max' => 5, 'min' => 0), $statement['result']['score']);
+    }
+
+    public function testBookmarked()
+    {
+        $actor = $this->getActor();
+        $object = array(
+            'id' => '38983',
+            'name' => '摄影基础',
+            'definitionType' => XAPIActivityTypes::CLASS_ONLINE,
+        );
+
+        $httpClient = $this->mockHttpClient(array(
+            'actor' => $actor,
+            'object' => $object,
+        ));
+
+        $service = $this->createXAPIService($httpClient);
+        $statement = $service->bookmarked($actor, $object, null, null, null, false);
+
+
+        $this->assertEquals(array(
+            'id' => 'https://w3id.org/xapi/adb/verbs/bookmarked',
+            'display' => array(
+                'zh-CN' => '收藏了',
+                'en-US' => 'bookmarked',
+            )
+        ), $statement['verb']);
+
+        $this->assertEquals('https://w3id.org/xapi/acrossx/activities/class-online',
+            $statement['object']['definition']['type']);
+    }
+
+    public function testShared()
+    {
+        $actor = $this->getActor();
+        $object = array(
+            'id' => '38983',
+            'name' => '摄影基础',
+            'definitionType' => XAPIActivityTypes::CLASS_ONLINE,
+        );
+
+        $httpClient = $this->mockHttpClient(array(
+            'actor' => $actor,
+            'object' => $object,
+        ));
+
+        $service = $this->createXAPIService($httpClient);
+        $statement = $service->shared($actor, $object, null, null, null, false);
+
+        $this->assertEquals(array(
+            'id' => 'http://adlnet.gov/expapi/verbs/shared',
+            'display' => array(
+                'zh-CN' => '分享了',
+                'en-US' => 'shared',
+            )
+        ), $statement['verb']);
+        $this->assertEquals('https://w3id.org/xapi/acrossx/activities/class-online',
+            $statement['object']['definition']['type']);
+    }
+
     private function getActor()
     {
         return array(

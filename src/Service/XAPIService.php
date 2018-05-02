@@ -649,6 +649,124 @@ class XAPIService extends BaseService
         return $isPush ? $this->pushStatement($statement) : $statement;
     }
 
+    public function registered($actor, $object = null, $result = null, $uuid = null, $timestamp = null, $isPush = true)
+    {
+        $statement = array();
+        if (!empty($uuid)) {
+            $statement['id'] = $uuid;
+        }
+        $statement['actor'] = $actor;
+        $statement['verb'] = array(
+            'id' => 'http://adlnet.gov/expapi/verbs/registered',
+            'display' => array(
+                'zh-CN' => '注册了',
+                'en-US' => XAPIVerbs::REGISTERED,
+            ),
+        );
+
+        $statement['timestamp'] = $this->getTime($timestamp);
+
+        return $isPush ? $this->pushStatement($statement) : $statement;
+    }
+
+    public function rated($actor, $object = null, $result = null, $uuid = null, $timestamp = null, $isPush = true)
+    {
+        $statement = array();
+        if (!empty($uuid)) {
+            $statement['id'] = $uuid;
+        }
+        $statement['actor'] = $actor;
+        $statement['verb'] = array(
+            'id' => 'http://id.tincanapi.com/verb/rated',
+            'display' => array(
+                'zh-CN' => '评分了',
+                'en-US' => XAPIVerbs::RATED,
+            ),
+        );
+
+        $statement['object'] = array(
+            'id' => $object['id'],
+            'definition' => array(
+                'type' => $this->getActivityType($object['definitionType']),
+                'name' => array(
+                    $this->defaultLang => $object['name']
+                )
+            )
+        );
+
+        $statement['result'] = array(
+            'score' => array(
+                'raw' => $result['score']['raw'],
+                'max' => $result['score']['max'],
+                'min' => $result['score']['min'],
+            )
+        );
+
+        $statement['timestamp'] = $this->getTime($timestamp);
+
+        return $isPush ? $this->pushStatement($statement) : $statement;
+    }
+
+    public function bookmarked($actor, $object = null, $result = null, $uuid = null, $timestamp = null, $isPush = true)
+    {
+        $statement = array();
+        if (!empty($uuid)) {
+            $statement['id'] = $uuid;
+        }
+        $statement['actor'] = $actor;
+        $statement['verb'] = array(
+            'id' => 'https://w3id.org/xapi/adb/verbs/bookmarked',
+            'display' => array(
+                'zh-CN' => '收藏了',
+                'en-US' => XAPIVerbs::BOOKMARKED,
+            ),
+        );
+
+        $statement['object'] = array(
+            'id' => $object['id'],
+            'definition' => array(
+                'type' => $this->getActivityType($object['definitionType']),
+                'name' => array(
+                    $this->defaultLang => $object['name']
+                )
+            )
+        );
+
+        $statement['timestamp'] = $this->getTime($timestamp);
+
+        return $isPush ? $this->pushStatement($statement) : $statement;
+    }
+
+    public function shared($actor, $object = null, $result = null, $uuid = null, $timestamp = null, $isPush = true)
+    {
+        $statement = array();
+        if (!empty($uuid)) {
+            $statement['id'] = $uuid;
+        }
+        $statement['actor'] = $actor;
+        $statement['verb'] = array(
+            'id' => 'http://adlnet.gov/expapi/verbs/shared',
+            'display' => array(
+                'zh-CN' => '分享了',
+                'en-US' => XAPIVerbs::SHARED,
+            ),
+        );
+
+        $statement['object'] = array(
+            'id' => $object['id'],
+            'definition' => array(
+                'type' => $this->getActivityType($object['definitionType']),
+                'name' => array(
+                    $this->defaultLang => $object['name']
+                )
+            )
+        );
+
+        $statement['timestamp'] = $this->getTime($timestamp);
+
+        return $isPush ? $this->pushStatement($statement) : $statement;
+    }
+
     /**
      * 提交"购买"的记录
      * @param $actor
