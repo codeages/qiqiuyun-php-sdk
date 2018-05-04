@@ -22,6 +22,8 @@ class XAPIServiceTest extends BaseTestCase
                 'id' => 1,
                 'title' => '测试课程',
                 'description' => '这是一个测试课程',
+                'price' => 100,
+                'tags' => '｜摄影｜运动｜',
             ),
             'video' => array(
                 'id' => '1111',
@@ -316,7 +318,7 @@ class XAPIServiceTest extends BaseTestCase
     protected function createXAPIService($httpClient = null)
     {
         return new XAPIService($this->auth, array(
-            'school_name' => '测试网校', 'school_url' => 'http://demo.edusoho.com'
+            'school_name' => '测试网校', 'school_url' => 'http://demo.edusoho.com', 'school_version' => '8.0.0'
         ), null, $httpClient);
     }
 }
