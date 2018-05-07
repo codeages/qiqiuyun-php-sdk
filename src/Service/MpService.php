@@ -4,7 +4,7 @@ namespace QiQiuYun\SDK\Service;
 
 class MpService extends BaseService
 {
-    protected $host = 'mp.qiqiuyun.net';
+    protected $host = 'mp-service.qiqiuyun.net';
 
     public function sendMpRequest(array $params)
     {
