@@ -248,8 +248,9 @@ class XAPIServiceTest extends BaseTestCase
 
         $this->assertEquals('http://adlnet.gov/expapi/activities/course',
             $statement['object']['definition']['type']);
+        $keys = array_keys($statement['object']['definition']['extensions']);
         $this->assertEquals('http://xapi.edusoho.com/extensions/course',
-            array_keys($statement['object']['definition']['extensions'])[0]);
+            $keys[0]);
         $this->assertEquals(array('raw' => 4, 'max' => 5, 'min' => 0), $statement['result']['score']);
         $this->assertEquals('这个是值得购买到课程', $statement['result']['response']);
     }
