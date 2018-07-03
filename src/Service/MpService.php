@@ -4,7 +4,7 @@ namespace QiQiuYun\SDK\Service;
 
 class MpService extends BaseService
 {
-    protected $host = 'mp-platform-dev.cn';
+    protected $host = 'mp-service-api.test.qiqiuyun.cn';
 
     public function sendMpRequest(array $params)
     {
@@ -19,5 +19,10 @@ class MpService extends BaseService
     public function getToken(array $params)
     {
         return $this->request('POST', '/tokens', $params);
+    }
+
+    public function getAuthorization()
+    {
+        return $this->request('GET', '/schools/authorizations', array());
     }
 }
