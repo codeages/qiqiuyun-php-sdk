@@ -18,11 +18,11 @@ class MpService extends BaseService
 
     public function getToken(array $params)
     {
-        return $this->request('POST', '/api/tokens', $params);
+        return $this->request('POST', '/tokens', $params);
     }
 
     public function getAuthorization()
     {
-        return $this->request('GET', '/api/authorizations', array());
+        return $this->request('GET', '/schools/authorizations', array());
     }
 }
