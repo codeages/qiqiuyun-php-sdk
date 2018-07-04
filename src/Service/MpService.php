@@ -4,7 +4,7 @@ namespace QiQiuYun\SDK\Service;
 
 class MpService extends BaseService
 {
-    protected $host = 'mp-service.qiqiuyun.cn';
+    protected $host = 'mp-service.qiqiuyun.net';
 
     public function sendMpRequest(array $params)
     {
@@ -23,6 +23,6 @@ class MpService extends BaseService
 
     public function getAuthorization()
     {
-        return $this->request('GET', '/schools/authorizations', array());
+        return $this->request('GET', '/authorizations', array());
     }
 }
