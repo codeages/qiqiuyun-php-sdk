@@ -90,6 +90,14 @@ class QiQiuYunSDK
     }
 
     /**
+     * @return \QiQiuYun\SDK\Service\AiService
+     */
+    public function getAiService()
+    {
+        return $this->getService('Ai');
+    }
+
+    /**
      * 创建API请求认证类实例
      *
      * @param string $accessKey
