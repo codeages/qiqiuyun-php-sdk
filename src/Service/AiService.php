@@ -16,12 +16,13 @@ class AiService extends BaseService
      *
      * @param $userId int 用户id
      * @param $userName string 用户名
+     * @param $type string 会话类型 register:注册 compare:对比
      * 
      * @return array 会话信息
      */
-    public function createFaceSession($userId, $userName)
+    public function createFaceSession($userId, $userName, $type)
     {
-        return $this->request('POST', '/face/session', array('user_id' => $userId, 'user_name' => $userName));
+        return $this->request('POST', '/face/sessions', array('user_id' => $userId, 'username' => $userName, 'type' => $type));
     }
 
     /**
@@ -35,63 +36,22 @@ class AiService extends BaseService
      */
     public function getFaceSession($sessionId)
     {
-        return $this->request('GET', '/face/session/' . $sessionId);
+        return $this->request('GET', "/face/sessions/{$sessionId}");
     }
 
     /**
-     * 更新人脸识别会话信息
+     * 完成人脸上传
      *
      * @see http://docs.qiqiuyun.com/v2/ai-face.html
      *
      * @param string $sessionId 会话id
-     * @param array  $data 更新数据
+     * @param int $responseCode 上传后返回的http状态码，由存储供应商返回
+     * @param string $responseBody 上传结果，由存储供应商返回
      * 
-     * @return array 会话信息
+     * @return array 
      */
-    public function updateFaceSession($sessionId, array $data = array())
+    public function finishFaceUpload($sessionId, $responseCode, $responseBody)
     {
-        return $this->request('POST', '/face/session/' . $sessionId, $data);
-    }
-
-    /**
-     * 人脸注册
-     *
-     * @see http://docs.qiqiuyun.com/v2/ai-face.html
-     *
-     * @param string $sessionId 会话id
-     * @param string $key 人脸资源编号
-     * 
-     * @return array 会话信息
-     */
-    public function faceRegister($sessionId, $key)
-    {
-        return $this->request('POST', '/face/register', array('session_id' => $sessionId, 'key' => $key));
-    }
-
-    /**
-     * 人脸对比
-     *
-     * @see http://docs.qiqiuyun.com/v2/ai-face.html
-     *
-     * @param string $sessionId 会话id
-     * @param string $key 人脸资源编号
-     * 
-     * @return array 会话信息
-     */
-    public function faceCompare($sessionId, $key)
-    {
-        return $this->request('POST', '/face/compare', array('session_id' => $sessionId, 'key' => $key));
-    }
-
-    /**
-     * 获取七牛上传凭证
-     *
-     * @see http://docs.qiqiuyun.com/v2/ai-face.html
-     *
-     * @return array 上传所需信息
-     */
-    public function createUploadToken()
-    {
-        return $this->request('POST', '/face/upload_token');
+        return $this->request('POST', "/face/sessions/{$sessionId}/finish_upload", array('response_code' => $responseCode, 'response_body' => $responseBody));
     }
 }
