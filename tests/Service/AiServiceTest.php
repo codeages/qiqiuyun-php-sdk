@@ -43,9 +43,9 @@ class AiServiceTest extends BaseTestCase
     {
         $mockSession = $this->mockSession();
 
-        $httpClient = $this->mockHttpClient([
+        $httpClient = $this->mockHttpClient(array(
             'success' => true
-        ]);
+        ));
 
         $service = new AiService($this->auth, array(), null, $httpClient);
 
