@@ -23,7 +23,7 @@ class PlayV2ServiceTest extends BaseTestCase
         $this->assertCount(3, $token);
         $this->assertEquals($deadline, $token[0]);
         $this->assertEquals(16, strlen($token[1]));
-        
+
         ksort($options);
         $options = http_build_query($options);
 
@@ -49,7 +49,7 @@ class PlayV2ServiceTest extends BaseTestCase
         $this->assertCount(3, $token);
         $this->assertEquals($deadline, $token[0]);
         $this->assertEquals(16, strlen($token[1]));
-        
+
         ksort($options);
         $options = http_build_query($options);
 
@@ -64,7 +64,7 @@ class PlayV2ServiceTest extends BaseTestCase
     {
         $resNo = 'this_is_a_test_resource_no_1';
         $lifetime = 600;
-        $options = ['std' => 1];
+        $options = array('std' => 1);
 
         $playService = new PlayV2Service($this->auth);
         $url = $playService->makePlayMetaUrl($resNo, $options, $lifetime, true);

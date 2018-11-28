@@ -14,7 +14,7 @@ class PlayV2Service extends BaseService
      *
      * @param string $resNo    资源编号
      * @param int    $lifetime Token 的有效时长
-     * @param bool   $useNonce Token是否一次性
+     * @param bool   $useNonce Token 是否一次性
      *
      * @return string 资源播放Token
      */
@@ -23,6 +23,14 @@ class PlayV2Service extends BaseService
         return $this->auth->makePlayToken2($resNo, $options, $lifetime, $useNonce);
     }
 
+    /**
+     * 生成获取播放元信息的地址
+     *
+     * @param string $resNo    资源编号
+     * @param array  $options  选项
+     * @param int    $lifetime Token 有效时长
+     * @param bool   $useNonce Token 是否一次性
+     */
     public function makePlayMetaUrl($resNo, $options = array(), $lifetime = 600, $useNonce = true)
     {
         $url = $this->getRequestUri('/js/v2/play', 'auto');

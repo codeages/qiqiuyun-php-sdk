@@ -112,6 +112,7 @@ class QiQiuYunSDK
      *
      * @param string $accessKey
      * @param string $secretKey
+     *
      * @return Auth
      */
     public function createAuth($accessKey, $secretKey)
