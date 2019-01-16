@@ -11,15 +11,15 @@ class PushServiceTest extends BaseTestCase
     {
         $device = $this->moceDevice();
         $httpClient = $this->mockHttpClient($device);
-        $service = new PushService($this->auth, [], null, $httpClient);
-        $result = $service->registerDevice([
+        $service = new PushService($this->auth, array(), null, $httpClient);
+        $result = $service->registerDevice(array(
             'provider' => 'xiaomi',
             'provider_reg_id' => md5(uniqid()),
             'device_token' => 'test_token',
             'os' => 'android',
             'os_version' => '2.3.3',
             'model' => '233'
-        ]);
+        ));
 
         $this->assertEquals($device['reg_id'], $result['reg_id']);
         $this->assertEquals($device['is_active'], $result['is_active']);
@@ -30,7 +30,7 @@ class PushServiceTest extends BaseTestCase
     {
         $device = $this->moceDevice();
         $httpClient = $this->mockHttpClient($device);
-        $service = new PushService($this->auth, [], null, $httpClient);
+        $service = new PushService($this->auth, array(), null, $httpClient);
         $result = $service->updateDeviceActive($device['reg_id'], 1);
 
         $this->assertEquals($device['reg_id'], $result['reg_id']);
@@ -40,29 +40,29 @@ class PushServiceTest extends BaseTestCase
 
     public function testPushMessage()
     {
-        $successRegIdsMock = [md5(uniqid()), md5(uniqid())];
+        $successRegIdsMock = array(md5(uniqid()), md5(uniqid()));
         $httpClient = $this->mockHttpClient($successRegIdsMock);
-        $service = new PushService($this->auth, [], null, $httpClient);
-        $result = $service->pushMessage([
+        $service = new PushService($this->auth, array(), null, $httpClient);
+        $result = $service->pushMessage(array(
             'reg_ids' => implode(',', $successRegIdsMock),
             'pass_through_type' => 'normal',
             'payload' => 'test_payload',
             'title' => 'test_title',
             'description' => 'test_description',
-        ]);
+        ));
 
         $this->assertEquals($successRegIdsMock, $result);
     }
 
     private function moceDevice()
     {
-        return [
+        return array(
             'reg_id' => 'test_reg_id',
             'is_active' => 1,
             'device_token' => 'test_device_token',
             'os' => 'android',
             'os_version' => '2.3.3',
             'model' => '2333'
-        ];
+        );
     }
 }

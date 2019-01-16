@@ -45,7 +45,7 @@ class PushService extends BaseService
      */
     public function updateDeviceActive($regId, $isActive)
     {
-        return $this->request('POST', "/devices/{$regId}/active", ['is_active' => $isActive]);
+        return $this->request('POST', "/devices/{$regId}/active", array('is_active' => $isActive));
     }
 
     /**
