@@ -7,7 +7,7 @@ namespace QiQiuYun\SDK\Service;
  */
 class PushService extends BaseService
 {
-    protected $host = 'push-service.local.dev_test.cn';
+    protected $host = 'push-service.qiqiuyun.net';
 
     /**
      * @params $params array 注册参数
@@ -45,7 +45,7 @@ class PushService extends BaseService
      */
     public function updateDeviceActive($regId, $isActive)
     {
-        return $this->request('POST', "/devices/{$regId}/active", ['reg_id' => $regId, 'is_active' => $isActive]);
+        return $this->request('POST', "/devices/{$regId}/active", ['is_active' => $isActive]);
     }
 
     /**
