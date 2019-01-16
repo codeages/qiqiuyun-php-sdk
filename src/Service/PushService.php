@@ -35,15 +35,10 @@ class PushService extends BaseService
     /**
      * @param $regId string 注册时返回的注册号
      * @param $isActive int 设备是否活跃 1 or 0
-     * @return array 返回参数如下：
-     *      reg_id 云平台生成的reg_id,
-     *      is_active 是否活跃,
-     *      device_token 设备编号,
-     *      os 设备类型 android or ios,
-     *      os_version 设备系统版本号,
-     *      model 手机型号
+     *
+     * @return array
      */
-    public function updateDeviceActive($regId, $isActive)
+    public function setDeviceActive($regId, $isActive)
     {
         return $this->request('POST', "/devices/{$regId}/active", array('is_active' => $isActive));
     }
