@@ -7,7 +7,7 @@ namespace QiQiuYun\SDK\Service;
  */
 class PushService extends BaseService
 {
-    protected $host = 'push-service.qiqiuyun.net';
+    protected $host = 'push-service.local.dev_test.cn';
 
     /**
      * @params $params array 注册参数
@@ -43,9 +43,9 @@ class PushService extends BaseService
      *      os_version 设备系统版本号,
      *      model 手机型号
      */
-    public function updateDevice($regId, $isActive)
+    public function updateDeviceActive($regId, $isActive)
     {
-        return $this->request('POST', "/devices/{$regId}", ['reg_id' => $regId, 'is_active' => $isActive]);
+        return $this->request('POST', "/devices/{$regId}/active", ['reg_id' => $regId, 'is_active' => $isActive]);
     }
 
     /**
@@ -57,7 +57,7 @@ class PushService extends BaseService
      *      title 通知标题
      *      description 通知描述
      * @return array 返回参数如下：
-     *      notificationIds 成功通知的设备的reg_id
+     *      push_id 推送批次的id
      *
      */
     public function pushMessage($params)

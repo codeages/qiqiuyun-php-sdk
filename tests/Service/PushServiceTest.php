@@ -26,12 +26,12 @@ class PushServiceTest extends BaseTestCase
         $this->assertEquals($device['os_version'], $result['os_version']);
     }
 
-    public function testUpdateDevice()
+    public function testUpdateDeviceActive()
     {
         $device = $this->moceDevice();
         $httpClient = $this->mockHttpClient($device);
         $service = new PushService($this->auth, [], null, $httpClient);
-        $result = $service->updateDevice($device['reg_id'], 1);
+        $result = $service->updateDeviceActive($device['reg_id'], 1);
 
         $this->assertEquals($device['reg_id'], $result['reg_id']);
         $this->assertEquals($device['is_active'], $result['is_active']);
