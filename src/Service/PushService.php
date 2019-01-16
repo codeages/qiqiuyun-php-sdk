@@ -7,7 +7,7 @@ namespace QiQiuYun\SDK\Service;
  */
 class PushService extends BaseService
 {
-    protected $host = 'ai-service.qiqiuyun.net';
+    protected $host = 'push-service.qiqiuyun.net';
 
     /**
      * @params $params array 注册参数
