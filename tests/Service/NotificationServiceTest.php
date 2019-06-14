@@ -2,6 +2,7 @@
 
 namespace QiQiuYun\SDK\Tests\Service;
 
+use QiQiuYun\SDK\Constants\NotificationChannelTypes;
 use QiQiuYun\SDK\Tests\BaseTestCase;
 use QiQiuYun\SDK\Service\NotificationService;
 
@@ -43,13 +44,13 @@ class NotificationServiceTest extends BaseTestCase
     {
         $httpClient = $this->mockHttpClient(array(
             "user_id" => 39,
-            "type" => "wechat",
+            "type" => NotificationChannelTypes::WECHAT,
             "status" => 1,
             "created_time" => "2019-06-06T09:55:28+00:00",
             "updated_time" => "2019-06-09T08:01:23+00:00",
         ));
 
-        $channelType = 'wechat';
+        $channelType = NotificationChannelTypes::WECHAT;
         $params = array(
             'app_id' => '12345',
             'app_secret' => '123456',
@@ -59,7 +60,7 @@ class NotificationServiceTest extends BaseTestCase
         $result = $service->openChannel($channelType, $params);
         $this->assertEquals(array(
             "user_id" => 39,
-            "type" => "wechat",
+            "type" => NotificationChannelTypes::WECHAT,
             "status" => 1,
             "created_time" => "2019-06-06T09:55:28+00:00",
             "updated_time" => "2019-06-09T08:01:23+00:00",
@@ -70,13 +71,13 @@ class NotificationServiceTest extends BaseTestCase
     {
         $httpClient = $this->mockHttpClient(array(
             "user_id" => 39,
-            "type" => "wechat",
+            "type" => NotificationChannelTypes::WECHAT,
             "status" => 0,
             "created_time" => "2019-06-06T09:55:28+00:00",
             "updated_time" => "2019-06-09T08:01:23+00:00",
         ));
 
-        $channelType = 'wechat';
+        $channelType = NotificationChannelTypes::WECHAT;
         $params = array(
             'app_id' => '12345',
             'app_secret' => '123456',
@@ -86,7 +87,7 @@ class NotificationServiceTest extends BaseTestCase
         $result = $service->openChannel($channelType, $params);
         $this->assertEquals(array(
             "user_id" => 39,
-            "type" => "wechat",
+            "type" => NotificationChannelTypes::WECHAT,
             "status" => 0,
             "created_time" => "2019-06-06T09:55:28+00:00",
             "updated_time" => "2019-06-09T08:01:23+00:00",
@@ -100,7 +101,7 @@ class NotificationServiceTest extends BaseTestCase
         ));
         $params = array(
             array(
-                "channel" => "wechat",
+                "channel" => NotificationChannelTypes::WECHAT,
                 "to_id" =>  "o6_bmjrPTlm6_2sgVt7hMZOPfL2M",
                 "title" =>  "xxx",
                 "content" =>  "xxxxxx",
