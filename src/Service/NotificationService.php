@@ -74,43 +74,43 @@ class NotificationService extends BaseService
     /**
      * @param $notifications
      * [
-        {
-            "channel" : "wechat",
-            "to_id": "o6_bmjrPTlm6_2sgVt7hMZOPfL2M",
-            "title": "xxx",
-            "content": "xxxxxx",
-            "template_id": "xxxxx",
-            "template_args": {
-                "first": {
-                    "value":"恭喜你购买成功！",
-                    "color":"#173177"
-                },
-                "keyword1":{
-                    "value":"巧克力",
-                    "color":"#173177"
-                },
-                "keyword2": {
-                    "value":"39.8元",
-                    "color":"#173177"
-                },
-                "keyword3": {
-                    "value":"2014年9月22日",
-                    "color":"#173177"
-                },
-                "remark":{
-                    "value":"欢迎再次购买！",
-                    "color":"#173177"
-                }
-            },
-            "goto": {
-                "type": "url/miniprogram", 必填
-                "url": "xxxx",
-                "appid": "xxxxxx",
-                "pagepath": "xxxxx",
-            },
-        },
-        ...
-    ]
+     *   {
+     *       "channel" : "wechat",
+     *       "to_id": "o6_bmjrPTlm6_2sgVt7hMZOPfL2M",
+     *       "title": "xxx",
+     *       "content": "xxxxxx",
+     *       "template_id": "xxxxx",
+     *       "template_args": {
+     *           "first": {
+     *               "value":"恭喜你购买成功！",
+     *               "color":"#173177"
+     *           },
+     *           "keyword1":{
+     *               "value":"巧克力",
+     *               "color":"#173177"
+     *           },
+     *           "keyword2": {
+     *               "value":"39.8元",
+     *               "color":"#173177"
+     *           },
+     *           "keyword3": {
+     *               "value":"2014年9月22日",
+     *               "color":"#173177"
+     *           },
+     *           "remark":{
+     *               "value":"欢迎再次购买！",
+     *               "color":"#173177"
+     *           }
+     *       },
+     *       "goto": {
+     *           "type": "url/miniprogram", 必填
+     *           "url": "xxxx",
+     *           "appid": "xxxxxx",
+     *           "pagepath": "xxxxx",
+     *       },
+     *   },
+     *   ...
+     * ]
      * @return array
      *         * ["sn" : "XXXXXXXXX"] 批次SN，用于查询
      */
@@ -123,16 +123,16 @@ class NotificationService extends BaseService
      * @param $sn
      *        批次SN 用于查询
      * @return array
-     {
-        "sn": "d54676fa85f211e9a177186590d302a3", //SN
-        "total_count": 1, 总数
-        "succeed_count": 0, 成功的数量
-        "failure_reason": null, [{"code": "521002", "count": "1", "message": "未知错误，请联系云服务供应商"}]
-        "is_finished": "1",
-        "finished_time": "1970-01-01T00:00:00+00:00",
-        "created_time": "2019-06-03T11:29:21+00:00",
-        "updated_time": "2019-06-03T11:29:21+00:00"
-     }
+     * {
+     *    "sn": "d54676fa85f211e9a177186590d302a3", //SN
+     *    "total_count": 1, 总数
+     *    "succeed_count": 0, 成功的数量
+     *    "failure_reason": null, [{"code": "521002", "count": "1", "message": "未知错误，请联系云服务供应商"}]
+     *    "is_finished": "1",
+     *    "finished_time": "1970-01-01T00:00:00+00:00",
+     *    "created_time": "2019-06-03T11:29:21+00:00",
+     *    "updated_time": "2019-06-03T11:29:21+00:00"
+     *  }
      */
     public function getNotification($sn)
     {
