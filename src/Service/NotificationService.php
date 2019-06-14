@@ -13,8 +13,6 @@ class NotificationService extends BaseService
     /**
      * @return array 返回Account
      *         * "id" ID,
-     *         * "user_id" 云用户ID,
-     *         * "access_key" 网校AccessKey,
      *         * "status" 0：关闭 1：开启, 成功开启为1
      *         * "created_time" "2019-06-06T09:55:28+00:00",
      *         * "updated_time" "2019-06-09T07:44:12+00:00"
@@ -28,8 +26,6 @@ class NotificationService extends BaseService
     /**
      * @return array 返回Account
      *         * "id" ID,
-     *         * "user_id" 云用户ID,
-     *         * "access_key" 网校AccessKey,
      *         * "status" 0：关闭 1：开启, 成功关闭为0
      *         * "created_time" "2019-06-06T09:55:28+00:00",
      *         * "updated_time" "2019-06-09T07:44:12+00:00"

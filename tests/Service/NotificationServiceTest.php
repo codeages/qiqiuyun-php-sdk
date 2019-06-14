@@ -11,8 +11,6 @@ class NotificationServiceTest extends BaseTestCase
     {
         $httpClient = $this->mockHttpClient(array(
             "id" => 3,
-            "user_id" => 39,
-            "access_key" => "12345",
             "status" => 1,
             "created_time" => "2019-06-06T09:55:28+00:00",
             "updated_time" => "2019-06-09T07:44:12+00:00",
@@ -22,7 +20,6 @@ class NotificationServiceTest extends BaseTestCase
 
         $result = $service->openAccount();
 
-        $this->assertEquals('12345', $result['access_key']);
         $this->assertEquals(1, $result['status']);
     }
 
@@ -30,8 +27,6 @@ class NotificationServiceTest extends BaseTestCase
     {
         $httpClient = $this->mockHttpClient(array(
             "id" => 3,
-            "user_id" => 39,
-            "access_key" => "12345",
             "status" => 0,
             "created_time" => "2019-06-06T09:55:28+00:00",
             "updated_time" => "2019-06-09T07:44:12+00:00",
@@ -41,7 +36,6 @@ class NotificationServiceTest extends BaseTestCase
 
         $result = $service->openAccount();
 
-        $this->assertEquals('12345', $result['access_key']);
         $this->assertEquals(0, $result['status']);
     }
 
