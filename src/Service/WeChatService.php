@@ -26,7 +26,7 @@ class WeChatService extends BaseService
     /**
      * 获取服务号的所有用户，分页
      *
-     * @params $nextOpenId string 选填 从这个OPENID开始取用户数据
+     * @param $nextOpenId string 选填 从这个OPENID开始取用户数据
      *
      * @return array 返回参数如下：
      *               total string  总数

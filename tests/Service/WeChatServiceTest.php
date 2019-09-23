@@ -9,11 +9,11 @@ class WeChatServiceTest extends BaseTestCase
 {
     public function testGetPreAuthUrl()
     {
-        $httpClient = $this->mockHttpClient('ww.test.com');
+        $httpClient = $this->mockHttpClient(array('url' => 'ww.test.com'));
         $service = new WeChatService($this->auth, array(), null, $httpClient);
         $result = $service->getPreAuthUrl(1, 'test.com');
 
-        $this->assertEquals($result, 'ww.test.com');
+        $this->assertEquals($result['url'], 'ww.test.com');
     }
 
     public function testGetUserList()
