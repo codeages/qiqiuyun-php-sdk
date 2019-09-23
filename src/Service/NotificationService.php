@@ -12,11 +12,10 @@ class NotificationService extends BaseService
 
     /**
      * @return array 返回Account
-     *         * "id" ID,
-     *         * "status" 0：关闭 1：开启, 成功开启为1
-     *         * "created_time" "2019-06-06T09:55:28+00:00",
-     *         * "updated_time" "2019-06-09T07:44:12+00:00"
-     *
+     *               * "id" ID,
+     *               * "status" 0：关闭 1：开启, 成功开启为1
+     *               * "created_time" "2019-06-06T09:55:28+00:00",
+     *               * "updated_time" "2019-06-09T07:44:12+00:00"
      */
     public function openAccount()
     {
@@ -25,14 +24,14 @@ class NotificationService extends BaseService
 
     /**
      * @return array 返回Account
-     *         * "id" ID,
-     *         * "status" 0：关闭 1：开启, 成功关闭为0
-     *         * "created_time" "2019-06-06T09:55:28+00:00",
-     *         * "updated_time" "2019-06-09T07:44:12+00:00"
+     *               * "id" ID,
+     *               * "status" 0：关闭 1：开启, 成功关闭为0
+     *               * "created_time" "2019-06-06T09:55:28+00:00",
+     *               * "updated_time" "2019-06-09T07:44:12+00:00"
      */
     public function closeAccount()
     {
-        return $this->request('DELETE', "/accounts");
+        return $this->request('DELETE', '/accounts');
     }
 
     /**
@@ -40,27 +39,30 @@ class NotificationService extends BaseService
      *        wechat 微信,...
      * @param $params
      *        options app_id app_secret
+     *
      * @return array 返回 Channel
-     *         * "user_id" 云用户ID,
-     *         * "type" "wechat" 微信,...
-     *         * "status" 0：关闭 1：开启, 成功开启为1
-     *         * "created_time" "2019-06-06T09:55:28+00:00",
-     *         * "updated_time" "2019-06-09T08:01:23+00:00"
+     *               * "user_id" 云用户ID,
+     *               * "type" "wechat" 微信,...
+     *               * "status" 0：关闭 1：开启, 成功开启为1
+     *               * "created_time" "2019-06-06T09:55:28+00:00",
+     *               * "updated_time" "2019-06-09T08:01:23+00:00"
      */
     public function openChannel($channelType, $params)
     {
         $params['type'] = $channelType;
-        return $this->request('POST', "/channels", $params);
+
+        return $this->request('POST', '/channels', $params);
     }
 
     /**
      * @param $channelType wechat 微信,...
+     *
      * @return array
-     *         * "user_id" 云用户ID,
-     *         * "type" "wechat" 微信,...
-     *         * "status" 0：关闭 1：开启, 成功关闭为0
-     *         * "created_time" "2019-06-06T09:55:28+00:00",
-     *         * "updated_time" "2019-06-09T08:01:23+00:00"
+     *               * "user_id" 云用户ID,
+     *               * "type" "wechat" 微信,...
+     *               * "status" 0：关闭 1：开启, 成功关闭为0
+     *               * "created_time" "2019-06-06T09:55:28+00:00",
+     *               * "updated_time" "2019-06-09T08:01:23+00:00"
      */
     public function closeChannel($channelType)
     {
@@ -107,8 +109,9 @@ class NotificationService extends BaseService
      *   },
      *   ...
      * ]
+     *
      * @return array
-     *         * ["sn" : "XXXXXXXXX"] 批次SN，用于查询
+     *               * ["sn" : "XXXXXXXXX"] 批次SN，用于查询
      */
     public function sendNotifications($notifications)
     {
@@ -118,17 +121,18 @@ class NotificationService extends BaseService
     /**
      * @param $sn
      *        批次SN 用于查询
+     *
      * @return array
-     * {
-     *    "sn": "d54676fa85f211e9a177186590d302a3", //SN
-     *    "total_count": 1, 总数
-     *    "succeed_count": 0, 成功的数量
-     *    "failure_reason": null, [{"code": "521002", "count": "1", "message": "未知错误，请联系云服务供应商"}]
-     *    "is_finished": "1",
-     *    "finished_time": "1970-01-01T00:00:00+00:00",
-     *    "created_time": "2019-06-03T11:29:21+00:00",
-     *    "updated_time": "2019-06-03T11:29:21+00:00"
-     *  }
+     *               {
+     *               "sn": "d54676fa85f211e9a177186590d302a3", //SN
+     *               "total_count": 1, 总数
+     *               "succeed_count": 0, 成功的数量
+     *               "failure_reason": null, [{"code": "521002", "count": "1", "message": "未知错误，请联系云服务供应商"}]
+     *               "is_finished": "1",
+     *               "finished_time": "1970-01-01T00:00:00+00:00",
+     *               "created_time": "2019-06-03T11:29:21+00:00",
+     *               "updated_time": "2019-06-03T11:29:21+00:00"
+     *               }
      */
     public function getNotification($sn)
     {
@@ -139,19 +143,23 @@ class NotificationService extends BaseService
      * @param $conditions |sns|
      * @param int $offset
      * @param int $limit
+     *
      * @return array
-     *         Notification 集合
+     *               Notification 集合
      */
     public function searchNotifications($conditions, $offset = 0, $limit = 30)
     {
         $params = array_merge($conditions, array('offset' => $offset, 'limit' => $limit));
-        return $this->request('GET', "/notifications", $params); 
+
+        return $this->request('GET', '/notifications', $params);
     }
 
     /**
      * @param $sns
+     *
      * @return array
-     *         Notification 集合
+     *               Notification 集合
+     *
      * @throws SDKException
      */
     public function batchGetNotifications($sns)
@@ -165,6 +173,7 @@ class NotificationService extends BaseService
             'offset' => 0,
             'limit' => count($sns),
         );
-        return $this->request('GET', "/notifications", $params);
+
+        return $this->request('GET', '/notifications', $params);
     }
 }
