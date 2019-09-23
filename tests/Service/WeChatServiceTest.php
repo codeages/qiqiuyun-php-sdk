@@ -43,11 +43,11 @@ class WeChatServiceTest extends BaseTestCase
         $this->assertEquals($result['user_info_list'][0]['subscribe'], 1);
     }
 
-    public function testGetAuthorizationInfoList()
+    public function testGetAuthorizationInfo()
     {
         $httpClient = $this->mockHttpClient(array(array('funcscope_category' => array('id' => 1)), array('funcscope_category' => array('id' => 2))));
         $service = new WeChatService($this->auth, array(), null, $httpClient);
-        $result = $service->getAuthorizationInfoList('official');
+        $result = $service->getAuthorizationInfo('official');
 
         $this->assertEquals($result[0]['funcscope_category'], array('id' => 1));
     }
