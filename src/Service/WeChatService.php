@@ -13,7 +13,7 @@ class WeChatService extends BaseService
      * 获取预授权URL
      *
      * @param $platformType int     必填 （1：公众号  2：小程序）
-     *        $callbackUrl  string  必填  授权回调地址
+     * @param $callbackUrl  string  必填  授权回调地址
      *
      * @return array
      *               url  string 预授权URL
