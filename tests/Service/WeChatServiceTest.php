@@ -40,7 +40,7 @@ class WeChatServiceTest extends BaseTestCase
         $service = new WeChatService($this->auth, array(), null, $httpClient);
         $result = $service->batchGetUserInfo(array('test1', 'test2'));
 
-        $this->assertEquals($result['user_info_list'][0]['subscribe'], 1);
+        $this->assertEquals($result[0]['subscribe'], 1);
     }
 
     public function testGetAuthorizationInfo()
