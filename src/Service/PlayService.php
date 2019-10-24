@@ -21,6 +21,20 @@ class PlayService extends BaseService
     }
 
     /**
+     * 生成资源播放jwtToken
+     *
+     * @param string $no       资源编号
+     * @param int    $lifetime 令牌的的有效时长，默认600秒,不超过86400秒
+     * @param array  $options  参数
+     *
+     * @return string 资源播放Token
+     */
+    public function makePlayJwtToken($no, $lifetime = 600, $options = array())
+    {
+        return $this->auth->makePlayJwtToken($no, $lifetime, $options);
+    }
+
+    /**
      * 获取云资源的播放地址，该地址可以直接嵌入iframe播放
      *
      * @param string $resNo    资源编号

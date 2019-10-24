@@ -3,6 +3,7 @@
 namespace QiQiuYun\SDK;
 
 use QiQiuYun\SDK;
+use Firebase\JWT\JWT;
 
 class Auth
 {
@@ -116,5 +117,27 @@ class Auth
         $signature = $this->makeSignature($signingText);
 
         return "{$deadline}:{$nonce}:{$signature}";
+    }
+
+    /**
+     * 生成资源播放jwtToken
+     *
+     * @param string $no       资源编号
+     * @param int    $lifetime 令牌的的有效时长，默认600秒,不超过86400秒
+     * @param array  $options  参数
+     *
+     * @return string 资源播放Token
+     */
+    public function makePlayJwtToken($no, $lifetime = 600, $options = array())
+    {
+        $options['no'] = $no;
+
+        $options['jti'] = SDK\random_str('16');
+
+        $options['exp'] = time() + $lifetime;
+
+        $token = JWT::encode($options, 'wyOV9rew98ClmpuklnT1Y80omjc7ZLel', 'HS256');
+
+        return $token;
     }
 }
