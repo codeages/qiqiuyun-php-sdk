@@ -3,6 +3,7 @@
 namespace QiQiuYun\SDK;
 
 use QiQiuYun\SDK;
+use Firebase\JWT\JWT;
 
 class Auth
 {
@@ -32,16 +33,16 @@ class Auth
     {
         $signature = hash_hmac('sha1', $text, $this->secretKey, true);
 
-        return  str_replace(array('+', '/'), array('-', '_'), base64_encode($signature));
+        return str_replace(array('+', '/'), array('-', '_'), base64_encode($signature));
     }
 
     /**
      * 制作API请求的授权信息
      *
-     * @param string $uri      HTTP 请求的 URI
-     * @param string $body     HTTP 请求的 BODY
-     * @param int    $lifetime 授权生命周期
-     * @param bool   $useNonce 授权随机值避免重放攻击
+     * @param string $uri HTTP 请求的 URI
+     * @param string $body HTTP 请求的 BODY
+     * @param int $lifetime 授权生命周期
+     * @param bool $useNonce 授权随机值避免重放攻击
      *
      * @return string 授权信息
      */
@@ -60,8 +61,8 @@ class Auth
     public function makeXAPIRequestAuthorization()
     {
         $deadline = strtotime(date('Y-m-d H:0:0', strtotime('+2 hours')));
-        $signingText = $this->getAccessKey()."\n".$deadline;
-        $signature = $this->getAccessKey().':'.$deadline.':'.$this->makeSignature($signingText);
+        $signingText = $this->getAccessKey() . "\n" . $deadline;
+        $signature = $this->getAccessKey() . ':' . $deadline . ':' . $this->makeSignature($signingText);
 
         return "Signature $signature";
     }
@@ -69,9 +70,9 @@ class Auth
     /**
      * 生成资源播放令牌
      *
-     * @param string $resNo    资源编号
-     * @param int    $lifetime 令牌的的有效时长，默认600秒
-     * @param bool   $useNonce 是否使用随机值，防止重放攻击
+     * @param string $resNo 资源编号
+     * @param int $lifetime 令牌的的有效时长，默认600秒
+     * @param bool $useNonce 是否使用随机值，防止重放攻击
      *
      * @return string 资源播放Token
      */
@@ -93,10 +94,10 @@ class Auth
     /**
      * 生成资源播放令牌 V2
      *
-     * @param string $resNo    资源编号
-     * @param array  $options  附加的选项参数
-     * @param int    $lifetime 令牌的的有效时长，默认600秒
-     * @param bool   $useNonce 是否使用随机值，防止重放攻击
+     * @param string $resNo 资源编号
+     * @param array $options 附加的选项参数
+     * @param int $lifetime 令牌的的有效时长，默认600秒
+     * @param bool $useNonce 是否使用随机值，防止重放攻击
      *
      * @return string 资源播放Token
      */
@@ -116,5 +117,27 @@ class Auth
         $signature = $this->makeSignature($signingText);
 
         return "{$deadline}:{$nonce}:{$signature}";
+    }
+
+    /**
+     * 生成资源播放jwtToken
+     *
+     * @param string $no 资源编号
+     * @param int $lifetime 令牌的的有效时长，默认600秒
+     * @param array $options 参数
+     *
+     * @return string 资源播放Token
+     */
+    public function makePlayJwtToken($no, $lifetime = 600, $options = array())
+    {
+        $options['no'] = $no;
+
+        $options['jti'] = SDK\random_str('16');
+
+        $options['exp'] = time() + $lifetime;
+
+        $token = JWT::encode($options, $this->secretKey, 'HS256');
+
+        return $token;
     }
 }
