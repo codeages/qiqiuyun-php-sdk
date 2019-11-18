@@ -68,76 +68,14 @@ class Auth
     }
 
     /**
-     * 生成资源播放令牌
+     * 生成 Jwt Token
      *
-     * @param string $resNo 资源编号
-     * @param int $lifetime 令牌的的有效时长，默认600秒
-     * @param bool $useNonce 是否使用随机值，防止重放攻击
+     * @param array $payload 载荷
      *
      * @return string 资源播放Token
      */
-    public function makePlayToken($resNo, $lifetime = 600, $useNonce = true)
+    public function makeJwtToken($payload = array())
     {
-        if ($useNonce) {
-            $nonce = SDK\random_str('16');
-        } else {
-            $nonce = 'no';
-        }
-
-        $deadline = time() + $lifetime;
-        $signingText = "{$resNo}\n{$nonce}\n{$deadline}";
-        $signature = $this->makeSignature($signingText);
-
-        return "{$nonce}:{$deadline}:{$signature}";
-    }
-
-    /**
-     * 生成资源播放令牌 V2
-     *
-     * @param string $resNo 资源编号
-     * @param array $options 附加的选项参数
-     * @param int $lifetime 令牌的的有效时长，默认600秒
-     * @param bool $useNonce 是否使用随机值，防止重放攻击
-     *
-     * @return string 资源播放Token
-     */
-    public function makePlayToken2($resNo, $options = array(), $lifetime = 600, $useNonce = true)
-    {
-        if ($useNonce) {
-            $nonce = SDK\random_str('16');
-        } else {
-            $nonce = 'no';
-        }
-
-        ksort($options);
-        $options = http_build_query($options);
-
-        $deadline = time() + $lifetime;
-        $signingText = "{$resNo}\n{$options}\n{$deadline}\n{$nonce}";
-        $signature = $this->makeSignature($signingText);
-
-        return "{$deadline}:{$nonce}:{$signature}";
-    }
-
-    /**
-     * 生成资源播放jwtToken
-     *
-     * @param string $no 资源编号
-     * @param int $lifetime 令牌的的有效时长，默认600秒
-     * @param array $options 参数
-     *
-     * @return string 资源播放Token
-     */
-    public function makePlayJwtToken($no, $lifetime = 600, $options = array())
-    {
-        $options['no'] = $no;
-
-        $options['jti'] = SDK\random_str('16');
-
-        $options['exp'] = time() + $lifetime;
-
-        $token = JWT::encode($options, $this->secretKey, 'HS256');
-
-        return $token;
+        return JWT::encode($payload, $this->secretKey, 'HS256');
     }
 }
