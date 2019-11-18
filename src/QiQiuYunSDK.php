@@ -35,6 +35,16 @@ class QiQiuYunSDK
     }
 
     /**
+     * 获取云资源播放服务
+     *
+     * @return \QiQiuYun\SDK\Service\ResourceService
+     */
+    public function getResourceService()
+    {
+        return $this->getService('Resource');
+    }
+
+    /**
      * 获取短信服务
      *
      * @return \QiQiuYun\SDK\Service\SmsService
@@ -52,16 +62,6 @@ class QiQiuYunSDK
     public function getPlayService()
     {
         return $this->getService('Play');
-    }
-
-    /**
-     * 获取云资源播放服务
-     *
-     * @return \QiQiuYun\SDK\Service\PlayV2Service
-     */
-    public function getPlayV2Service()
-    {
-        return $this->getService('PlayV2');
     }
 
     /**
