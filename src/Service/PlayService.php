@@ -24,7 +24,7 @@ class PlayService extends BaseService
      * 生成资源播放jwtToken
      *
      * @param string $no       资源编号
-     * @param int    $lifetime 令牌的的有效时长，默认600秒,不超过86400秒
+     * @param int    $lifetime 令牌的的有效时长，默认600秒
      * @param array  $options  参数
      *
      * @return string 资源播放Token
