@@ -7,18 +7,7 @@ class S2B2CService extends BaseService
     //@todo 此处测试站，后改为正式站
     protected $host = 's2b2c-service.local.cg-dev.cn';
 
-    public function supplierHasMerchant($supplierAccessKey, $merchantAccessKey)
-    {
-        $query = array(
-            'supplierAccessKey' => $supplierAccessKey,
-            'merchantAccessKey' => $merchantAccessKey,
-        );
-        return $this->request('GET', '/suppliers/actions/has_merchant', $query);
-    }
-
     /**
-     * @param $merchantAccessKey string 渠道商的 access_key
-     *
      * @param $productIds array 订单中，供货商商品的 id，非本地商品 id.
      * @example array(1,2,3);
      *
@@ -27,14 +16,36 @@ class S2B2CService extends BaseService
      *
      * @return array
      */
-    public function reportSuccessOrder($merchantAccessKey, $productIds, $extra)
+    public function reportSuccessOrder($productIds, $extra)
     {
         $params = array(
-            'merchantAccessKey' => $merchantAccessKey,
+            'status' => 'success',
             'productIds' => $productIds,
             'extra' => $extra,
         );
 
-        return $this->request('POST', '/order/report/success', $params);
+        return $this->request('POST', '/order/report', $params);
+    }
+
+    /**
+     * @param $orderSn string 退款订单Sn
+     *
+     * @param array $productIds 退款商品在供应商的id，非本地商品id
+     * @example array(1, 2, 3);
+     *
+     * @param $extra array('orderRefund' => $orderRefund, 'orderItemRefund' => $orderItemRefund);
+     *
+     * @return array
+     */
+    public function reportRefundOrder($orderSn, $productIds, $extra)
+    {
+        $params = array(
+            'status' => 'refund',
+            'merchantOrderSn' => $orderSn,
+            'productIds' => $productIds,
+            'extra' => $extra
+        );
+
+        return $this->request('POST', 'order/report', $params);
     }
 }
