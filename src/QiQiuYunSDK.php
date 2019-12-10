@@ -36,7 +36,6 @@ class QiQiuYunSDK
         }
 
         $this->options = $options;
-        $this->auth = $this->createAuth($options['access_key'], $options['secret_key']);
         $this->logger = $logger;
         $this->httpClient = $httpClient;
     }
@@ -48,7 +47,7 @@ class QiQiuYunSDK
      */
     public function getResourceService()
     {
-        return $this->getService('Resource');
+        return $this->getService('Resource', true);
     }
 
     /**
@@ -140,26 +139,13 @@ class QiQiuYunSDK
     }
 
     /**
-     * 创建API请求认证类实例
-     *
-     * @param string $accessKey
-     * @param string $secretKey
-     *
-     * @return Auth
-     */
-    public function createAuth($accessKey, $secretKey)
-    {
-        return new Auth($accessKey, $secretKey);
-    }
-
-    /**
      * 根据服务名获得服务实例
      *
      * @param string $name 服务名
      *
      * @return mixed 服务实例
      */
-    protected function getService($name)
+    protected function getService($name, $useJwt = false)
     {
         if (isset($this->services[$name])) {
             return $this->services[$name];
@@ -169,8 +155,8 @@ class QiQiuYunSDK
         $options = empty($this->options['service'][$lowerName]) ? array() : $this->options['service'][$lowerName];
 
         $class = __NAMESPACE__.'\\Service\\'.$name.'Service';
-
-        $this->services[$name] = new $class($this->auth, $options, $this->logger, $this->httpClient);
+        $auth = new Auth($this->options['access_key'], $this->options['secret_key'],  $useJwt);
+        $this->services[$name] = new $class($auth, $options, $this->logger, $this->httpClient);
 
         return $this->services[$name];
     }

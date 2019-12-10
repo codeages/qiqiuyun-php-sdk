@@ -11,10 +11,19 @@ class Auth
 
     protected $secretKey;
 
-    public function __construct($accessKey, $secretKey)
+    protected $useJwt;
+
+    /**
+     * Auth constructor.
+     * @param $accessKey
+     * @param $secretKey
+     * @param bool $useJwt 新的服务将启用 JWT 作为鉴权的 Token
+     */
+    public function __construct($accessKey, $secretKey, $useJwt = false)
     {
         $this->accessKey = $accessKey;
         $this->secretKey = $secretKey;
+        $this->useJwt = $useJwt;
     }
 
     public function getAccessKey()
@@ -48,11 +57,22 @@ class Auth
      */
     public function makeRequestAuthorization($uri, $body = '', $lifetime = 600, $useNonce = true)
     {
-        $nonce = $useNonce ? SDK\random_str('16') : 'no';
-        $deadline = time() + $lifetime;
-        $signature = $this->makeSignature("{$nonce}\n{$deadline}\n{$uri}\n{$body}");
+        if ($this->useJwt) {
+            $payload = array(
+                'jti' => strtolower(Sdk\random_str(16)),
+                'exp' => time() + $lifetime,
+            );
 
-        return "Signature {$this->accessKey}:{$deadline}:{$nonce}:{$signature}";
+            $token =  JWT::encode($payload, $this->secretKey, 'HS256', $this->accessKey);
+
+            return "Bearer {$token}";
+        } else {
+            $nonce = $useNonce ? SDK\random_str('16') : 'no';
+            $deadline = time() + $lifetime;
+            $signature = $this->makeSignature("{$nonce}\n{$deadline}\n{$uri}\n{$body}");
+
+            return "Signature {$this->accessKey}:{$deadline}:{$nonce}:{$signature}";
+        }
     }
 
     /**
