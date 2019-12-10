@@ -9,10 +9,10 @@ class ResourceService extends BaseService
     /**
      * 获取表单上传的参数
      *
-     * @param $params 参数
+     * @param $params array 参数
      * @return array 上传表单参数
      */
-    public function startFormUpload($params)
+    public function startUpload(array $params)
     {
         return $this->request('POST', '/upload/start', $params);
     }
@@ -20,10 +20,10 @@ class ResourceService extends BaseService
     /**
      * 完成表单上传
      *
-     * @param $no 云资源编号
+     * @param $no string 云资源编号
      * @return array
      */
-    public function finishFormUpload($no)
+    public function finishUpload($no)
     {
         return $this->request('POST', '/upload/finish', array('no' => $no));
     }

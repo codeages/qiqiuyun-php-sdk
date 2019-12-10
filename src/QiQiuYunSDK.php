@@ -5,7 +5,6 @@ namespace QiQiuYun\SDK;
 use Psr\Log\LoggerInterface;
 use QiQiuYun\SDK\HttpClient\ClientInterface;
 use QiQiuYun\SDK\Exception\SDKException;
-use QiQiuYun\SDK\Service\NotificationService;
 
 class QiQiuYunSDK
 {
@@ -19,6 +18,14 @@ class QiQiuYunSDK
 
     protected $httpClient;
 
+    /**
+     * QiQiuYunSDK constructor.
+     *
+     * @param array $options
+     * @param LoggerInterface|null $logger
+     * @param ClientInterface|null $httpClient
+     * @throws SDKException
+     */
     public function __construct(array $options, LoggerInterface $logger = null, ClientInterface $httpClient = null)
     {
         if (empty($options['access_key'])) {
@@ -117,13 +124,16 @@ class QiQiuYunSDK
     }
 
     /**
-     * @return NotificationService
+     * @return \QiQiuYun\SDK\Service\NotificationService
      */
     public function getNotificationService()
     {
         return $this->getService('Notification');
     }
 
+    /**
+     * @return \QiQiuYun\SDK\Service\WeChatService
+     */
     public function getWeChatService()
     {
         return $this->getService('WeChat');
