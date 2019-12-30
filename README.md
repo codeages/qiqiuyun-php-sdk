@@ -1,17 +1,17 @@
-# QiQiuYun PHP SDK
+# ESCloud PHP SDK
 
-[![Build Status](https://travis-ci.org/codeages/qiqiuyun-php-sdk.svg?branch=master)](https://travis-ci.org/codeages/qiqiuyun-php-sdk)
+[![Build Status](https://travis-ci.org/codeages/escloud-php-sdk.svg?branch=master)](https://travis-ci.org/codeages/escloud-php-sdk)
 
 ## 安装
 
 ```shell
-composer require codeages/qiqiuyun-php-sdk
+composer require codeages/escloud-php-sdk
 ```
 
 ## 使用说明
 
 ```php
-$sdk = new \QiQiuYun\SDK\QiQiuYunSDK(array(
+$sdk = new \ESCloud\SDK\ESCloudSDK(array(
     'access_key' => 'your_access_key', // 必需
     'secret_key' => 'your_secret_key', // 必需
     'service' => array(     // 可选，各个服务的配置项
@@ -37,7 +37,7 @@ $sdk->getDrpService();
 气球云为网校接入提供了测试环境，用于发调试。通过设置`host`配置项，即可使用测试环境的服务，例如短信测试服务：
 
 ```php
-$sdk = new \QiQiuYun\SDK\QiQiuYunSDK(array(
+$sdk = new \ESCloud\SDK\ESCloudSDK(array(
     'access_key' => 'your_access_key', 
     'secret_key' => 'your_secret_key', 
     'service' => array(

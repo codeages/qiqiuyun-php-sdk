@@ -1,10 +1,10 @@
 <?php
 
-namespace QiQiuYun\SDK\Tests\Service;
+namespace ESCloud\SDK\Tests\Service;
 
-use QiQiuYun\SDK\Tests\BaseTestCase;
-use QiQiuYun\SDK\Service\XAPIService;
-use QiQiuYun\SDK\Constants\XAPIActivityTypes;
+use ESCloud\SDK\Tests\BaseTestCase;
+use ESCloud\SDK\Service\XAPIService;
+use ESCloud\SDK\Constants\XAPIActivityTypes;
 
 class XAPIServiceTest extends BaseTestCase
 {
@@ -49,7 +49,7 @@ class XAPIServiceTest extends BaseTestCase
     }
 
     /**
-     * @expectedException \QiQiuYun\SDK\Exception\ResponseException
+     * @expectedException \ESCloud\SDK\Exception\ResponseException
      * @expectedExceptionCode 9
      */
     public function testWatchVideo_Error()

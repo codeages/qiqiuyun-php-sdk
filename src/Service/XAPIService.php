@@ -1,11 +1,11 @@
 <?php
 
-namespace QiQiuYun\SDK\Service;
+namespace ESCloud\SDK\Service;
 
-use QiQiuYun\SDK\Exception\ResponseException;
-use QiQiuYun\SDK\Exception\SDKException;
-use QiQiuYun\SDK\Constants\XAPIActivityTypes;
-use QiQiuYun\SDK\Constants\XAPIVerbs;
+use ESCloud\SDK\Exception\ResponseException;
+use ESCloud\SDK\Exception\SDKException;
+use ESCloud\SDK\Constants\XAPIActivityTypes;
+use ESCloud\SDK\Constants\XAPIVerbs;
 
 class XAPIService extends BaseService
 {
@@ -857,7 +857,7 @@ class XAPIService extends BaseService
      * @return mixed
      *
      * @throws ResponseException
-     * @throws \QiQiuYun\SDK\HttpClient\ClientException
+     * @throws \ESCloud\SDK\HttpClient\ClientException
      */
     public function pushStatement($statement)
     {
@@ -872,7 +872,7 @@ class XAPIService extends BaseService
      * @return mixed
      *
      * @throws ResponseException
-     * @throws \QiQiuYun\SDK\HttpClient\ClientException
+     * @throws \ESCloud\SDK\HttpClient\ClientException
      */
     public function pushStatements($statements)
     {

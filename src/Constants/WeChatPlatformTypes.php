@@ -1,6 +1,6 @@
 <?php
 
-namespace QiQiuYun\SDK\Constants;
+namespace ESCloud\SDK\Constants;
 
 final class WeChatPlatformTypes
 {

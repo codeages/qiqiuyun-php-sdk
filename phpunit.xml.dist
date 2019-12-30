@@ -14,7 +14,7 @@
         bootstrap                   = "vendor/autoload.php" >
 
     <testsuites>
-        <testsuite name="QiQiuYun PHP SDK Test Suite">
+        <testsuite name="ESCloud PHP SDK Test Suite">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>

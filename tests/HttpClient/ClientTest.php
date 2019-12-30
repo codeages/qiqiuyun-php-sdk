@@ -1,9 +1,9 @@
 <?php
 
-namespace QiQiuYun\SDK\Tests;
+namespace ESCloud\SDK\Tests;
 
 use PHPUnit\Framework\TestCase;
-use QiQiuYun\SDK\HttpClient\Client;
+use ESCloud\SDK\HttpClient\Client;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -17,6 +17,6 @@ class ClientTest extends TestCase
 
         $client = new Client(array(), $logger);
         $response = $client->request('GET', 'https://www.baidu.com/');
-        $this->assertInstanceOf('QiQiuYun\\SDK\\HttpClient\\Response', $response);
+        $this->assertInstanceOf('ESCloud\\SDK\\HttpClient\\Response', $response);
     }
 }

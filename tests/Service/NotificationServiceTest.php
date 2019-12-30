@@ -1,10 +1,10 @@
 <?php
 
-namespace QiQiuYun\SDK\Tests\Service;
+namespace ESCloud\SDK\Tests\Service;
 
-use QiQiuYun\SDK\Constants\NotificationChannelTypes;
-use QiQiuYun\SDK\Tests\BaseTestCase;
-use QiQiuYun\SDK\Service\NotificationService;
+use ESCloud\SDK\Constants\NotificationChannelTypes;
+use ESCloud\SDK\Tests\BaseTestCase;
+use ESCloud\SDK\Service\NotificationService;
 
 class NotificationServiceTest extends BaseTestCase
 {

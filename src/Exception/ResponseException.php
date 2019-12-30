@@ -1,9 +1,9 @@
 <?php
 
-namespace QiQiuYun\SDK\Exception;
+namespace ESCloud\SDK\Exception;
 
-use QiQiuYun\SDK\HttpClient\Response;
-use QiQiuYun\SDK;
+use ESCloud\SDK\HttpClient\Response;
+use ESCloud\SDK;
 
 class ResponseException extends SDKException
 {

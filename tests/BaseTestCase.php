@@ -1,10 +1,10 @@
 <?php
 
-namespace QiQiuYun\SDK\Tests;
+namespace ESCloud\SDK\Tests;
 
 use PHPUnit\Framework\TestCase;
-use QiQiuYun\SDK\Auth;
-use QiQiuYun\SDK\HttpClient\Response;
+use ESCloud\SDK\Auth;
+use ESCloud\SDK\HttpClient\Response;
 
 abstract class BaseTestCase extends TestCase
 {
@@ -34,7 +34,7 @@ abstract class BaseTestCase extends TestCase
     {
         $response = new Response(array(), json_encode($responseData), $httpStatusCode);
 
-        $stub = $this->getMockBuilder('QiQiuYun\\SDK\\HttpClient\\ClientInterface')
+        $stub = $this->getMockBuilder('ESCloud\\SDK\\HttpClient\\ClientInterface')
             ->getMock();
 
         $stub->method('request')

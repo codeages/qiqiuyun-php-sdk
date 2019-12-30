@@ -1,6 +1,6 @@
 <?php
 
-namespace QiQiuYun\SDK;
+namespace ESCloud\SDK;
 
 /**
  * 系统通用错误码

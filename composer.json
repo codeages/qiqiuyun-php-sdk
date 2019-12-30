@@ -1,7 +1,7 @@
 {
-  "name" : "codeages/qiqiuyun-php-sdk",
+  "name" : "codeages/escloud-php-sdk",
   "type" : "library",
-  "description" : "QiQiuYun PHP SDK",
+  "description" : "ESCloud PHP SDK",
   "authors": [
     {
       "name": "Codeages Team",
@@ -12,12 +12,12 @@
   "autoload" : {
     "files": ["src/functions.php"],
     "psr-4": {
-      "QiQiuYun\\SDK\\" : "src"
+      "ESCloud\\SDK\\" : "src"
     }
   },
   "autoload-dev" : {
     "psr-4": {
-      "QiQiuYun\\SDK\\Tests\\" : "tests"
+      "ESCloud\\SDK\\Tests\\" : "tests"
     }
   },
   "require": {

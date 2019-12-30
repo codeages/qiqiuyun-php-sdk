@@ -1,10 +1,11 @@
 <?php
 
-namespace QiQiuYun\SDK\Service;
+namespace ESCloud\SDK\Service;
 
-use QiQiuYun\SDK\Exception\ResponseException;
-use QiQiuYun\SDK\Exception\SDKException;
-use QiQiuYun\SDK\HttpClient\ClientException;
+use ESCloud\SDK\Exception\ResponseException;
+use ESCloud\SDK\Exception\SDKException;
+use ESCloud\SDK\HttpClient\ClientException;
+use phpDocumentor\Reflection\Types\String_;
 
 class ResourceService extends BaseService
 {
@@ -77,15 +78,15 @@ class ResourceService extends BaseService
 
     /**
      * @param string $no
-     * @param array $params
+     * @param string $name
      * @return array
      * @throws ClientException
      * @throws ResponseException
      * @throws SDKException
      */
-    public function update(string $no, array $params)
+    public function rename(string $no, string $name)
     {
-        return $this->request('PATCH', '/resources/' . $no, $params);
+        return $this->request('PUT', '/resources/' . $no . '/name', ['name' => $name]);
     }
 
     /**

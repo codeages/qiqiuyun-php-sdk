@@ -1,9 +1,9 @@
 <?php
 
-namespace QiQiuYun\SDK\Tests\Service;
+namespace ESCloud\SDK\Tests\Service;
 
-use QiQiuYun\SDK\Service\PlayService;
-use QiQiuYun\SDK\Tests\BaseTestCase;
+use ESCloud\SDK\Service\PlayService;
+use ESCloud\SDK\Tests\BaseTestCase;
 
 class PlayServiceTest extends BaseTestCase
 {
