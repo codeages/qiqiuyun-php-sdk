@@ -1,8 +1,8 @@
 <?php
 
-namespace QiQiuYun\SDK;
+namespace ESCloud\SDK;
 
-use QiQiuYun\SDK;
+use ESCloud\SDK;
 use Firebase\JWT\JWT;
 
 class Auth

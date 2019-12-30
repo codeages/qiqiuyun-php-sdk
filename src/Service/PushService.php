@@ -1,6 +1,6 @@
 <?php
 
-namespace QiQiuYun\SDK\Service;
+namespace ESCloud\SDK\Service;
 
 /**
  * App推送服务

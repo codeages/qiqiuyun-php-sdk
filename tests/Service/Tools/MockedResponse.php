@@ -1,6 +1,6 @@
 <?php
 
-namespace QiQiuYun\SDK\Tests\Service\Tools;
+namespace ESCloud\SDK\Tests\Service\Tools;
 
 class MockedResponse
 {

@@ -20,7 +20,7 @@ namespace {
     }
 }
 
-namespace QiQiuYun\SDK {
+namespace ESCloud\SDK {
     function base64_urlsafe_encode($data)
     {
         $find = array('+', '/');

@@ -1,6 +1,6 @@
 <?php
 
-namespace QiQiuYun\SDK\Helper;
+namespace ESCloud\SDK\Helper;
 
 /**
  * 短信模板ID

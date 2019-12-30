@@ -1,6 +1,6 @@
 <?php
 
-namespace QiQiuYun\SDK\Service;
+namespace ESCloud\SDK\Service;
 
 /**
  * AI服务

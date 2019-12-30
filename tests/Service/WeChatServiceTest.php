@@ -1,9 +1,9 @@
 <?php
 
-namespace QiQiuYun\SDK\test\Service;
+namespace ESCloud\SDK\test\Service;
 
-use QiQiuYun\SDK\Service\WeChatService;
-use QiQiuYun\SDK\Tests\BaseTestCase;
+use ESCloud\SDK\Service\WeChatService;
+use ESCloud\SDK\Tests\BaseTestCase;
 
 class WeChatServiceTest extends BaseTestCase
 {

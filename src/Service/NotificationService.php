@@ -1,8 +1,8 @@
 <?php
 
-namespace QiQiuYun\SDK\Service;
+namespace ESCloud\SDK\Service;
 
-use QiQiuYun\SDK\Exception\SDKException;
+use ESCloud\SDK\Exception\SDKException;
 
 class NotificationService extends BaseService
 {

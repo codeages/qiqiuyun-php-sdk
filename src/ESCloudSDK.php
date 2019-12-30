@@ -1,12 +1,12 @@
 <?php
 
-namespace QiQiuYun\SDK;
+namespace ESCloud\SDK;
 
 use Psr\Log\LoggerInterface;
-use QiQiuYun\SDK\HttpClient\ClientInterface;
-use QiQiuYun\SDK\Exception\SDKException;
+use ESCloud\SDK\HttpClient\ClientInterface;
+use ESCloud\SDK\Exception\SDKException;
 
-class QiQiuYunSDK
+class ESCloudSDK
 {
     protected $options;
 
@@ -19,7 +19,7 @@ class QiQiuYunSDK
     protected $httpClient;
 
     /**
-     * QiQiuYunSDK constructor.
+     * ESCloudSDK constructor.
      *
      * @param array $options
      * @param LoggerInterface|null $logger
@@ -43,7 +43,7 @@ class QiQiuYunSDK
     /**
      * 获取云资源播放服务
      *
-     * @return \QiQiuYun\SDK\Service\ResourceService
+     * @return \ESCloud\SDK\Service\ResourceService
      */
     public function getResourceService()
     {
@@ -53,7 +53,7 @@ class QiQiuYunSDK
     /**
      * 获取短信服务
      *
-     * @return \QiQiuYun\SDK\Service\SmsService
+     * @return \ESCloud\SDK\Service\SmsService
      */
     public function getSmsService()
     {
@@ -63,7 +63,7 @@ class QiQiuYunSDK
     /**
      * 获取云资源播放服务
      *
-     * @return \QiQiuYun\SDK\Service\PlayService
+     * @return \ESCloud\SDK\Service\PlayService
      */
     public function getPlayService()
     {
@@ -73,7 +73,7 @@ class QiQiuYunSDK
     /**
      * 获取XAPI服务
      *
-     * @return \QiQiuYun\SDK\Service\XAPIService
+     * @return \ESCloud\SDK\Service\XAPIService
      */
     public function getXAPIService()
     {
@@ -83,7 +83,7 @@ class QiQiuYunSDK
     /**
      * 获取分销服务
      *
-     * @return \QiQiuYun\SDK\Service\DrpService
+     * @return \ESCloud\SDK\Service\DrpService
      */
     public function getDrpService()
     {
@@ -91,7 +91,7 @@ class QiQiuYunSDK
     }
 
     /**
-     * @return \QiQiuYun\SDK\Service\MpService
+     * @return \ESCloud\SDK\Service\MpService
      */
     public function getMpService()
     {
@@ -99,7 +99,7 @@ class QiQiuYunSDK
     }
 
     /**
-     * @return \QiQiuYun\SDK\Service\ESopService
+     * @return \ESCloud\SDK\Service\ESopService
      */
     public function getESopService()
     {
@@ -107,7 +107,7 @@ class QiQiuYunSDK
     }
 
     /**
-     * @return \QiQiuYun\SDK\Service\AiService
+     * @return \ESCloud\SDK\Service\AiService
      */
     public function getAiService()
     {
@@ -115,7 +115,7 @@ class QiQiuYunSDK
     }
 
     /**
-     * @return \QiQiuYun\SDK\Service\PushService
+     * @return \ESCloud\SDK\Service\PushService
      */
     public function getPushService()
     {
@@ -123,7 +123,7 @@ class QiQiuYunSDK
     }
 
     /**
-     * @return \QiQiuYun\SDK\Service\NotificationService
+     * @return \ESCloud\SDK\Service\NotificationService
      */
     public function getNotificationService()
     {
@@ -131,7 +131,7 @@ class QiQiuYunSDK
     }
 
     /**
-     * @return \QiQiuYun\SDK\Service\WeChatService
+     * @return \ESCloud\SDK\Service\WeChatService
      */
     public function getWeChatService()
     {

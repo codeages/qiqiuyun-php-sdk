@@ -1,9 +1,9 @@
 <?php
 
-namespace QiQiuYun\SDK\Service;
+namespace ESCloud\SDK\Service;
 
-use QiQiuYun\SDK\Helper\MarketingHelper;
-use QiQiuYun\SDK\Exception\SDKException;
+use ESCloud\SDK\Helper\MarketingHelper;
+use ESCloud\SDK\Exception\SDKException;
 
 class DrpService extends BaseService
 {

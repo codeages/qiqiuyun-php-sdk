@@ -1,20 +1,20 @@
 <?php
 
-namespace QiQiuYun\SDK\Service;
+namespace ESCloud\SDK\Service;
 
-use QiQiuYun\SDK\Auth;
-use QiQiuYun\SDK\HttpClient\Client;
+use ESCloud\SDK\Auth;
+use ESCloud\SDK\HttpClient\Client;
 use Psr\Log\LoggerInterface;
-use QiQiuYun\SDK\HttpClient\ClientInterface;
-use QiQiuYun\SDK\Exception\SDKException;
-use QiQiuYun\SDK\HttpClient\Response;
-use QiQiuYun\SDK\Exception\ResponseException;
-use QiQiuYun\SDK;
+use ESCloud\SDK\HttpClient\ClientInterface;
+use ESCloud\SDK\Exception\SDKException;
+use ESCloud\SDK\HttpClient\Response;
+use ESCloud\SDK\Exception\ResponseException;
+use ESCloud\SDK;
 
 abstract class BaseService
 {
     /**
-     * QiQiuYun auth
+     * ESCloud auth
      *
      * @var Auth
      */

@@ -1,8 +1,8 @@
 <?php
 
-namespace QiQiuYun\SDK\Service;
+namespace ESCloud\SDK\Service;
 
-use QiQiuYun\SDK;
+use ESCloud\SDK;
 
 class PlayService extends BaseService
 {

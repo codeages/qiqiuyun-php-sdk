@@ -1,9 +1,9 @@
 <?php
 
-namespace QiQiuYun\SDK\Tests\Service;
+namespace ESCloud\SDK\Tests\Service;
 
-use QiQiuYun\SDK\Tests\BaseTestCase;
-use QiQiuYun\SDK\Service\AiService;
+use ESCloud\SDK\Tests\BaseTestCase;
+use ESCloud\SDK\Service\AiService;
 
 class AiServiceTest extends BaseTestCase
 {

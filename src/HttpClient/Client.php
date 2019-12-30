@@ -1,6 +1,6 @@
 <?php
 
-namespace QiQiuYun\SDK\HttpClient;
+namespace ESCloud\SDK\HttpClient;
 
 use Psr\Log\LoggerInterface;
 
