@@ -55,8 +55,6 @@ abstract class BaseService
      */
     protected $logger;
 
-    private static $resolversByClass = array();
-
     public function __construct(Auth $auth, array $options = array(), LoggerInterface $logger = null, ClientInterface $client = null)
     {
         $this->auth = $auth;
@@ -88,12 +86,15 @@ abstract class BaseService
     /**
      * 气球云 API V2 的统一请求方法
      *
-     * @param string $method
-     * @param string $uri
-     * @param array  $data
-     * @param array  $headers
-     *
-     * @return array
+     * @param $method
+     * @param $uri
+     * @param array $data
+     * @param array $headers
+     * @param string $node
+     * @return mixed
+     * @throws ResponseException
+     * @throws SDKException
+     * @throws SDK\HttpClient\ClientException
      */
     protected function request($method, $uri, array $data = array(), array $headers = array(), $node = 'root')
     {
@@ -131,6 +132,9 @@ abstract class BaseService
      * 从Response中抽取API返回结果
      *
      * @param Response $response
+     * @return mixed
+     * @throws ResponseException
+     * @throws SDKException
      */
     protected function extractResultFromResponse(Response $response)
     {
@@ -153,9 +157,11 @@ abstract class BaseService
     /**
      * 获得完整的请求地址
      *
-     * @param string $uri
-     *
-     * @return string 请求地址
+     * @param $uri
+     * @param string $protocol
+     * @param string $node
+     * @return string
+     * @throws SDKException
      */
     protected function getRequestUri($uri, $protocol = 'http', $node = 'root')
     {

@@ -5,7 +5,6 @@ namespace QiQiuYun\SDK;
 use Psr\Log\LoggerInterface;
 use QiQiuYun\SDK\HttpClient\ClientInterface;
 use QiQiuYun\SDK\Exception\SDKException;
-use QiQiuYun\SDK\Service\NotificationService;
 
 class QiQiuYunSDK
 {
@@ -19,6 +18,14 @@ class QiQiuYunSDK
 
     protected $httpClient;
 
+    /**
+     * QiQiuYunSDK constructor.
+     *
+     * @param array $options
+     * @param LoggerInterface|null $logger
+     * @param ClientInterface|null $httpClient
+     * @throws SDKException
+     */
     public function __construct(array $options, LoggerInterface $logger = null, ClientInterface $httpClient = null)
     {
         if (empty($options['access_key'])) {
@@ -29,9 +36,18 @@ class QiQiuYunSDK
         }
 
         $this->options = $options;
-        $this->auth = $this->createAuth($options['access_key'], $options['secret_key']);
         $this->logger = $logger;
         $this->httpClient = $httpClient;
+    }
+
+    /**
+     * 获取云资源播放服务
+     *
+     * @return \QiQiuYun\SDK\Service\ResourceService
+     */
+    public function getResourceService()
+    {
+        return $this->getService('Resource', true);
     }
 
     /**
@@ -52,16 +68,6 @@ class QiQiuYunSDK
     public function getPlayService()
     {
         return $this->getService('Play');
-    }
-
-    /**
-     * 获取云资源播放服务
-     *
-     * @return \QiQiuYun\SDK\Service\PlayV2Service
-     */
-    public function getPlayV2Service()
-    {
-        return $this->getService('PlayV2');
     }
 
     /**
@@ -125,29 +131,19 @@ class QiQiuYunSDK
     }
 
     /**
-     * @return NotificationService
+     * @return \QiQiuYun\SDK\Service\NotificationService
      */
     public function getNotificationService()
     {
         return $this->getService('Notification');
     }
 
+    /**
+     * @return \QiQiuYun\SDK\Service\WeChatService
+     */
     public function getWeChatService()
     {
         return $this->getService('WeChat');
-    }
-
-    /**
-     * 创建API请求认证类实例
-     *
-     * @param string $accessKey
-     * @param string $secretKey
-     *
-     * @return Auth
-     */
-    public function createAuth($accessKey, $secretKey)
-    {
-        return new Auth($accessKey, $secretKey);
     }
 
     /**
@@ -157,7 +153,7 @@ class QiQiuYunSDK
      *
      * @return mixed 服务实例
      */
-    protected function getService($name)
+    protected function getService($name, $useJwt = false)
     {
         if (isset($this->services[$name])) {
             return $this->services[$name];
@@ -167,8 +163,8 @@ class QiQiuYunSDK
         $options = empty($this->options['service'][$lowerName]) ? array() : $this->options['service'][$lowerName];
 
         $class = __NAMESPACE__.'\\Service\\'.$name.'Service';
-
-        $this->services[$name] = new $class($this->auth, $options, $this->logger, $this->httpClient);
+        $auth = new Auth($this->options['access_key'], $this->options['secret_key'],  $useJwt);
+        $this->services[$name] = new $class($auth, $options, $this->logger, $this->httpClient);
 
         return $this->services[$name];
     }
