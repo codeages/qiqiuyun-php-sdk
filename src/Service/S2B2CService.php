@@ -65,6 +65,7 @@ class S2B2CService extends BaseService
     public function getMe()
     {
         $this->uri = '/merchants/me';
+
         return $this->sendRequest('getMe', array());
     }
 
