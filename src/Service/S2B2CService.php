@@ -34,9 +34,8 @@ class S2B2CService extends BaseService
             'merchantOrder' => $order,
             'merchantOrderItems' => $orderItems,
         );
-        $this->uri = '/distribute/order/settlement/report';
 
-        return $this->sendRequest('reportSuccessOrder', $params, 'POST');
+        return $this->sendRequest('/distribute/order/settlement/report', $params, 'POST');
     }
 
     /**
@@ -55,9 +54,8 @@ class S2B2CService extends BaseService
             'merchantOrderRefund' => $orderRefund,
             'merchantOrderRefundItems' => $orderRefundItems,
         );
-        $this->uri = '/order/report/refund';
 
-        return $this->sendRequest('reportRefundOrder', $params, 'POST');
+        return $this->sendRequest('/order/report/refund', $params, 'POST');
     }
 
     /**
@@ -67,9 +65,7 @@ class S2B2CService extends BaseService
      */
     public function getMe()
     {
-        $this->uri = '/merchants/me';
-
-        return $this->sendRequest('getMe', array());
+        return $this->sendRequest('/merchants/me', array());
     }
 
     /**
@@ -79,9 +75,7 @@ class S2B2CService extends BaseService
      */
     public function getOwnSupplier()
     {
-        $this->uri = '/merchants/own/supplier';
-
-        return $this->sendRequest('getOwnSupplier', array());
+        return $this->sendRequest('/merchants/own/supplier', array());
     }
 
     /**
@@ -102,9 +96,8 @@ class S2B2CService extends BaseService
             'start' => (int) $start,
             'limit' => (int) $limit,
         );
-        $this->uri = '/merchants/flows';
 
-        return $this->sendRequest('searchMerchantFlow', $params);
+        return $this->sendRequest('/merchants/flows', $params);
     }
 
     /**
@@ -125,8 +118,8 @@ class S2B2CService extends BaseService
             'start' => (int) $start,
             'limit' => (int) $limit,
         );
-        $this->uri = '/merchants/orders';
-        return $this->sendRequest('searchMerchantOrder', $params);
+
+        return $this->sendRequest('/merchants/orders', $params);
     }
 
     /**
@@ -147,16 +140,9 @@ class S2B2CService extends BaseService
             'start' => (int) $start,
             'limit' => (int) $limit,
         );
-        $this->uri = '/distribute/products';
 
-        return $this->sendRequest('searchDistribute', $params);
+        return $this->sendRequest('/distribute/products', $params);
     }
-
-    // 获取余额明细详情接口路径
-    private $flowDetailPath = '/merchants/flow_detail';
-
-    // 获取订单详情接口路径
-    private $orderDetailPath = '/merchants/order_detail';
 
     /**
      * 获取余额明细详情
@@ -167,9 +153,7 @@ class S2B2CService extends BaseService
     {
         $sendData = array('flowId' => $flowId);
 
-        $this->uri = $this->flowDetailPath;
-
-        return $this->sendRequest('getFlowDetail', $sendData);
+        return $this->sendRequest('/merchants/flow_detail', $sendData);
     }
 
     /**
@@ -181,16 +165,11 @@ class S2B2CService extends BaseService
     {
         $sendData = array('orderSn' => $orderSn);
 
-        $this->uri = $this->orderDetailPath;
-
-        return $this->sendRequest('getOrderDetail', $sendData);
+        return $this->sendRequest('/merchants/order_detail', $sendData);
     }
 
-    // 批量获取分发课程状态接口路径
-    private $distrabuteProductsPath = '/merchants/distrabute_products';
-
     /**
-     * 获取订单列表详情
+     * 批量获取分发课程状态接口路径
      *
      * @return array ()
      */
@@ -200,61 +179,44 @@ class S2B2CService extends BaseService
             'productIds' => $productIds,
         );
 
-        $this->uri = $this->distrabuteProductsPath;
-
-        return $this->sendRequest('findDistrabuteProducts', $sendData);
+        return $this->sendRequest('/merchants/distrabute_products', $sendData);
     }
-
-    // 修改采购课程价格的接口路径
-    private $changeProductSellingPricePath = '/distribute/product_detail/{productDetailId}/selling_price/change';
 
     public function changeProductSellingPrice($productDetailId, $sellingPrice)
     {
         $sendData = array(
             'sellingPrice' => $sellingPrice,
         );
-        $this->uri = str_replace('{productDetailId}', $productDetailId, $this->changeProductSellingPricePath);
+        $uri = str_replace('{productDetailId}', $productDetailId,
+            '/distribute/product_detail/{productDetailId}/selling_price/change');
 
-        return $this->sendRequest('changeProductSellingPrice', $sendData, 'POST');
+        return $this->sendRequest($uri, $sendData, 'POST');
     }
-
-    private $getProductUri = '/distribute/product';
 
     public function getDistributeProduct($productId)
     {
-        $this->uri = $this->getProductUri ."/{$productId}";
-
-        return $this->sendRequest('getDistributeProduct', array());
+        return $this->sendRequest("/distribute/product/{$productId}", array());
     }
-
-    private $getProducVersionstUri = '/distribute/product/{productDetailId}/versions';
 
     public function getDistributeProductVersions($productDetailId)
     {
-        $this->uri = str_replace('{productDetailId}', $productDetailId, $this->getProducVersionstUri);
+        $uri = str_replace('{productDetailId}', $productDetailId,
+            '/distribute/product/{productDetailId}/versions');
 
-        return $this->sendRequest('getDistributeProductVersions', array());
+        return $this->sendRequest($uri, array());
     }
-
-    private $getDistributeContentUri = '/distribute/content';
 
     public function getDistributeContent($productDetailId)
     {
-        $this->uri = $this->getDistributeContentUri ."/{$productDetailId}";
+        $uri = "/distribute/content/{$productDetailId}";
 
-        return $this->sendRequest('getDistributeContent', array());
+        return $this->sendRequest($uri, array());
     }
-
-    private $getDistributeOldContentUri = '/distribute/old/content';
 
     public function getDistributeOldContent($distributeId)
     {
-        $this->uri = $this->getDistributeOldContentUri ."/{$distributeId}";
-
-        return $this->sendRequest('getDistributeOldContent', array());
+        return $this->sendRequest("/distribute/old/content/{$distributeId}", array());
     }
-
-    private $adoptDirtributeProductUri = '/distribute/product/{id}/adopt';
 
     /**
      * @return array ['status' => boolean,
@@ -269,29 +231,25 @@ class S2B2CService extends BaseService
      */
     public function adoptDirtributeProduct($productId)
     {
-        $this->uri = str_replace('{id}', $productId, $this->adoptDirtributeProductUri);
+        $uri = str_replace('{id}', $productId, '/distribute/product/{id}/adopt');
 
-        return $this->sendRequest('adoptDirtributeProduct', array(), 'POST');
+        return $this->sendRequest($uri, array(), 'POST');
     }
 
     public function changePurchaseStatusToRemoved($productId)
     {
-        $this->uri = str_replace('{productId}', $productId, '/purchase/{productId}/removed');
+        $uri = str_replace('{productId}', $productId, '/purchase/{productId}/removed');
 
-        return $this->sendRequest('changePurchaseStatusToRemoved', array(), 'POST');
+        return $this->sendRequest($uri, array(), 'POST');
     }
 
     public function upgrade($params)
     {
-        $this->uri = '/upgrade';
-
-        return $this->sendRequest('upgrade', $params, 'POST');
+        return $this->sendRequest('/upgrade', $params, 'POST');
     }
 
     public function searchPurchaseProduct($conditions, $sorts, $start, $limit)
     {
-        $this->uri = '/contents/search_purchase_product';
-
         $body = array(
             'conditions' => $conditions,
             'sorts' => $sorts,
@@ -299,31 +257,8 @@ class S2B2CService extends BaseService
             'limit' => $limit,
         );
 
-        return $this->sendRequest('searchPurchaseProduct', $body, 'GET');
+        return $this->sendRequest('/contents/search_purchase_product', $body, 'GET');
     }
-
-    // 调用接口路径
-    protected $uri;
-
-    // 资源播放列表接口路径
-    private $hlsPlaylistPath = '/merchant_resource/hls/playlist';
-
-    // 资源播放列表接口路径-json
-    private $hlsPlaylistJsonPath = '/merchant_resource/hls/playlist/json';
-
-    // 资源播放流接口路径
-    private $hlsStreamPath = '/merchant_resource/hls/stream';
-
-    private $hlsClefPlusPath = '/merchant_resource/hls/clef_plus';
-
-    // 资源详情
-    private $resourcePath = '/merchant_resource/detail';
-
-    // 资源下载信息获取
-    private $resourceDownloadPath = '/merchant_resource/download';
-
-    // 资源信息的播放
-    private $resourcePlayerPath = '/merchant_resource/player';
 
     /**
      * 获取商品资源播放列表m3u8
@@ -336,9 +271,8 @@ class S2B2CService extends BaseService
         if (!empty($sendData['error'])) {
             return $sendData;
         }
-        $this->uri = $this->hlsPlaylistPath;
 
-        return $this->sendRequest('getProductHlsPlaylist', $sendData);
+        return $this->sendRequest('/merchant_resource/hls/playlist', $sendData);
     }
 
     /**
@@ -352,9 +286,8 @@ class S2B2CService extends BaseService
         if (!empty($sendData['error'])) {
             return $sendData;
         }
-        $this->uri = $this->hlsPlaylistJsonPath;
 
-        return $this->sendRequest('getProductHlsPlaylistJson', $sendData);
+        return $this->sendRequest('/merchant_resource/hls/playlist/json', $sendData);
     }
 
     /**
@@ -368,9 +301,8 @@ class S2B2CService extends BaseService
         if (!empty($sendData['error'])) {
             return $sendData;
         }
-        $this->uri = $this->hlsStreamPath;
 
-        return $this->sendRequest('getProductHlsStream', $sendData);
+        return $this->sendRequest('/merchant_resource/hls/stream', $sendData);
     }
 
     /**
@@ -384,9 +316,8 @@ class S2B2CService extends BaseService
         if (!empty($sendData['error'])) {
             return $sendData;
         }
-        $this->uri = $this->hlsClefPlusPath;
 
-        return $this->sendRequest('getProductHlsClefPlus', $sendData);
+        return $this->sendRequest('/merchant_resource/hls/clef_plus', $sendData);
     }
 
     /**
@@ -401,9 +332,8 @@ class S2B2CService extends BaseService
             return $sendData;
         }
         $sendData['params']['resourceNo'] = $sendData['resourceNo'];
-        $this->uri = $this->resourcePath;
 
-        return $this->sendRequest('getProductResource', $sendData);
+        return $this->sendRequest('/merchant_resource/detail', $sendData);
     }
 
     /**
@@ -418,9 +348,8 @@ class S2B2CService extends BaseService
             return $sendData;
         }
         $sendData['params']['resourceNo'] = $sendData['resourceNo'];
-        $this->uri = $this->resourcePlayerPath;
 
-        return $this->sendRequest('getProductResourcePlayer', $sendData);
+        return $this->sendRequest('/merchant_resource/player', $sendData);
     }
 
     /**
@@ -435,9 +364,8 @@ class S2B2CService extends BaseService
             return $sendData;
         }
         $sendData['params']['resourceNo'] = $sendData['resourceNo'];
-        $this->uri = $this->resourceDownloadPath;
 
-        return $this->sendRequest('getProductResDownload', $sendData);
+        return $this->sendRequest('/merchant_resource/download', $sendData);
     }
 
     /**
@@ -456,8 +384,7 @@ class S2B2CService extends BaseService
             'lifetime' => $lifetime,
             'payload' => $payload,
         );
-        $this->uri = '/merchant_resource/make_jwt_play_token';
-        $tokenData = $this->sendRequest('getProductResourceJWTPlayToken', $sendData, 'POST');
+        $tokenData = $this->sendRequest('/merchant_resource/make_jwt_play_token', $sendData, 'POST');
 
         return $tokenData['JWTPlayToken'];
     }
@@ -467,89 +394,79 @@ class S2B2CService extends BaseService
 
     public function isLiveAvailableRecord($liveId)
     {
-        $this->uri = $this->merchantLivePrefix.'/check_record_available';
         $body = array(
             'liveId' => $liveId,
         );
 
-        return $this->sendRequest('isAvailableRecord', $body, 'GET');
+        return $this->sendRequest($this->merchantLivePrefix.'/check_record_available', $body, 'GET');
     }
 
     public function getLiveRoomMaxOnline($liveId)
     {
-        $this->uri = $this->merchantLivePrefix.'/get_max_online';
         $body = array(
             'liveId' => $liveId,
         );
 
-        return $this->sendRequest('getMaxOnline', $body, 'GET');
+        return $this->sendRequest($this->merchantLivePrefix.'/get_max_online', $body, 'GET');
     }
 
     public function getLiveEntryTicket($liveId, $entryUser = array())
     {
-        $this->uri = $this->merchantLivePrefix.'/create_entry_ticket';
         $body = array(
             'liveId' => $liveId,
             'entryUser' => $entryUser
         );
 
-        return $this->sendRequest('getLiveEntryTicket', $body, 'POST');
+        return $this->sendRequest($this->merchantLivePrefix.'/create_entry_ticket', $body, 'POST');
     }
 
     public function consumeLiveEntryTicket($liveId, $ticketNo)
     {
-        $this->uri = $this->merchantLivePrefix.'/consume_entry_ticket';
         $body = array(
             'liveId' => $liveId,
             'ticketNo' => $ticketNo
         );
 
-        return $this->sendRequest('consumeLiveEntryTicket', $body, 'POST');
+        return $this->sendRequest($this->merchantLivePrefix.'/consume_entry_ticket', $body, 'POST');
     }
 
     public function entryLiveReplay($roomParams)
     {
-        $this->uri = $this->merchantLivePrefix.'/entry_live_replay';
-
-        return $this->sendRequest('entryLiveReplay', $roomParams, 'POST');
+        return $this->sendRequest($this->merchantLivePrefix.'/entry_live_replay', $roomParams, 'POST');
     }
 
     public function createLiveReplayList($liveId)
     {
-        $this->uri = $this->merchantLivePrefix.'/create_live_replays';
         $body = array(
             'liveId' => $liveId,
         );
 
-        return $this->sendRequest('createLiveReplayList', $body, 'POST');
+        return $this->sendRequest($this->merchantLivePrefix.'/create_live_replays', $body, 'POST');
     }
 
     public function createAppLiveReplayList($liveId, $roomParams)
     {
-        $this->uri = $this->merchantLivePrefix.'/create_app_live_replays';
         $roomParams['liveId'] = $liveId;
 
-        return $this->sendRequest('createAppLiveReplayList', $roomParams, 'POST');
+        return $this->sendRequest($this->merchantLivePrefix.'/create_app_live_replays', $roomParams, 'POST');
     }
 
     public function getLiveRoomCheckinList($liveId)
     {
-        $this->uri = $this->merchantLivePrefix.'/get_room_checkin_list';
         $body = array(
             'liveId' => $liveId,
         );
 
-        return $this->sendRequest('getLiveRoomCheckinList', $body, 'POST');
+        return $this->sendRequest($this->merchantLivePrefix.'/get_room_checkin_list', $body, 'POST');
     }
 
     public function getLiveRoomHistory($liveId)
     {
-        $this->uri = $this->merchantLivePrefix.'/get_room_history';
         $body = array(
             'liveId' => $liveId,
         );
 
-        return $this->sendRequest('getLiveRoomHistory', $body, 'POST');
+        return $this->sendRequest($this->merchantLivePrefix.'/get_room_history', $body, 'POST');
     }
 
     /**
@@ -586,14 +503,14 @@ class S2B2CService extends BaseService
         return $sendData;
     }
 
-    private function sendRequest($methodName, $data, $requestMethod = 'GET')
+    private function sendRequest($uri, $data, $requestMethod = 'GET')
     {
         try {
-            $this->logger->info('try '.$methodName.': ', array('DATA' => $data));
-            $result = $this->request($requestMethod, $this->uri, $data, $this->getDefaultHeaders());
-            $this->logger->info($methodName.' SUCCEED', array($result));
+            $this->logger->info('try visit '.$uri.': ', array('DATA' => $data));
+            $result = $this->request($requestMethod, $uri, $data, $this->getDefaultHeaders());
+            $this->logger->info('visit '.$uri.' SUCCEED', array($result));
         } catch (\Exception $e) {
-            $this->logger->error($methodName.' error: '.$e->getMessage(), array('DATA' => $data));
+            $this->logger->error('visit '.$uri.' error: '.$e->getMessage(), array('DATA' => $data));
 
             return $this->createErrorResult($e->getMessage());
         }
