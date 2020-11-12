@@ -791,6 +791,35 @@ class S2B2CService extends BaseService
         return $sendData;
     }
 
+    protected function getRequestUri($uri, $protocol = 'https', $node = 'root')
+    {
+        if (!in_array($protocol, array('http', 'https', 'auto'))) {
+            throw new SDKException("The protocol parameter must be in 'http', 'https', 'auto', your value is '{$protocol}'.");
+        }
+
+        if ('leaf' == $node) {
+            $host = empty($this->leafHost) ? $this->host : $this->leafHost;
+        }
+
+        $host= $this->host;
+
+        if (is_array($host)) {
+            shuffle($host);
+            reset($host);
+            $host = current($host);
+        }
+
+        $host = (string) $host;
+
+        if (!$host) {
+            throw new SDKException('API host is not exist or invalid.');
+        }
+
+        $uri = ('/' !== substr($uri, 0, 1) ? '/' : '').$uri;
+
+        return ('https://').$host.$uri;
+    }
+
     private function sendRequest($uri, $data, $requestMethod = 'GET')
     {
         try {
