@@ -5,6 +5,8 @@ namespace QiQiuYun\SDK\Service;
 use App\Biz\Service\ProductService;
 use Psr\Log\LoggerInterface;
 use QiQiuYun\SDK\Auth;
+use QiQiuYun\SDK\Exception\ResponseException;
+use QiQiuYun\SDK\Exception\SDKException;
 use QiQiuYun\SDK\HttpClient\ClientInterface;
 
 class S2B2CService extends BaseService
@@ -463,6 +465,292 @@ class S2B2CService extends BaseService
     }
 
     /**
+     * =======================题库相关=========================
+     */
+
+    private $itemBnakRoutePrefix = '/item_bank';
+
+    public function showAssessment($assessmentId)
+    {
+        $result = $this->sendRequest($this->itemBnakRoutePrefix.'/assessment/' .$assessmentId. '/show', [], 'GET');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+        
+        throw new SDKException('request fail');
+    }
+
+    public function getAssessment($assessmentId)
+    {
+        $result = $this->sendRequest($this->itemBnakRoutePrefix.'/assessment/' .$assessmentId, [], 'GET');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function drawAssessment($range, $sections)
+    {
+        $data = [
+            'range' => $range,
+            'sections' => $sections
+        ];
+
+        $result = $this->sendRequest($this->itemBnakRoutePrefix.'/assessment/draw_items', $data, 'POST');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function createAssessment($assessment)
+    {
+        $result = $this->sendRequest($this->itemBnakRoutePrefix.'/assessment/create', $assessment, 'POST');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function openAssessment($assessmentId)
+    {
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/assessment/{$assessmentId}/open", [], 'POST');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function getLatestAnswerRecord($answerSceneId, $userId)
+    {
+
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/answer/answer_scene_id/{$answerSceneId}/user/{$userId}", [], 'GET');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function getNextReviewingAnswer($answerSceneId)
+    {
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/next_answer/answer_scene_id/{$answerSceneId}", [], 'GET');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function startAnswer($answerSceneId, $mediaId, $userId)
+    {
+        $data = [
+            'answerSceneId' => $answerSceneId,
+            'assessmentId' => $mediaId,
+            'userId' => $userId
+        ];
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/answer/start", $data, 'POST');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function getAssessmentResponseByAnswerRecordId($answerRecordId)
+    {
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/assessment/response/record/{$answerRecordId}", [], 'GET');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function getAnswerRecord($answerRecordId)
+    {
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/answer_record/{$answerRecordId}", [], 'GET');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function continueAnswer($answerRecordId)
+    {
+
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/answer/{$answerRecordId}/continue", [], 'POST');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function submitAnswer($assessmentResponse)
+    {
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/answer/submit", $assessmentResponse, 'POST');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function saveAnswer($assessmentResponse)
+    {
+
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/answer/save", $assessmentResponse, 'POST');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function reviewAnswer($reviewReport)
+    {
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/answer/review", $reviewReport, 'POST');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function getAnswerReport($answerReportId)
+    {
+
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/answer_report/{$answerReportId}/get", [], 'GET');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function getAnswerScene($answerSceneId)
+    {
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/answer_scene/{$answerSceneId}", [], 'GET');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function countAnswerRecord($conditions)
+    {
+
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/answer_record/count", $conditions, 'GET');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function searchAnswerRecord($conditions, $orderBy, $start, $limit)
+    {
+        $data = [
+            'conditions' => $conditions,
+            'orderBy' => $orderBy,
+            'start' => $start,
+            'limit' => $limit
+        ];
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/answer_record/search", $data, 'GET');
+        
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function searchQuestionFavorite($conditions, $orderBy, $start, $limit)
+    {
+        $data = [
+            'conditions' => $conditions,
+            'orderBy' => $orderBy,
+            'start' => $start,
+            'limit' => $limit
+        ];
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/question/favorites", $data, 'GET');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function createQuestionFavorite($questionFavorite)
+    {
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/question/favorite/create", $questionFavorite, 'POST');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function deleteByQuestionFavorite($questionFavorite)
+    {
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/question/favorite/delete", $questionFavorite, 'POST');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function findAssessmentsByIds($ids)
+    {
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/assessment/find", ['ids' => $ids], 'GET');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    public function findAnswerReport($ids)
+    {
+        $result = $this->sendRequest($this->itemBnakRoutePrefix."/answer_report/find", ['ids' => $ids], 'GET');
+
+        if (!empty($result['status']) && $result['status'] = 'success') {
+            return $result['data'];
+        }
+
+        throw new SDKException('request fail');
+    }
+
+    /**
      * 生成调用商品资源类接口的基础参数
      *
      * @param string $uri    访问的路由
@@ -494,6 +782,35 @@ class S2B2CService extends BaseService
         }
 
         return $sendData;
+    }
+
+    protected function getRequestUri($uri, $protocol = 'https', $node = 'root')
+    {
+        if (!in_array($protocol, array('http', 'https', 'auto'))) {
+            throw new SDKException("The protocol parameter must be in 'http', 'https', 'auto', your value is '{$protocol}'.");
+        }
+
+        if ('leaf' == $node) {
+            $host = empty($this->leafHost) ? $this->host : $this->leafHost;
+        }
+
+        $host= $this->host;
+
+        if (is_array($host)) {
+            shuffle($host);
+            reset($host);
+            $host = current($host);
+        }
+
+        $host = (string) $host;
+
+        if (!$host) {
+            throw new SDKException('API host is not exist or invalid.');
+        }
+
+        $uri = ('/' !== substr($uri, 0, 1) ? '/' : '').$uri;
+
+        return ('https://').$host.$uri;
     }
 
     private function sendRequest($uri, $data, $requestMethod = 'GET')
