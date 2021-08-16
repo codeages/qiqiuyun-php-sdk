@@ -3,6 +3,7 @@
 namespace QiQiuYun\SDK\Service;
 
 use QiQiuYun\SDK\Constants\PlatformNewsBlockTypes;
+use QiQiuYun\SDK\Constants\EditionTypes;
 
 /**
  * Open站
@@ -27,9 +28,9 @@ class PlatformNewsService extends BaseService
      *               *url      string 课程url
      *               *position int    课程推荐排序
      */
-    public function getAdvice($limit = 4)
+    public function getAdvice($limit = 4, $edition = EditionTypes::OPENSOURCE)
     {
-        return $this->getFromPlatformNews(PlatformNewsBlockTypes::ADVICE_BLOCK, $limit);
+        return $this->getFromPlatformNews(PlatformNewsBlockTypes::ADVICE_BLOCK, $limit, $edition);
     }
 
     /**
@@ -48,9 +49,9 @@ class PlatformNewsService extends BaseService
      *               *url      string 应用url
      *               *position int    应用排序
      */
-    public function getApplications($limit = 4)
+    public function getApplications($limit = 4, $edition = EditionTypes::OPENSOURCE)
     {
-        return $this->getFromPlatformNews(PlatformNewsBlockTypes::PLUGIN_BLOCK, $limit);
+        return $this->getFromPlatformNews(PlatformNewsBlockTypes::PLUGIN_BLOCK, $limit, $edition);
     }
 
     /**
@@ -69,9 +70,9 @@ class PlatformNewsService extends BaseService
      *               *url      string 二维码图片url
      *               *position int
      */
-    public function getQrCode($limit = 1)
+    public function getQrCode($limit = 1, $edition = EditionTypes::OPENSOURCE)
     {
-        return $this->getFromPlatformNews(PlatformNewsBlockTypes::QR_CODE_BLOCK, $limit);
+        return $this->getFromPlatformNews(PlatformNewsBlockTypes::QR_CODE_BLOCK, $limit, $edition);
     }
 
     /**
@@ -90,9 +91,9 @@ class PlatformNewsService extends BaseService
      *               *url      string 公告url
      *               *position int
      */
-    public function getAnnouncements($limit = 1)
+    public function getAnnouncements($limit = 1, $edition = EditionTypes::OPENSOURCE)
     {
-        return $this->getFromPlatformNews(PlatformNewsBlockTypes::ANNOUNCEMENT_BLOCK, $limit);
+        return $this->getFromPlatformNews(PlatformNewsBlockTypes::ANNOUNCEMENT_BLOCK, $limit, $edition);
     }
 
     /**
@@ -107,8 +108,8 @@ class PlatformNewsService extends BaseService
      *               returnUrl string  跳转url
      *               details array    取回的信息
      */
-    protected function getFromPlatformNews($blockId, $limit = 4)
+    protected function getFromPlatformNews($blockId, $limit = 4, $edition = EditionTypes::OPENSOURCE)
     {
-        return $this->request('GET', "/api/news/block/{$blockId}", array('limit' => $limit));
+        return $this->request('GET', "/api/news/block/{$blockId}", array('limit' => $limit, 'edition' => $edition));
     }
 }
