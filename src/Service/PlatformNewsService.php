@@ -16,6 +16,8 @@ class PlatformNewsService extends BaseService
      * 获取ES商学院课程推荐
      *
      * @param $limit
+     * @param $edition
+     *
      *
      * @return array
      *               id   int  区块id
@@ -37,6 +39,7 @@ class PlatformNewsService extends BaseService
      * 获取推荐应用
      *
      * @param $limit
+     * @param $edition
      *
      * @return array
      *               id   int  区块id
@@ -58,6 +61,7 @@ class PlatformNewsService extends BaseService
      * 获取公众号二维码
      *
      * @param $limit
+     * @param $edition
      *
      * @return array
      *               id   int  区块id
@@ -79,6 +83,7 @@ class PlatformNewsService extends BaseService
      * 获取站长公告
      *
      * @param $limit
+     * @param $edition
      *
      * @return array
      *               id   int  区块id
@@ -101,6 +106,7 @@ class PlatformNewsService extends BaseService
      *
      * @param $blockId
      * @param int $limit
+     * @param $edition
      *
      * @return array
      *               id int  区块id
